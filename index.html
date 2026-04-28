@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" >
+        <title>Accessible LaTeX PDFs</title>
+        <style>
+            img[src^="https://a.cms.omniupdate.com/"] { display: none; }
+            button { margin-bottom: 1ex; }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li>To get an accessible PDF, make sure everything is completely up to date, and as the very first lines in your TeX file:
+                <pre><code>\DocumentMetadata{tagging=on,lang=en-US,pdfstandard=ua-2,
+ % check-tagging-status, % uncomment to log status of packages
+ tagging-setup={
+  % math/alt/use, % uncomment for Ally
+  math/setup=mathml-SE
+ }
+}
+</code></pre>
+                <!-- see https://usergroup.ally.ac/content/perma?id=65867 for math/alt discussion -->
+                <button>Copy</button>
+            </li>
+            <li><a href="accessible.pdf">PDF resource (start here)</a></li>
+            <li><a href="accessible.tex">its TeX source</a></li>
+            <li>Examples:
+                <ul>
+                    <li>2025-08-27 department colloquium
+                        <ul>
+                            <li><a href="accessibleTalk.pdf">PDF presentation</a></li>
+                            <li>
+                                <a href="accessibleTalk.tex">its TeX source</a>
+                                <ul>
+                                    <li><a href="pdfixScreenshot.png">included PDFix screenshot</a></li>
+                                    <li><a href="veraPdfScreenshot.png">included VeraPDF screenshot</a></li>
+                                    <li><a href="PacScreenshot.png">included PAC screenshot</a></li>
+                                    <li><a href="Blackboard-PPT-Tues.pdf">included ltx-footer example</a></li>
+                                    <li><a href="table-header-scope.sty">included style file to avoid PAC bug</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>2025-10-11 MAA presentation
+                        <ul>
+                            <li><a href="accessibleTalk-2025-10-11.pdf">PDF presentation</a></li>
+                            <li><a href="accessibleTalk-2025-10-11.tex">its TeX source</a>
+                                <ul>
+                                    <li><a href="Blackboard-PPT-Tues.pdf">included ltx-footer example</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="https://tex.stackexchange.com/questions/55437/">How to update your LaTeX</a></li>
+            <li><a href="https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html">The basics</a></li>
+            <li><a href="https://latex3.github.io/tagging-project/tagging-status/">Status of individual packages and classes</a></li>
+            <li>Tools to check that your pdf is accessible:
+                <ul>
+                    <li><a href="https://pdfix.net/">PDFix</a> (GUI only)</li>
+                    <li><a href="https://verapdf.org/software/">VeraPDF</a> (not great for locating problems)</li>
+                    <li><a href="https://pac.pdf-accessibility.org/en">PAC</a> (PDF1.7/UA-1 only)</li>
+                    <li><a href="https://help.anthology.com/ally-lms/en/administrators/ally-accessibility-checklist.html">Ally's accessibility checklist</a></li>
+                </ul>
+            </li>
+            <li>
+                If Ally complains about missing headers: use <code>\section*</code> or
+                <a href="https://tex.stackexchange.com/a/758805/107497">this TeX.SE answer</a>
+                <!-- see https://usergroup.ally.ac/content/perma?id=67523 for that discussion -->
+            </li>
+            <li><a href="https://und.edu/academics/ttada/academic-technologies/digital-accessibility/tools.html">Other resources collected by UND</a></li>
+            <li>Tools to read the created pdf (see <a href="https://tex.stackexchange.com/a/755945/107497">this TeX.SE answer for the latest</a>), you will need NVDA or JAWS (both of which require Windows), the MathCat add-on, and one of
+                <ul>
+                    <li>Adobe</li>
+                    <li>Foxit</li>
+                    <li>(maybe) Firefox</li>
+                </ul>
+            </li>
+            <li><a href="https://www.youtube.com/watch?v=Eu_qM53tInw&t=5900s">A talk from July 2025's TeX conference showing an example</a></li>
+        </ul>
+        <script>
+            document.querySelector('button').addEventListener('click', copyFunction);
+            function copyFunction() {
+                navigator.clipboard.writeText(document.querySelector('code').textContent).then(sayCopied);
+            }
+            function sayCopied() {
+                document.querySelector('button').textContent = 'Copied';
+                setTimeout( () => { document.querySelector('button').textContent = 'Copy'; }, 1500 );
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+\DocumentMetadata{lang=en,tagging=on,lang=en,
+% pdfstandard=ua-1,pdfversion=1.7,
+ pdfstandard=ua-2,
+ tagging-setup={
+%  math/alt/use,
+  math/setup=mathml-SE
+ }
+}
+\documentclass{article}
+\title{Title}
+\author{}
+\date{}
+\usepackage{amsmath,unicode-math}
+\ExplSyntaxOn
+\newcommand\intertextmath[1]{
+% \exp_args:Ne
+ \tag_struct_begin:n
+  {
+   tag = Formula , %\pdf_version_compare:NnTF < { 2.0 } { Span } { Formula }
+%   \bool_if:NT \l__tag_math_alt_bool { , alt = { subformula ~ of ~ larger ~ formula } }
+  }
+  \(#1\)
+ \tag_struct_end:
+% \group_begin:
+%  \tag_suspend:n { inner ~ formula }
+%  \(#1\)
+% \group_end:
+}
+\ExplSyntaxOff
+\begin{document}
+\section*{Heading}
+\begin{align*}
+1&=1\\
+3&=1+2\\
+6&=1+2+3\\
+10&=1+2+3+4\\
+15&=1+2+3+4+5\\
+\intertext{and by induction on \intertextmath{n}}
+\frac{n(n+1)}2&=1+2+\dots+n
+\end{align*}
+\end{document}
+
+I would like to revisit this issue with a concrete example.  In math, it's common to have several equations grouped together.  Within this grouping, it's common to have a short piece of text that isn't math.  Within this short piece of text, it's common to have a small bit of math.  (This alternation could continue, but would be much less common.)  The PDF 1.7 specification (as I understand it) and Ally are looking for alt text on all such formulas.  Adobe's accessibility checker, on the other hand, objects to nested alt text.
+
+The question is, what should we do with the inner math bit.  In PDF 1.7:
+* exampleNoTagV17.pdf disables tagging on the inner math bit.  Adobe and Ally are happy, but the document is obviously less accessible.
+* exampleSingleAltV17.pdf tags the inner math bit as a formula but omits the alt text.  Ally and Adobe are happy, but the PDF does not meet the 1.7 specification.
+* exampleDoubleAltV17.pdf tags the inner math bit as a formula and provides alt text.  Ally is happy, but Adobe complains about nested alt text.
+In PDF 2.0:
+* exampleNoTagV2.pdf disables tagging on the inner math bit.  Adobe and Ally are happy, but the document is obviously less accessible.
+* exampleSingleAltV2.pdf tags the inner math bit as a formula but omits the alt text.  Adobe is happy, but Ally is not.
+* exampleDoubleAltV2.pdf tags the inner math bit as a formula and provides alt text.  Ally is happy, but Adobe complains about nested alt text.
+
+For PDF 1.7, I don't see a way to reconcile Ally, Adobe, and the specification to give an accessible document.  But PDF 2.0 offers a way out: formulas do not require alt text.  The attachment exampleNoAltV2.pdf satisfies Adobe and the PDF 2.0 specification (but not Ally because of the missing alt text).  With the recommended screen readers (NVDA/MathCAT or Jaws/MathCat) and PDF readers (Adobe, Foxit, Firefox), NoAlt also performs better: the user is able to step into the equation group and examine it piece by piece, instead of only getting the entirety of the alt text.  (I have many times told others: "Use alt text on formulas if you need to pass Ally's checks, but it makes the accessibility worse.")
+
+Would it be possible for Ally to not require alt text on formulas?  Perhaps only for PDFs that are versions 2.0 or higher?  (The PDF version number is in the first line any pdf file.)
