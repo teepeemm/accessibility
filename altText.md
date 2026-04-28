@@ -1,5 +1,5 @@
 
-#Alt text guidelines
+# Alt text guidelines
 
 ## Do:
 
