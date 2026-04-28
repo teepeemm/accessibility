@@ -157,7 +157,7 @@ If we want to define a new overlay aware command,
 we should use the \texttt{xparse} syntax
 \begin{verbatim}[\verbatimOptions]
 \NewDocumentCommand{\mycommand}
-  { s D<>{all} ... }{ ... }
+  { s D<>{1-} ... }{ ... }
 \end{verbatim}
 where the \texttt{s} indicates an optional star
 (if we want our command to look for that),
@@ -181,9 +181,9 @@ alert (red), example (green), and structure (blue).
 All three are slightly darker than standard 100\%/0\%/0\%
 in \acro{RGB} colors to enhance contrast for accessibility.
 
-Where \texttt{beamer} has the concept of a \emph{fragile} frame
-that uses verbatim or listings to change the catcodes,
-\ltxtalk\ does this when a \tubbraced{frame*} environment is used.
+If a frame needs to use verbatim or listings to change the catcodes,
+then \ltxtalk\ needs a \tubbraced{frame*} environment
+(this is similar to \texttt{beamer}'s concept of a \emph{fragile} frame).
 As with most things related to verbatim,
 such a frame cannot appear as the argument of another command.
 
@@ -381,7 +381,7 @@ in the top right of the header.
 This cannot be done with the existing template, but can be accomplished with
 \begin{lstlisting}
 \NewCommandCopy\oldframetitle\frametitle
-\renewcommand{\frametitle}[1]{%
+\RenewDocumentCommand{\frametitle}{m}{%
   \oldframetitle{#1\hfill
     \includegraphics[height=2ex,artifact]
       {logofile}}}
@@ -416,21 +416,21 @@ Outside of the footer, we can access that using
 
 %examples at
 %\url{https://www.texdev.net/ltx-talk/examples/}:
-\begin{itemize}
-%\item background-image % as with regular document
-%\item float-centering
-%\item footer-text
-%\item header-footer-color
-%\item list-actions
-%\item list-overlays
-%\item math-fonts % as with regular document
-%\item overlays-opacity
-%\item titlepage-styling
-%\item totalframes
-%\item verbatim-alt-env
-%\item verbatim-content
-\item actionenv
-\end{itemize}
+%\begin{itemize}
+%%\item background-image % as with regular document
+%%\item float-centering
+%%\item footer-text
+%%\item header-footer-color
+%%\item list-actions
+%%\item list-overlays
+%%\item math-fonts % as with regular document
+%%\item overlays-opacity
+%%\item titlepage-styling
+%%\item totalframes
+%%\item verbatim-alt-env
+%%\item verbatim-content
+%%\item actionenv
+%\end{itemize}
 
 \subsection{Adjusting the Title Page}
 

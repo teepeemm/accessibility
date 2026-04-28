@@ -152,9 +152,8 @@ the vast majority of accessibility is enabled by using
 %  check-tagging-status,
   tagging-setup={
 %    math/alt/use,
-    math/setup=mathml-SE
-  }
-}
+    math/setup=mathml-SE } }
+\RequirePackage{unicode-math}
 \end{verbatim}
 as the first command of the document (even before the \cs{documentclass}).
 We'll discuss the commented options as we proceed;
@@ -162,7 +161,7 @@ other options are available by looking through
 \texttt{texdoc documentmetadata-support-code}.
 In addition to enabling tagging, the \cs{DocumentMetadata} command
 also allows us to adjust the \PDF\ metadata of the compiled document.
-We also need to use the package \texttt{unicode-math}.
+%We also need to use the package \texttt{unicode-math}.
 
 An all too common occurrence during compilation was a tagging related error,
 often that ``The number of automatic begin and end hooks differ!''
@@ -231,17 +230,18 @@ so that a screen reader does not say ``Image: image \dots''
 to the image:
 \begin{itemize}
 \ttfamily
-\item\cs{includegraphics}[\textbf{alt=\{...\}}]
-\item\cs{tikz}[\textbf{alt=\{...\}}]
-\item\cs{begin}\{tikzpicture\}[\textbf{alt=\{...\}}]
-\item\cs{begin}\{picture\}[\textbf{alt=\{...\}}]
+\item\cs{includegraphics}[\textbf{alt=\tubbraced{...}}]
+\item\cs{tikz}[\textbf{alt=\tubbraced{...}}]
+\item\cs{begin}\tubbraced{tikzpicture}[\textbf{alt=\tubbraced{...}}]
+\item\cs{begin}\tubbraced{picture}[\textbf{alt=\tubbraced{...}}]
 \end{itemize}
-We also have two other options to \texttt{alt=\{...\}}:
+We also have two other options to \texttt{alt=\tubbraced{...}}:
 if the image is purely decorative and unnecessary for the reader,
 we can use the option \texttt{artifact}
 so that screen readers ignore it entirely.
-Less commonly, we can use \texttt{actualtext=\{...\}}
-so that screen readers act as if there is no image, and instead read the text.
+Less commonly, we can use \texttt{actualtext=\tubbraced{...}}
+so that screen readers act as if there is no image,
+and instead read the text.
 This works best if the image is actually stylistically decorated text.
 
 In our case, we were able to hire a student worker over the summer
@@ -364,7 +364,12 @@ This usually causes \PDF\ screen readers to read the alt text and
 omit the more informative \MathML\ tags, so we discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
-rmarkdown: \verb|\setkeys{Gin}{alt={...}}|
+A colleague uses the rmarkdown, which has its own syntax
+for including graphics.
+This does not (yet?) allow us to specify the alt text,
+which we therefore accomplish by using \verb|\setkeys{Gin}{alt={...}}|.
+Note that this setting will remain in effect until
+the next such command or when the group ends.
 
 \section{Tables}
 
@@ -552,6 +557,8 @@ the \texttt{number of strings} or the \texttt{hash size},
 requiring us to modify the compilation command
 (see \url{https://tex.stackexchange.com/a/741777/}).
 
+\iffalse
+
 This is an example article for \TUB, linked from
 \url{https://tug.org/TUGboat/location.html}.
 
@@ -652,6 +659,8 @@ complete bibliography of \TUB, \texttt{texbook3.bib} with many common
 \TeX-related books and articles, and plenty more.
 
 Email \verb|tugboat@tug.org| with any questions.
+
+\fi
 
 \bibliographystyle{tugboat} % tugboat's bibtex style
 %\nocite{book-minimal}       % make the example bibliography non-empty

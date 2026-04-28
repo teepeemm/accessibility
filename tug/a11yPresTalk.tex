@@ -10,6 +10,17 @@
   }
 }
 \documentclass{ltx-talk}
+\date{July 2026}
+\title[Accessible Presentations]
+ {Creating Accessible Presentations With \texttt{ltx-talk}}
+%\subtitle{beamer+tagging}
+\author[Tim Prescott]{Timothy Prescott (\TeX.SE \texttt{teepeemm})}
+% abstract:
+%We discuss how to create accessible \PDF\ presentations
+%using \texttt{ltx-talk}, which is similar to \texttt{beamer}.
+%We give several examples, including how to adapt common Beamer styles.
+%We also discuss necessary adaptations
+%to satisfy a common accessibility checker available in several \acro{LMS}s.
 
 % 30 minutes including questions
 
@@ -107,24 +118,6 @@
   language={[LaTeX]TeX}
 }
 
-\title[Accessible Presentations]
- {Creating Accessible Presentations With \texttt{ltx-talk}}
-%\subtitle{beamer+tagging}
-\author[Tim Prescott]{Timothy Prescott (\TeX.SE \texttt{teepeemm})}
-\date{July 2026}
-% abstract:
-%We discuss how to create accessible \PDF\ presentations
-%using \texttt{ltx-talk}, which is similar to \texttt{beamer}.
-%We give several examples, including how to adapt common Beamer styles.
-%We also discuss necessary adaptations
-%to satisfy a common accessibility checker available in several \acro{LMS}s.
-
-%\newcommand{\apex}{%
-%  \texorpdfstring{A\kern -.1em \lower -.5ex\hbox{P}%
-%    \kern -.25em\lower .5ex\hbox{E}\kern -.1em X%
-%  }{APEX}%
-%}
-
 %\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
 \providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
 
@@ -151,7 +144,7 @@
 }
 % flame logo, white, digital png
 \NewCommandCopy\oldframetitle\frametitle
-\renewcommand{\frametitle}[1]{%
+\RenewDocumentCommand{\frametitle}{m}{%
   \oldframetitle{#1\hfill
     \includegraphics[height=2ex,artifact]{flame-w-rgb}%
   }%
@@ -393,7 +386,7 @@ print-frame-title & true\\\bottomrule
 $\qquad\longrightarrow\qquad\longrightarrow$}
 \begin{lstlisting}
 \NewCommandCopy\oldframetitle\frametitle
-\renewcommand{\frametitle}[1]{%
+\RenewDocumentCommand{\frametitle}{m}{%
   \oldframetitle{#1\hfill
     \includegraphics[height=2ex,artifact]{logo-file}%
   }%
@@ -482,6 +475,7 @@ other options are plain \& wallpaper
 
 \EditInstance{hidden}{std}{opacity = <value>}
 % 0 <= value <= 1 for how opaque hidden things should be
+% default is 0
 \end{lstlisting}
 \end{frame*}
 
