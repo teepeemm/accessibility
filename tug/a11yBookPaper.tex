@@ -244,8 +244,13 @@ so that screen readers act as if there is no image,
 and instead read the text.
 This works best if the image is actually stylistically decorated text.
 
-In our case, we were able to hire a student worker over the summer
-to supply the bulk of the alt text.
+It is useful to note that it is not too difficult to create alt text.
+A majority of our discussion requires some familiarity with creating
+a longer \LaTeX\ document.
+For alt text, however, we used a short Python script that added
+\texttt{[alt={ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
+A student worker with less \TeX\ experience was then able to go through
+the book, examine the resulting \PDF, and supply the alt text.
 
 There are two contrasting problems arising from alt text.
 The first was succinctly stated by a colleague:
@@ -296,8 +301,20 @@ Image code adapted from \url{https://tex.stackexchange.com/a/440352/}.}
 %\cite{snake}
 \end{figure}
 %
+More pertinent to our discussion, a defining feature of the textbook
+is its inclusion of numerous three dimensional images created with
+Asymptote that the reader is able to rotate in the \PDF\ with appropriate
+viewers (see \autoref{threeDfig} for an example).
+\begin{figure}
+\includegraphics[width=\linewidth]{figdivthm_space2_3DBW}
+\caption{A figure from the textbook with alt text:
+\texttt{A wedge where 0<z<2x and 0<x<1-y².}
+Make sure to grab and rotate the image.}
+\label{threeDfig}
+\end{figure}
 It is not reasonable to describe a commutative diagram with fourteen cells
-in at most 120 characters.
+in at most 120 characters, nor can a short description convey the information
+learned by rotating an image.
 %More pertinent to the textbook, a defining feature is that the \PDF\ 
 %includes many three dimensional figures that can be rotated
 %in Adobe's \PDF\ viewer (see  for an example).
@@ -364,8 +381,8 @@ This usually causes \PDF\ screen readers to read the alt text and
 omit the more informative \MathML\ tags, so we discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
-A colleague uses the rmarkdown, which has its own syntax
-for including graphics.
+A colleague uses the \texttt{rmarkdown} package,
+which has its own syntax for including graphics.
 This does not (yet?) allow us to specify the alt text,
 which we therefore accomplish by using \verb|\setkeys{Gin}{alt={...}}|.
 Note that this setting will remain in effect until
@@ -388,8 +405,7 @@ To identify the headings in a particular tabular, we use
 \begin{verbatim}[\verbatimoptions]
 \tagpdfsetup{
  table/header-rows={...},
- table/header-columns={...}
-}
+ table/header-columns={...} }
 \end{verbatim}
 The default is an empty list specifying no header along that axis,
 so that the most common occurrence of a single header row only needs
@@ -487,8 +503,11 @@ as paths within the \PDF\ document, such as
 \begin{verbatim}[\verbatimoptions]
 root/
   document[0]/
-  pages[65](167 0 obj PDPage)/
-  annots[0](11747 0 obj PDLinkAnnot)
+  pages[14](925 0 obj PDPage)/
+  contentStream[0](926 0 obj
+    PDSemanticContentStream)/
+  content[124]{mcid:109}/
+  contentItem[0]{mcid:109}
 \end{verbatim}
 \VeraPDF\ also has a command line version of the program,
 allowing for faster (or even automated) checking of generated \PDF s.
@@ -501,9 +520,9 @@ summarized in \autoref{vera-report}.
 \label{vera-report}
 \begin{tabular}{l S[table-format=4] S[table-format=8,digit-group-size=4]}\toprule
 Profile & {Rules} & {Checks} \\\midrule
-PDF/UA-2 & 1723 & 13140427 \\
-WTPDF 1.0 Accessibility & 1719 & 13140423 \\
-WTPDF 1.0 Reuse & 1706 & 11904349 \\\bottomrule
+PDF/UA-2 & 1723 & 12926774 \\
+WTPDF 1.0 Accessibility & 1719 & 12926770 \\
+WTPDF 1.0 Reuse & 1706 & 11679799 \\\bottomrule
 \end{tabular}
 \end{table}
 
@@ -527,8 +546,8 @@ For shorter documents, we can also examine the tagging structure
 of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
 or the website \url{https://ngpdf.com/}.
 
-* Ally, UDOIT, SiteImprove, continual engine prep?
-* Adobe?
+%* Ally, UDOIT, SiteImprove, continual engine prep?
+%* Adobe?
 
 % Section headings: Ally, UDOIT ?
 
