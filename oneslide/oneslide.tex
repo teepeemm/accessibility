@@ -1,0 +1,101 @@
+% due July 8
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+%  check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+\documentclass{ltx-talk}
+\usepackage{qrcode}
+
+\title[Accessible PDF]{Creating Accessible PDFs With \LaTeX}
+%\shorttitle{Accessible PDF Textbook}
+\author{Timothy Prescott}
+\institute{University of North Dakota}
+%\logo{\includegraphics{example-image}}
+%\institute{\raisebox{0pt}[\baselineskip]\LaTeX}
+%\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
+\date{\today}
+
+%\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
+\providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
+
+\AddToHook{begindocument/end}{
+  \EditInstance{header}{std}{
+    background-color = maybeUNDgreen,
+    color            = white,
+  }
+}
+
+\EditInstance{footer}{std}{
+  color         = black!75,
+  separator     = \hfill|\hfill,
+  element-order = {date, author, title, frameoftitle},
+}
+
+\DeclareInstance{footer-element}{frameoftitle}{talk}{}
+\ExpandArgs{c}\newcommand{@frameoftitle}{%
+  \arabic{frame}/\RefProperty{lastpage}{totalframes}
+}
+
+\DeclareInstance{titlepage-element}{titlegraphic}{talk}{}
+% department logo obtained locally
+% other graphics from https://campus.und.edu/brand/downloads.html
+% primary logotype, full color, svg converted to pdf
+\ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \includegraphics[
+    actualtext={University of North Dakota, Mathematics \& Statistics},
+    width=5cm
+  ]{MathStats-CMYK_primary.jpg}% logotype-full
+}
+% flame logo, white, digital png
+\NewCommandCopy\oldframetitle\frametitle
+\RenewDocumentCommand{\frametitle}{m}{%
+  \oldframetitle{#1\hfill
+    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
+  }%
+}
+
+\begin{document}
+
+\begin{frame}
+\maketitle[
+  element-order = {title, subtitle, author, titlegraphic, date},
+  framestyle = wallpaper
+]
+\end{frame}
+
+\begin{frame*}
+\frametitle{TL;DR}
+\begin{minipage}[t]{.5\textwidth}
+Update \LaTeX
+\begin{verbatim}
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+% check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+\RequirePackage{unicode-math}
+\end{verbatim}
+compile with Lua\LaTeX\\
+Add alt text\\
+Give tables headers
+\end{minipage}%
+\begin{minipage}[t]{.5\textwidth}
+\begin{center}
+\url{https://github.com/teepeemm/accessibility}\\\bigskip
+\qrcode{https://github.com/teepeemm/accessibility}
+\end{center}
+\end{minipage}
+\end{frame*}
+
+\end{document}
