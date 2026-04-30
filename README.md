@@ -40,7 +40,9 @@ PDF Validators:
 * [PDFix](https://pdfix.net/) uses the same algorithm as veraPDF, will show you where any errors are, but has no command line interface
 * There are not many [other PDF validators](https://pdfa.org/accessible-math-in-pdf-finally/) that can handle math.
 * [PDF validation false negatives](https://github.com/latex3/tagging-project/discussions/categories/issues-with-accessibility-checkers-and-other-at-software)
-* FYI, [Ally's accessibility checklist](https://help.anthology.com/ally-lms/en/administrators/ally-accessibility-checklist.html) Note it appears many times in the false negatives list, and also will readily award false positives.  It's judgement probably shouldn't be trusted, but if it's judging you, you have to satisfy some hoops.
+* FYI, [Ally's accessibility checklist](https://help.anthology.com/ally-lms/en/administrators/ally-accessibility-checklist.html).
+Note that Ally appears many times in the false negatives list, and also will readily award false positives.
+It's judgement probably shouldn't be trusted, but if it's judging you, you have to jump through a hoop and uncomment the `math/alt/use` line.
 
 PDF Screen readers:
 -----------
@@ -52,5 +54,7 @@ PDF Screen readers:
 
 * https://accessibility.umn.edu/gaad/virtual-swag
 * https://iu.instructure.com/courses/2325746/pages/creating-fully-tagged-pdf-slash-ua-2-accessible-documents-with-latex?module_item_id=35514589
+* https://texlive.net/tests/MathML/
+* https://pdfa.org/resource/best-practice-guide-math-in-pdf/
 
 -->
