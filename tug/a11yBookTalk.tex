@@ -63,7 +63,7 @@
 }
 % flame logo, white, digital png
 \NewCommandCopy\oldframetitle\frametitle
-\renewcommand{\frametitle}[1]{%
+\RenewDocumentCommand{\frametitle}{m}{%
   \oldframetitle{#1\hfill
     \includegraphics[height=2ex,artifact]{flame-w-rgb}%
   }%
