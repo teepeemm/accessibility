@@ -109,28 +109,28 @@ Using a custom textbook has enabled students
 to download the \PDF\ for free
 in addition to having the option to purchase the book
 for a fraction of the cost of other textbooks
-(currently \$25--\$30 per semester, when the author last checked).
+(currently \$25--\$30 per semester, when I last checked).
 
 The format of the book is to \cs{include} one \cs{part} for each semester,
-so that \cs{includeonly} allows us to have a one semester \PDF s that we send
-to the university printer to create physical copies
+so that \cs{includeonly} allows us to have three one semester \PDF s that we
+send to the university printer to create physical copies
 (the online \PDF\ includes all three semesters).
-Within each included file, we have a few paragraphs introducing each chapter
+Within each included file, there are a few paragraphs introducing each chapter
 and then \cs{input} each section.
 Each section then ends with a custom command that inputs the exercises
 for that section.
 
-Our university has been emphasizing the national requirement
+My university has been emphasizing the national requirement
 that all documents must be accessible according to
 the \acro{WCAG} 2.1 \acro{AA} guideline
 as of April 2026 (now delayed to 2027), see \TUB\ 45:2 \cite{Kuan:2024:LCL}
 for a historical overview of how we got to this point.
-Beginning in early 2025, we began exploring how to ensure that
+Beginning in early 2025, I began exploring how to ensure that
 the textbook meets this guideline.
 
 \section{The Basics}
 
-We first needed to convert the document from using \XeLaTeX\ to \LuaLaTeX,
+I first needed to convert the document from using \XeLaTeX\ to \LuaLaTeX,
 which also necessitated adjusting a few font commands in the preamble,
 but not much else.
 
@@ -139,7 +139,7 @@ since at least \TUB\ 40:2 \cite{Rowley:2019:ALK}
 (see also
 \url{https://tug.org/TUGboat/Contents/listkeyword.html#CatTAGAccessibility}),
 building off of existing efforts.
-% should we cite others from TUGboat?
+% should I cite others from TUGboat?
 Thanks to their hard work,
 the vast majority of accessibility is enabled by using
 %\begin {verbatim}
@@ -156,30 +156,29 @@ the vast majority of accessibility is enabled by using
 \RequirePackage{unicode-math}
 \end{verbatim}
 as the first command of the document (even before the \cs{documentclass}).
-We'll discuss the commented options as we proceed;
+I'll discuss the commented options as we proceed;
 other options are available by looking through
 \texttt{texdoc documentmetadata-support-code}.
 In addition to enabling tagging, the \cs{DocumentMetadata} command
-also allows us to adjust the \PDF\ metadata of the compiled document.
-%We also need to use the package \texttt{unicode-math}.
+can adjust the \PDF\ metadata of the compiled document.
 
 An all too common occurrence during compilation was a tagging related error,
 often that ``The number of automatic begin and end hooks differ!''
-Our setup of using \cs{include} and \cs{input} allowed us to comment out
+My setup of using \cs{include} and \cs{input} allowed me to comment out
 various sections, isolating a single section that caused the error.
-We then examined the log file,
+I then examined the log file,
 found a ``Package tagpdf Warning'' regarding some aspect of our code, and
 created a minimal working example causing this warning and error.
 
-With the example in hand, we began searching the internet for a fix.
+With the example in hand, I began searching the internet for a fix.
 For packages, a good starting point was to view
 \url{https://latex3.github.io/tagging-project/tagging-status/},
 which reports the tagging compatibility of each class and package.
-Often, a linked issue would contain code snippets we could copy and paste
+Often, a linked issue would contain code snippets I could copy and paste
 into the preamble that would resolve the issue.
-We can also create a tagging status report in the log file
-by uncommenting the \texttt{check-tagging-status} line
-in our \cs{DocumentMetadata}.
+Uncommenting the \texttt{check-tagging-status} line
+in the \cs{DocumentMetadata} will also create
+a tagging status report in the log file.
 
 The \texttt{tagging-status} website and log information have five categories:
 \begin{description}
@@ -203,7 +202,9 @@ your odds are bad if it's a local package provided by a ``friend''.
 \end{description}
 
 Resolving errors not directly related to packages was more difficult.
-We often turned to \url{https://tex.stackexchange.com/} for help.
+I often turned to \url{https://tex.stackexchange.com/} for help.
+(In more extreme cases, I reported a bug at
+\url{https://github.com/latex3/tagging-project}.)
 Luckily for the reader (and the author), some errors were caused
 by a bug in the tagging code that was quickly fixed.
 (A quickly fixed bug was also occasionally true
@@ -226,7 +227,7 @@ Ideally, alt text should be
 so that a screen reader does not say ``Image: image \dots''
 \item not blindly copied from an AI output
 \end{itemize}
-\LaTeX's tagging code allows us to specify alt text as an optional argument
+\LaTeX's tagging code can specify alt text as an optional argument
 to the image:
 \begin{itemize}
 \ttfamily
@@ -235,7 +236,7 @@ to the image:
 \item\cs{begin}\tubbraced{tikzpicture}[\textbf{alt=\tubbraced{...}}]
 \item\cs{begin}\tubbraced{picture}[\textbf{alt=\tubbraced{...}}]
 \end{itemize}
-We also have two other options to \texttt{alt=\tubbraced{...}}:
+There are also two other options to \texttt{alt=\tubbraced{...}}:
 if the image is purely decorative and unnecessary for the reader,
 we can use the option \texttt{artifact}
 so that screen readers ignore it entirely.
@@ -247,7 +248,7 @@ This works best if the image is actually stylistically decorated text.
 It is useful to note that it is not too difficult to create alt text.
 A majority of our discussion requires some familiarity with creating
 a longer \LaTeX\ document.
-For alt text, however, we used a short Python script that added
+For alt text, however, I used a short Python script that added
 \texttt{[alt={ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
 A student worker with less \TeX\ experience was then able to go through
 the book, examine the resulting \PDF, and supply the alt text.
@@ -365,7 +366,7 @@ as in \autoref{fig:calcprob}.
   \caption{\label{fig:calcprob}How do you write alt text for this exercise
   without giving away the answer?}
 \end{figure}
-We chose to describe the graph using various synonyms
+I chose to describe the graph using various synonyms
 (``the graph is a line from $(-2,0.5)$ to a hollow dot at $(-1,1)$, \dots''),
 but acknowledge this is not an entirely satisfactory approach.
 
@@ -378,12 +379,12 @@ formulas include alt text.
 We can accomplish this by uncommenting the \texttt{math/alt/use}
 key in the \cs{DocumentMetadata} command.
 This usually causes \PDF\ screen readers to read the alt text and
-omit the more informative \MathML\ tags, so we discourage its use
+omit the more informative \MathML\ tags, so I discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
 A colleague uses the \texttt{rmarkdown} package,
 which has its own syntax for including graphics.
-This does not (yet?) allow us to specify the alt text,
+This does not (yet?) allow specifying the alt text,
 which we therefore accomplish by using \verb|\setkeys{Gin}{alt={...}}|.
 Note that this setting will remain in effect until
 the next such command or when the group ends.
@@ -399,7 +400,7 @@ then it's not actually a table and probably shouldn't be tagged as such
 ``this doesn't need to be tagged as a table'',
 but life will probably be easier if it's not a table to begin with).
 
-To identify the headings in a particular tabular, we use
+To identify the headings in a particular tabular, I use
 %\begin{verbatim}[setup-code=\small]
 %\begin{verbatim}[\small]
 \begin{verbatim}[\verbatimoptions]
@@ -418,7 +419,7 @@ and can omit the \texttt{table-header-columns}.
 These declarations obey \TeX's grouping rules, so that a header
 specification will last until the end of the current environment.
 
-While \cs{multicolumn} is tagging ready, we cannot say the same for
+While \cs{multicolumn} is tagging ready, I cannot say the same for
 a \cs{multirow} cell, which needs to have
 %
 %\newline
@@ -434,7 +435,7 @@ a \cs{multirow} cell, which needs to have
 \end{verbatim}
 at the beginning of the cell.
 
-We should also note that the table interface
+I should also note that the table interface
 will likely change over the next few years.
 Follow \texttt{texdoc latex-lab-table} for the details.
 
@@ -444,24 +445,24 @@ Follow \texttt{texdoc latex-lab-table} for the details.
 
 \section{Other Package Changes}
 
-We had originally formatted our headings using the \texttt{titlesec} package.
+I had originally formatted our headings using the \texttt{titlesec} package.
 This requires adjustments to properly tag,
 and was becoming too complicated for our use.
-We opted to instead use \cs{@startsec}
+I opted to instead use \cs{@startsec}
 (see \texttt{texdoc latex2e}, section 6.8).
 Another possibility is the new template mechanism
 (see \texttt{texdoc latex-lab-sec-template}).
 
-We were originally using \texttt{enumitem} to adjust our \tubbraced{enumerate}
+I was originally using \texttt{enumitem} to adjust our \tubbraced{enumerate}
 environments, which is also not amenable to tagging.
-We are now using \texttt{enumext},
+I am now using \texttt{enumext},
 although there is also a templating alternative
 (see \texttt{texdoc blocks-doc}).
 
-We also made heavy use of the \texttt{marginnote} package
+I also made heavy use of the \texttt{marginnote} package
 which, along with \texttt{marginfit}, % and marginfix?
 is currently incompatible with tagging.
-Instead, we are now using \texttt{marginalia}.
+Instead, I am now using \texttt{marginalia}.
 % \cs{marginpar} another possibility
 
 %beamer ltx-talk
@@ -469,7 +470,7 @@ Instead, we are now using \texttt{marginalia}.
 \section{Checking the Results}
 
 Having resolved all possible errors,
-we needed to verify that our result was indeed accessible.
+I needed to verify that our result was indeed accessible.
 The obvious first step is to ensure
 a screen reader properly handles the document.
 Unfortunately, when it comes to \PDF\ version 2.0,
@@ -489,14 +490,14 @@ resulting in many claimed ``issues'' with a valid document.
 %(for example, 1.7 but not 2.0 requires that formulas have alt text).
 \url{https://pdfa.org/accessible-math-in-pdf-finally/} lists several
 (but currently only five) checkers that support \PDF\ version 2.0.
-We have experience with
+I have experience with
 \veraPDF\ (\url{https://verapdf.org/}) and
 \PDFix\ (\url{https://pdfix.net/}).
 
 The \LaTeX\ team uses \veraPDF\ to validate their documents,
 so that using the same validation gives similar results
 (this is usually good, but can be bad if they have overlooked an issue).
-The main downside we found with \veraPDF\ is that
+The main downside I found with \veraPDF\ is that
 while it provides a \acro{GUI} to initiate a validation and see the results,
 it reports the location of failed validation checks
 as paths within the \PDF\ document, such as
@@ -534,15 +535,15 @@ making it possible to locate errors given by \veraPDF.
 Our institution uses Ally to check \PDF s posted to our \acro{LMS}.
 Ally is one of the aforementioned \PDF\ checkers that looks for version 1.7
 and requires formulas to have alt text.
-For this reason, we try to avoid posting the textbook to the \acro{LMS}.
+For this reason, I try to avoid posting the textbook to the \acro{LMS}.
 
 Ally also requires that documents over two pages use headings.
-We normally accomplish this with \cs{section} commands,
+I normally accomplish this with \cs{section} commands,
 but if a document does not otherwise have them,
 it is possible to have the title also provide a heading,
 see \url{https://tex.stackexchange.com/a/758805/}.
 
-For shorter documents, we can also examine the tagging structure
+For shorter documents, I can also examine the tagging structure
 of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
 or the website \url{https://ngpdf.com/}.
 
@@ -566,14 +567,14 @@ strings & 11\\
 hash & 11\\\bottomrule
 \end{tabular}
 \end{table}
-In \autoref{results}, we report the factor
+\autoref{results} reports the factor
 by which various computational statistics increase for the textbook.
 The final two entries relate
 how much memory the compilation process allocates.
 This originally resulted in fatal compilation errors that
 \TeX\ exceeded its capacity for
 the \texttt{number of strings} or the \texttt{hash size},
-requiring us to modify the compilation command
+requiring me to modify the compilation command
 (see \url{https://tex.stackexchange.com/a/741777/}).
 
 \iffalse
