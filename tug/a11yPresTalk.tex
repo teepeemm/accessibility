@@ -126,10 +126,14 @@
   color            = white,
 }
 
+\DeclareInstance{footer-element}{framesoftotal}{talk}{}
+\ExpandArgs{c}\newcommand{@framesoftotal}{%
+ \arabic{frame}/\RefProperty{lastpage}{totalframes}
+}
 \EditInstance{footer}{std}{
   color         = black!75,
   separator     = \hfill|\hfill,
-  element-order = {date, author, title, framenumber},
+  element-order = {date, author, title, framesoftotal},
 }
 
 \DeclareInstance{titlepage-element}{titlegraphic}{talk}{}
@@ -267,15 +271,14 @@ see \texttt{texdoc blocks-doc}
 \begin{frame*}
   \frametitle{A Strangely Sporadic Glossary}
  \begin{minipage}{.52\textwidth}
+ \lstset{aboveskip=0pt,belowskip=0pt}
  \begin{lstlisting}
 \newlength\mylabelwidth
-\setlength\mylabelwidth
-  {\widthof{tagged PDFs }}\\
+\setlength\mylabelwidth{\widthof{tagged PDFs }}
 \begin{frame}
-\frametitle{A Strangely Sporadic Glossary}
-\end{lstlisting}\vspace{-\baselineskip}
- \lstinputlisting{exampleDesc}%
-\vspace{-\baselineskip}
+ \frametitle{A Strangely Sporadic Glossary}
+\end{lstlisting}
+\lstinputlisting{exampleDesc}%
 \begin{lstlisting}
 \end{frame}
 \end{lstlisting}
@@ -309,6 +312,7 @@ see \texttt{texdoc blocks-doc}
 \lstset{aboveskip=0pt,belowskip=0pt}
 \frametitle{Matrix Multiplication Example,
  Step \arabic{slide}}
+ \lstset{aboveskip=0pt,belowskip=0pt}
  \begin{minipage}{.52\textwidth}
  \begin{onlyenv}<1>
 \begin{lstlisting}
@@ -462,7 +466,13 @@ other options are plain \& wallpaper
 % or
 \ExpandArgs{c}\newcommand{@shortmyelement}{...}
 \end{lstlisting}\bigskip
-(\cs{@shortmyelement} will be preferred if available)
+(\cs{@shortmyelement} will be preferred if available)\\
+For example:
+\begin{lstlisting}
+\ExpandArgs{c}\newcommand{@framesoftotal}{%
+ \arabic{frame}/\RefProperty{lastpage}{totalframes}
+}
+\end{lstlisting}
 \end{frame*}
 
 \subsection{More Customizations}

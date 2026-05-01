@@ -122,8 +122,8 @@ for that section.
 
 My university has been emphasizing the national requirement
 that all documents must be accessible according to
-the \acro{WCAG} 2.1 \acro{AA} guideline
-as of April 2026 (now delayed to 2027), see \TUB\ 45:2 \cite{Kuan:2024:LCL}
+the \acro{WCAG 2.1 AA} guideline
+as of April 2026 (now delayed to 2027); see \TUB\ 45:2 \cite{Kuan:2024:LCL}
 for a historical overview of how we got to this point.
 Beginning in early 2025, I began exploring how to ensure that
 the textbook meets this guideline.
@@ -167,19 +167,19 @@ often that ``The number of automatic begin and end hooks differ!''
 My setup of using \cs{include} and \cs{input} allowed me to comment out
 various sections, isolating a single section that caused the error.
 I then examined the log file,
-found a ``Package tagpdf Warning'' regarding some aspect of our code, and
+found a ``Package tagpdf Warning'' regarding some aspect of the code, and
 created a minimal working example causing this warning and error.
 
 With the example in hand, I began searching the internet for a fix.
 For packages, a good starting point was to view
 \url{https://latex3.github.io/tagging-project/tagging-status/},
 which reports the tagging compatibility of each class and package.
-Often, a linked issue would contain code snippets I could copy and paste
-into the preamble that would resolve the issue.
+Often, a linked issue contained code snippets I copied and pasted
+into the preamble that resolved the issue.
+
 Uncommenting the \texttt{check-tagging-status} line
 in the \cs{DocumentMetadata} will also create
 a tagging status report in the log file.
-
 The \texttt{tagging-status} website and log information have five categories:
 \begin{description}
 \item[compatible] Everything should work for the package, and
@@ -212,7 +212,7 @@ of errors relating to packages.)
 
 \section{Alt Text}
 
-With the bulk of the work handled automatically by \LuaLaTeX,
+With \LuaLaTeX\ automatically handling the bulk of the work,
 the greatest part of the work requiring manual intervention was
 providing alternative text for the thousand images throughout the book.
 Alt text provides a verbal description of an image
@@ -237,8 +237,8 @@ to the image:
 \item\cs{begin}\tubbraced{picture}[\textbf{alt=\tubbraced{...}}]
 \end{itemize}
 There are also two other options to \texttt{alt=\tubbraced{...}}:
-if the image is purely decorative and unnecessary for the reader,
 we can use the option \texttt{artifact}
+if the image is purely decorative and unnecessary for the reader,
 so that screen readers ignore it entirely.
 Less commonly, we can use \texttt{actualtext=\tubbraced{...}}
 so that screen readers act as if there is no image,
@@ -246,12 +246,12 @@ and instead read the text.
 This works best if the image is actually stylistically decorated text.
 
 It is useful to note that it is not too difficult to create alt text.
-A majority of our discussion requires some familiarity with creating
+A majority of this discussion requires some familiarity with creating
 a longer \LaTeX\ document.
 For alt text, however, I used a short Python script that added
 \texttt{[alt={ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
 A student worker with less \TeX\ experience was then able to go through
-the book, examine the resulting \PDF, and supply the alt text.
+the book, examine the resulting \PDF, and create the alt text.
 
 There are two contrasting problems arising from alt text.
 The first was succinctly stated by a colleague:

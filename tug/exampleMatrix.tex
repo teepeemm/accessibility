@@ -1,5 +1,5 @@
 \NewDocumentCommand{\visablealert}{d<>m}{%
- \visible<#1->{\alert<#1>{#2}}}
+ \uncover<#1->{\alert<#1>{#2}}}
 \newcommand{\colvect}[1]{%
  \begin{pmatrix}#1\end{pmatrix}}
 \begin{gather*}
@@ -20,7 +20,7 @@
  \end{pmatrix}}
 \\[\bigskipamount]
 \vphantom{\colvect{1\\2}}%
-\visible<2-5>{
+\invisible<1,6>{
  \alert{
   \only<2,3>{\colvect{1\\2}}
   \only<4,5>{\colvect{4\\5}}

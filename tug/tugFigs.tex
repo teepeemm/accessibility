@@ -14,8 +14,8 @@
 \colorlet{structure}{black}
 \colorlet{alert}{black}
 \usepackage{xfakebold}
-\RenewDocumentCommand{\alert}{D<>{all}m}
- {\alt<#1>{{\setBold[2]#2}}{#2}}
+\RenewDocumentCommand{\alert}{D<>{1-}m}
+  {\alt<#1>{{\setBold[2]#2}}{#2}}
 %\RenewDocumentCommand{\alert}{D<>{all}m}
 % {\alt<#1>{\symbf{#2}}{#2}}
 \fi
