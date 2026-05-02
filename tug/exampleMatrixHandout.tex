@@ -1,0 +1,36 @@
+\NewDocumentCommand{\visablealert}{d<>m}{%
+ \uncover<handout:#1-|projector:#1->{\alert<#1>{#2}}}
+\NewCommandCopy\oldalert\alert
+\RenewDocumentCommand{\alert}{ D<>{1-} m }{%
+ \oldalert<handout:#1|projector:#1>{#2}}
+\newcommand{\colvect}[1]{%
+ \begin{pmatrix}#1\end{pmatrix}}
+\begin{gather*}
+\begin{pmatrix}
+\alert<2,3>{1}&\alert<2,3>{2}\\
+\alert<4,5>{4}&\alert<4,5>{5}
+\end{pmatrix}
+\begin{pmatrix}
+ \alert<2,4>{-2}&\alert<3,5>{4}\\
+ \alert<2,4>{2} &\alert<3,5>{-5}
+\end{pmatrix}
+\visible<2-6>{
+ {}=\begin{pmatrix}
+  \visablealert<2>{2}&
+  \visablealert<3>{-6}\\
+  \visablealert<4>{2}&
+  \visablealert<5>{-9}
+ \end{pmatrix}}
+\\[\bigskipamount]
+\vphantom{\colvect{1\\2}}%
+\invisible<handout:1,6|projector:1,6>{
+ \alert{
+  \only<handout:2,3|projector:2,3>{\colvect{1\\2}}
+  \only<handout:4,5|projector:4,5>{\colvect{4\\5}}
+  \bullet
+  \only<handout:2,4|projector:2,4>{\colvect{-2\\2}}
+  \only<handout:3,5|projector:3,5>{\colvect{4\\-5}}
+  =
+  \only<handout:2|projector:2>{2}\only<handout:3|projector:3>{-6}
+  \only<handout:4|projector:4>{2}\only<handout:5|projector:5>{-9}}}
+\end{gather*}
