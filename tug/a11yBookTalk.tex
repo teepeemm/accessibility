@@ -15,6 +15,11 @@
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage{emoji}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+
+\DeclareMathOperator{\coker}{coker}
+\pgfplotsset{compat=1.18}
 
 \title[Accessible PDF Textbook]{Converting a PDF Textbook to be Accessible}
 %\shorttitle{Accessible PDF Textbook}
@@ -45,10 +50,14 @@
   }
 }
 
+\DeclareInstance{footer-element}{frameoftotal}{talk}{}
+\ExpandArgs{c}\newcommand{@frameoftotal}{%
+  \arabic{frame}/\RefProperty{lastpage}{totalframes}
+}
 \EditInstance{footer}{std}{
   color         = black!75,
   separator     = \hfill|\hfill,
-  element-order = {date, author, title, framenumber},
+  element-order = {date, author, title, frameoftotal},
 }
 
 \DeclareInstance{titlepage-element}{titlegraphic}{talk}{}
@@ -67,6 +76,13 @@
   \oldframetitle{#1\hfill
     \includegraphics[height=2ex,artifact]{flame-w-rgb}%
   }%
+}
+
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+\newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
+\newcommand{\meta}[1]{\ensuremath{\langle}%
+ \ifmmode\expandafter\mbox\fi{\itshape #1\/}%
+ \ensuremath{\rangle}%
 }
 
 \begin{document}
@@ -153,9 +169,8 @@ Use \LaTeX\ so that the output looks how you want it\\
 \emph{and the input reflects the meaning.}\\
 (Don't use tabular to position boxes.)\\\bigskip
 Make use of \emph{semantic} macros and environments:\\
-\verb|\textbf{Example 3.1.4 Finding Extreme Values}|\\
-should be\\
-\verb|\begin{example}{Finding Extreme Values}|
+Bad: \verb|\textbf{Example 3.1.4 Finding Extreme Values}|\\
+Good: \verb|\begin{example}{Finding Extreme Values}|
 % \end{example}
 \end{frame*}
 
@@ -165,17 +180,18 @@ should be\\
 \frametitle{What Else to do --- Images}
 \begin{itemize}
 \ttfamily
-\item\textbackslash includegraphics[\textbf{alt=\{...\}}]
-\item\textbackslash tikz[\textbf{alt=\{...\}}]
-\item\textbackslash begin\{tikzpicture\}[\textbf{alt=\{...\}}]
-\item\textbackslash begin\{picture\}[\textbf{alt=\{...\}}]
+\item\cs{includegraphics}[\textbf{alt=\tubbraced{...}}]
+\item\cs{tikz}[\textbf{alt=\tubbraced{...}}]
+\item\cs{begin}\tubbraced{tikzpicture}[\textbf{alt=\tubbraced{...}}]
+\item\cs{begin}\tubbraced{picture}[\textbf{alt=\tubbraced{...}}]
 \end{itemize}
-Keep it brief and objective; exposition won't be seen by most students.\\
-Alternatives to {\bfseries\ttfamily alt=\{...\}} are
+Keep it brief and objective; exposition won't be seen by most readers\\
+Alternatives to {\bfseries\ttfamily alt=\tubbraced{...}} are
 \begin{itemize}
 \item {\bfseries\ttfamily artifact} (image is decorative only)\quad
 \colorbox{maybeUNDgreen}{\includegraphics[height=2ex,artifact]{flame-w-rgb}}
-\item {\bfseries\ttfamily actualtext=\{...\}} (image is text in disguise)
+\item {\bfseries\ttfamily actualtext=\tubbraced{...}}
+(image is text in disguise)
 \quad
 \raisebox{-.8\height}{%
   \includegraphics[
@@ -199,26 +215,89 @@ Alternatives to {\bfseries\ttfamily alt=\{...\}} are
 \item At most 120 characters or 1--2 sentences.\\
 If not possible, have the alt text point to a separately written description
 \smallskip
-\item \verb|\setkeys{Gin}{alt={...}}|
+\item Backup method: \verb|\setkeys{Gin}{alt={...}}|
 \item ``Formulas need alt text'' $\leftrightarrow$ option
 \texttt{math/alt/use}
 \item Have someone else write the alt text?
 \end{itemize}
 \end{frame*}
 
-% snake lemma
+\begin{frame}
+\frametitle{Alt Text Problem 1}
+``What alt text would you give for the snake lemma?''\bigskip
+\AddToHookNext{env/tikzcd/begin}{\MathCollectFalse}
+\begin{tikzcd}[
+    ampersand replacement = \&,
+    alt={A complicated commutative diagram.},
+    every label/.append style = {font = \small}
+%    font=\footnotesize,
+%    row sep=small,
+%    column sep=tiny,
+%    cramped,
+  ]
+  \& \& \ker(a) \ar{r} \ar{d}
+  \& \ker(b)\ar{r} \ar{d}
+  \& \ker(c) \ar{d}   %\arrow[ddll,"\delta",rounded corners
+  \& \&\\
+  \& \& A \ar{r}{f} \ar{dd}[near end]{a}
+  \& B \ar{r}{g} \ar{dd}[near end]{b}
+  \& C \ar{r}\ar{dd}[near end]{c} \& 0 \& ~\\
+  \& \& \& ~ \& \& \ar[r, phantom, ""{coordinate, name=Y}] \&~\\
+  ~\& \ar[l, phantom, ""{coordinate, name=Z}] 0 \ar{r}
+  \& A' \ar{r}{f'} \ar{d}
+  \& B' \ar{r}{g'} \ar{d}
+  \& C' \ar{d} \& \& \\
+  \& \&
+  \ar[from=uuuurr, "d", crossing over, rounded corners,
+      to path={ -- ([xshift=2ex]\tikztostart.east)
+                -| (Y) [near end]\tikztonodes
+                -| (Z) [near end]\tikztonodes
+                |- ([xshift=-2ex]\tikztotarget.west)
+                -- (\tikztotarget)}
+     ]\coker(a)\ar{r}
+  \& \coker(b) \ar{r}
+  \& \coker(c) \& \&
+\end{tikzcd}
+\end{frame}
 
-% describe graph
+\begin{frame}
+\frametitle{Alt Text Problem 1b}
+\begin{minipage}{\textheight}
+\includegraphics[width=\textheight,alt={An interactive 3d shape from the textbook.}]{figdivthm_space2_3D}
+\end{minipage}\quad
+\begin{minipage}{.4\textwidth}
+Textbook feature:\smallskip\\
+Asymptote + media9 \\
+\null\quad\textrightarrow\ interactive 3d graphics
+\end{minipage}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alt Text Problem 2}
+  Exercise: Describe this function, identifying limiting values, intercepts
+  and their degree, critical and inflection points,
+  and regions where the function is increasing, decreasing, and
+  concave up or down.
+
+  \begin{tikzpicture}
+  \begin{axis}[xmin=-2,xmax=2,ymin=-.1,ymax=1.6,width=\linewidth,
+  axis x line=center,axis y line=center,axis equal image]
+    \draw(-2,0.5)--(-1,1)circle(.04);
+    \draw[fill=black](-1,0)circle(.04);
+    \addplot[domain=-1:2,smooth]{.5*(x+1)*(x-1)^2};
+  \end{axis}
+  \end{tikzpicture}
+\end{frame}
 
 \section{Tables}
 
 \begin{frame}
 \frametitle{What Else to do --- Tables}
 \begin{itemize}
-\item\texttt{\textbackslash tagpdfsetup\{table/header-rows=\{...\},table/header-columns=\{...\}\}\\
+\item\texttt{\cs{tagpdfsetup}\tubbraced{table/header-rows=\tubbraced{...},table/header-columns=\tubbraced{...}}\\
 \qquad\qquad \textrm{outside of the} tabular\\
-\qquad\qquad \textrm{(lasts until the group} \textbackslash ends)}
-\item\texttt{\textbackslash tagpdfsetup\{table/multirow=\{\emph{number of rows}\}\}} 
+\qquad\qquad \textrm{(lasts until the group} \cs{ends})}
+\item\texttt{\cs{tagpdfsetup}\tubbraced{table/multirow=\tubbraced{\meta{number of rows}}}} 
 \item Interface will probably change
 \item \texttt{texdoc latex-lab-table}
 %\item Need to work around a PAC bug
@@ -235,7 +314,7 @@ If not possible, have the alt text point to a separately written description
 \item margin[fit|fix|note] \textrightarrow\ margin[alia|par]
 \item titlesec \textrightarrow
 \begin{itemize}
-\item \texttt{\textbackslash @startsection} (\texttt{texdoc latex2e}, \S6.8)
+\item \cs{@startsection} (\texttt{texdoc latex2e}, \S6.8)
 \item templates (\texttt{texdoc latex-lab-sec-template})
 \end{itemize}
 \item Beamer \textrightarrow\ ltx-talk (tomorrow)
@@ -302,7 +381,7 @@ To verify that a PDF is accessible:
 %\item objects to bug in pgfplots
 %\item has a bug with tables
 %\item doesn't like multi(row/column)
-%\end{itemize}}}
+%\end{itemize}
 %\end{frame}
 
 %\begin{frame*}
@@ -325,9 +404,10 @@ To verify that a PDF is accessible:
 %\section{For more information}
 
 \begin{frame*}
-\frametitle{For more information}
+\frametitle{Last Bits}
 \begin{itemize}
 \item \url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}
+\item \url{https://github.com/teepeemm/accessibility}
 \item Compiling needs more:\smallskip\\
 \begin{tabular}{lS[table-format=2.1]}\toprule
 Stat & Factor \\\midrule
@@ -341,8 +421,11 @@ hash & 11 \\\bottomrule
 Try \verb|\DocumentMetadata{tagging=off}| for draft runs
 %\item \url{https://www.youtube.com/watch?v=Eu_qM53tInw&t=5900s}\\
 %\qquad A before and after example using Foxit, NVDA, and MathCAT
+\item Don't be afraid to edit beyond the preamble
 \end{itemize}
 \end{frame*}
+
+\end{document}
 
 \begin{frame}
 \frametitle{Examples}\tagpdfsetup{table/header-rows={1}}

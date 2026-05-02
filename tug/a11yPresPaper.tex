@@ -79,6 +79,13 @@ Grand Forks ND, 58203\\ USA}
 \begin{document}
 \maketitle
 
+%submitted abstract:
+%We discuss how to create accessible \PDF\ presentations
+%using \ltxtalk, which is similar to \texttt{beamer}.
+%We give several examples, including how to adapt common Beamer styles.
+%We also discuss necessary adaptations
+%to satisfy a common accessibility checker available in several \acro{LMS}s.
+
 \begin{abstract}
 We discuss how to create accessible \PDF\ presentations
 using \ltxtalk, which is similar to \texttt{beamer}.
@@ -89,17 +96,6 @@ to satisfy a common accessibility checker available in several \acro{LMS}s.
 
 \section{Introduction}
 
-%* Same \verb|\pause|/overlay specification idea (eg, \verb|\begin {itemize}[<+->]|)
-%* Ally $\Rightarrow$ \verb|\AtBeginDocument{\tagpdfsetup{role/new-tag=frametitle/H1}}|
-%* Can ``easily'' specify header and footer information\\\bigskip
-%\hfill%
-%\alt<+->{%
-% \includegraphics[height=.4\textheight,alt={MALL presentation with logo in corner}]{Blackboard-PPT-Tues.pdf}%
-%}{%
-% \parbox[c][.4\textheight]{1em}{}%
-%}%
-%\hfill\null
-
 In \TUB\ 46:2 \cite{Fischer:2025:NLT}, Fischer and Mittelbach reported that
 \begin{quote}
 The \texttt{beamer} class is incompatible with the tagging
@@ -109,7 +105,7 @@ therefore decided to write a new presentation class
 called \ltxtalk\ with proper tagging support as a
 replacement for \texttt{beamer}.
 \end{quote}
-Our purpose here is to explore this replacement.
+I will explore this replacement.
 
 \section{The Basics}
 
@@ -130,10 +126,6 @@ But we will probably want a \cs{DocumentMetadata} more like
 %    role/new-tag=frametitle/H1,
     math/setup=mathml-SE } }
 \end{verbatim}
-%where we use the usual key-value options for \cs{DocumentMetadata}.
-%(For example,
-%as the entire reason for the class's existence is proper tagging support,
-%we probably want \texttt{tagging=on}.)
 Also, documents must be compiled using \texttt{lualatex} (preferable)
 or \texttt{pdflatex}.
 
@@ -161,19 +153,19 @@ we should use the \texttt{xparse} syntax
 \end{verbatim}
 where the \texttt{s} indicates an optional star
 (if we want our command to look for that),
-the \verb|D<>{all}| indicates the overlay specification
-with a default value \emph{all}
+the \verb|D<>{1-}| indicates the overlay specification
+with a default value \verb|1-|
 (or \texttt{d<>} if a default value doesn't make sense),
 and then we have whatever other arguments we'd like our function to take.
 
 For example, an upcoming
 \begin{verbatim}[\verbatimOptions]
 \NewDocumentCommand{\visablealert}{d<> m}{%
-  \visible<#1->{\alert<#1>{#2}}}
+  \uncover<#1->{\alert<#1>{#2}}}
 \end{verbatim}
-creates a new command \cs{visiblealert} that takes an overlay specification
-as \#1 and then a mandatory argument as \#2.
-Its content will be visible on slides from \#1 onward,
+creates a new command \cs{visiblealert} that takes
+a mandatory overlay specification as \#1 and then a mandatory argument as \#2.
+Its content will be covered (transparent) on slides before \#1,
 and its content will be alerted on the slide given by \#1.
 
 \ltxtalk\ defines three colors:
@@ -181,7 +173,7 @@ alert (red), example (green), and structure (blue).
 All three are slightly darker than standard 100\%/0\%/0\%
 in \acro{RGB} colors to enhance contrast for accessibility.
 
-If a frame needs to use verbatim or listings to change the catcodes,
+If a frame needs to use verbatim or similar to change the catcodes,
 then \ltxtalk\ needs a \tubbraced{frame*} environment
 (this is similar to \texttt{beamer}'s concept of a \emph{fragile} frame).
 As with most things related to verbatim,
@@ -190,14 +182,21 @@ such a frame cannot appear as the argument of another command.
 \section{Overlays}
 
 \ltxtalk\ modifies many common commands to accept an overlay specification
-(after an optional star, but before other arguments),
+(after any optional star, but before other arguments),
 so that the commands do nothing outside of the specified slides.
 \ltxtalk\ also defines the usual overlay commands
-\cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible},
-and their environments \tubbraced{\meta{action}env}.
-% could talk about action spec, but I think that might be a bit much
-%\cs{onslide},
-%\cs{alt}, \cs{temporal}
+\cs{onslide}, \cs{alt}, and \cs{temporal}.
+The overlay commands
+\cs{alert}, \cs{only}, \cs{uncover}, \cs{visible}, and \cs{invisible}
+also have corresponding environments \tubbraced{\meta{action}env}.
+
+These five actions
+%(along with \cs{item})
+can also combine into \emph{action specifications}:
+\cs{item}, \cs{action}, and \tubbraced{actionenv}
+allow several actions within one \verb|<...>|.
+\meta{action}@\meta{slides} applies the \meta{action} to those slides,
+and these are then separated by \texttt{|} within the \texttt{<...>}.
 
 \section{Sections}
 
@@ -310,7 +309,7 @@ As we remarked with the previous example,
 it is not useful to tag slides with slightly varying information.
 Consequently, \ltxtalk\ would normally only tag
 the final slide in the frame.
-Pedagocically, we would prefer to have \ltxtalk\ \emph{tag all slides}
+Pedagocically, we would prefer to have \ltxtalk\ tag all slides
 in the frame, which is accomplished by the \texttt{1-} specification.
 As part of the overlay specifications, \texttt{tag-slides} also recognizes
 the variable \texttt{n} as ``the last slide'',
@@ -324,15 +323,21 @@ This causes the \cs{alert} to apply to all of the items
 %(annoying, but fixable)
 and the \cs{only} entries to all be visible.
 
-There are two solutions to this problem.
+%There are two solutions to this problem.
 If we want the handout to follow the \texttt{projector} mode and its tagging,
 we can change all of the overlay specifications from \texttt{<\meta{spec}>}
-to \texttt{<\meta{spec}|handout:\meta{spec}>}.
+to
+\begin{verbatim}[\verbatimOptions]
+<projector:!<spec>|handout:!<spec>>
+\end{verbatim}
 This indicates that the \texttt{handout} specification will follow
 the default \texttt{projector} specification.
 
 Alternatively, we can have only the last slide in the handout by using
-% see issue 206
+\begin{verbatim}[\verbatimOptions]
+<projector:!<spec>|article>
+\end{verbatim}
+on non-last slides.
 
 % Joseph may decide this warrants a better syntax
 % or that this is a niche enough use case to not bother
@@ -456,8 +461,9 @@ The default \cs{maketitle} is equivalent to
 
 The value for \texttt{framestyle} is passed to \cs{pagestyle}.
 In addition to the default and \texttt{plain} (no header or footer),
-we can also use \texttt{wallpaper} which removes the footer and the title
-(but not the background color of the header).
+we can also use \texttt{wallpaper} which removes the text
+from the footer and the title
+(but not their background colors).
 
 \subsection{Creating Custom Elements}
 
@@ -491,6 +497,12 @@ we can define the desired command with
 \begin{verbatim}[\verbatimOptions]
 \ExpandArgs{c}\newcommand{@myelement}{...}
 \end{verbatim}
+For example, I reproduce the \texttt{beamer} frame counter by using
+\begin{lstlisting}
+\ExpandArgs{c}\newcommand{@framesoftotal}{%
+ \arabic{frame}/%
+ \RefProperty{lastpage}{totalframes}}
+\end{lstlisting}
 
 \subsection{More Customizations}
 

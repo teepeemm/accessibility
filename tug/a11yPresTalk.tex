@@ -10,6 +10,7 @@
   }
 }
 \documentclass{ltx-talk}
+
 \date{July 2026}
 \title[Accessible Presentations]
  {Creating Accessible Presentations With \texttt{ltx-talk}}
@@ -30,10 +31,6 @@
 \usepackage[normalem]{ulem}
 \usepackage{siunitx}
 
-% but it's still indented?
-\newenvironment{fakeVerbatim}
-  {\smallskip\par\obeylines\obeyspaces\ttfamily\small\noindent\ignorespaces}
-  {\smallskip\par\noindent\ignorespacesafterend\vspace{-2.5\baselineskip}}
 \newcommand{\cs}[1]{\texttt{\textbackslash #1}}
 \newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
 \newcommand{\meta}[1]{\ensuremath{\langle}%
@@ -41,73 +38,8 @@
  \ensuremath{\rangle}%
 }
  
-%\usepackage{tcolorbox}% not used, but needed for the next package
-%\usepackage{tagpdfdocu-patches}% needed to make listings work properly
-
-%%%%%% copied from tagpdfdocu-patches.sty
-\makeatletter
-\ExplSyntaxOn
-\NewTaggingSocket{listings/number}{2}
-\NewTaggingSocketPlug{listings/number}{default}
- {
-   \tag_mc_end_push:
-   \tagstructbegin{tag=Lbl}
-    \tagmcbegin{}
-     #2
-    \tagmcend
-   \tagstructend
-   \tag_mc_begin_pop:n{} 
- }
-\AssignTaggingSocketPlug{listings/number}{default} 
-\ExplSyntaxOff
-\lst@Key{numbers}{none}{%
-    \let\lst@PlaceNumber\@empty
-    \lstKV@SwitchCases{#1}%
-    {none:\\%
-     left:\def\lst@PlaceNumber{\llap{\normalfont
-                \UseTaggingSocket{listings/number}{}{\lst@numberstyle{\thelstnumber}}\kern\lst@numbersep}}\\%
-     right:\def\lst@PlaceNumber{\rlap{\normalfont
-                \kern\linewidth \kern\lst@numbersep
-                \UseTaggingSocket{listings/number}{}{\lst@numberstyle{\thelstnumber}}}}%
-    }{\PackageError{Listings}{value `#1' for keyword `numbers' not supported}\@ehc}}
-\ExplSyntaxOn
-
-% environment tagging. Updated 2025-12-27 to new block code
-
-% new code from 2025-12-27, requires latex-dev     
-  \DeclareInstance{blockenv}{lstlisting}{std}
-   {
-    name           = lstlisting, 
-    tag-name       = verbatim,
-    tag-attr-class = ,           
-    tagging-recipe = standard,
-    inner-level-counter  = ,
-    transparent-level = true,    
-    legacy-code     = ,
-    block-instance = verbatim ,
-    inner-instance = ,
-    final-code     = \AssignStructureRole {para/textblock}%
-                         {\UseStructureName{block/verbatim/codeline}}\ignorespaces,
-    tagging-suppress-paras = true 
-   }  
-   
- \lst@AddToHook{PreInit}
-  { 
-    \MathCollectFalse 
-    \ifx\lst@float\relax
-     \SimpleBlockEnv{lstlisting}{}%
-    \else 
-     \SimpleBlockEnv{lstlisting}{tagging-recipe = standalone}
-    \fi
-  }
-
- \lst@AddToHook{DeInit}
-   {\BlockEnvEnd}% 
-
- \tagpdfsetup{float/new=lstlisting}
-\ExplSyntaxOff
-\makeatother
-%%%%% end copying
+\ProvideDocumentEnvironment{tcb@manual@entry}{}{}{} % needed for the next line
+\usepackage{tagpdfdocu-patches}% needed to make listings work properly
 
 \lstset{
   columns=fullflexible,
@@ -154,7 +86,7 @@
   }%
 }
 
-\EditInstance{hidden}{std}{opacity=.4}
+%\EditInstance{hidden}{std}{opacity=.4}
 
 %\ShowTemplateDefaults{titlepage}{talk}
 %\ShowTemplateInterface{type}{talk}
@@ -198,27 +130,37 @@
 \item tagged PDF + overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command} only on slides \verb|xyz|
 \item defined colors: \textcolor{alert}{alert}, \textcolor{example}{example}, \textcolor{structure}{structure}
 \item \tubbraced{frame*} $\Leftrightarrow$ \verb@\verb|...|@,
-\tubbraced{verb}, \tubbraced{lstlisting}, etc.
+\tubbraced{verbatim}, \tubbraced{lstlisting}, etc.
 \end{itemize}
 \end{frame*}
 
 \begin{frame*}
 \frametitle{More Basics --- Overlays}
+Overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command}
+only on slides \verb|xyz|\bigskip
 \begin{itemize}
-\item Overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command} only on slides \verb|xyz|
-\item Color commands with overlays: \cs{color}, \cs{mathcolor}, \cs{textcolor}; \cs{alert}
+\item Color commands with overlays: \cs{color}, \cs{mathcolor}, \cs{textcolor}
 \item Text commands with overlays: \cs{textbf}, \cs{textit},
 \cs{textmd}, \cs{textnormal}, \cs{textrm}, \cs{textsc}, \cs{textsf}, \cs{textsl}, \cs{texttt}, \cs{textup},
 \cs{emph}
 \item Also: \cs{includegraphics}; \cs{label}
-\item Also: \cs{item} (and can take an \emph{action spec})
-\item Main overlay commands: \cs{onslide}, \cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible}, \cs{alt}, \cs{temporal}
-\item Overlay environments: \tubbraced{onlyenv}, \tubbraced{invisibleenv}, \tubbraced{uncoverenv}, \tubbraced{visibleenv}
+\item[\Large\star] \cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible},
+\cs{alert}
+\item Environments \tubbraced{onlyenv}, \tubbraced{invisibleenv},
+\tubbraced{uncoverenv}, \tubbraced{visibleenv}, \tubbraced{alertenv}
+\item Also: \cs{onslide}, \cs{alt}, \cs{temporal}
+\item \cs{item}, \cs{action}, \tubbraced{actionenv} can take an
+\emph{action specification}\\
+(combine several \textcolor{structure}{\Large\star} actions
+into one \verb|<...>|)
+%\item Also: \cs{item} (and can take an \emph{action spec})
+%\item Main overlay commands: \cs{onslide}, \cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible}, \cs{alt}, \cs{temporal}
+%\item Overlay environments: \tubbraced{onlyenv}, \tubbraced{invisibleenv}, \tubbraced{uncoverenv}, \tubbraced{visibleenv}
 \end{itemize}
 \end{frame*}
 
-\begin{frame}
-\frametitle{A \cs{tableofcontents}}
+\begin{frame}<1>[name=TOCslide]
+\frametitle{A \cs{tableofcontents}\only<2>{ in a \cs{section}}}
 \tableofcontents
 \hrule\bigskip
 Default \texttt{tocdepth} is 2 (\cs{subsection}).
@@ -228,13 +170,7 @@ Default \texttt{tocdepth} is 2 (\cs{subsection}).
 
 \section{Sectioning}
 
-\begin{frame}
-\frametitle{A \cs{tableofcontents} in a \cs{section}}
-\tableofcontents
-%\begin{uncoverenv}<0>
-\hrule\bigskip
-Default \texttt{tocdepth} is 2 (\cs{subsection}).
-\end{frame}
+\reuseframe<2>{TOCslide}
 
 \begin{frame}
 \frametitle{Sectioning}
@@ -243,7 +179,8 @@ Default \texttt{tocdepth} is 2 (\cs{subsection}).
 \cs{section}, \cs{subsection}, \cs{subsubsection},\\
 \sout{\cs{paragraph}}, \sout{\cs{subparagraph}}
 \item (currently?) no visible output\\
-\qquad only affects the \cs{tableofcontents}
+\qquad only affects the \cs{tableofcontents}\\
+\qquad when used outside of frames
 \end{itemize}
 \end{frame}
 
@@ -266,8 +203,7 @@ see \texttt{texdoc blocks-doc}
 \end{frame*}
 
 \newlength\mylabelwidth
-\setlength\mylabelwidth
-  {\widthof{tagged PDFs }}
+\setlength\mylabelwidth{\widthof{tagged PDFs }}
 \begin{frame*}
   \frametitle{A Strangely Sporadic Glossary}
  \begin{minipage}{.52\textwidth}
@@ -292,23 +228,20 @@ see \texttt{texdoc blocks-doc}
 
 \begin{frame*}
 \frametitle{Overlays}
-\begin{itemize}
-\item Just like in Beamer
-\item To define an overlay command:
+To define an overlay command:
 \begin{lstlisting}
 \NewDocumentCommand{\mycommand}{ s D<>{1-} ... }{ ...}
 % or
 \NewDocumentCommand{\mycommand}{ s d<> ... }{ ...}
 \end{lstlisting}
-\item For example
+For example
 \begin{lstlisting}
 \NewDocumentCommand{\visablealert}{ d<> m }{%
  \visible<#1->{\alert<#1>{#2}}}
 \end{lstlisting}
-\end{itemize}
 \end{frame*}
 
-\begin{frame*}[tag-slides=all]
+\begin{frame*}[tag-slides={1-}]
 \lstset{aboveskip=0pt,belowskip=0pt}
 \frametitle{Matrix Multiplication Example,
  Step \arabic{slide}}
@@ -319,16 +252,15 @@ see \texttt{texdoc blocks-doc}
 \begin{frame}[tag-slides={1-}]
  \frametitle{Matrix Multiplication Example,
   Step \arabic{slide}}
-\end{lstlisting}%\vspace{-.8\baselineskip}
+\end{lstlisting}
  \end{onlyenv}
-% \only<2->{\vspace{-\baselineskip}}
  \only<1>{\lstinputlisting[lastline=15]{exampleMatrix}}
  \only<2>{\lstinputlisting[lastline=18]{exampleMatrix}}
  \only<3>{\lstinputlisting[firstline=6,lastline=23]{exampleMatrix}}
  \only<4>{\lstinputlisting[firstline=10,lastline=27]{exampleMatrix}}
  \only<5>{\lstinputlisting[firstline=14,lastline=31]{exampleMatrix}}
  \only<6>{\lstinputlisting[firstline=17]{exampleMatrix}}
- \begin{onlyenv}<6>%\vspace{-.6\baselineskip}
+ \begin{onlyenv}<6>
  \begin{lstlisting}
 \end{frame}
 \end{lstlisting}
@@ -347,19 +279,20 @@ see \texttt{texdoc blocks-doc}
 \item Previous example: \texttt{tag-slides=\{1-\}}\bigskip
 \item Which slides should\\
 \verb|\documentclass[mode=handout]{ltx-talk}| use?
-\item Default is to ignore all overlays
+\item Default is to ignore all overlays and just use slide \texttt{n}
 \item Fails in previous example:
-\newcommand{\colvect}[1]{%
- \begin{pmatrix}#1\end{pmatrix}}
-\[\alert{
-  \colvect{1\\2}
-  \colvect{4\\5}
-  \bullet
-  \colvect{-2\\2}
-  \colvect{4\\-5}
-  =
-  2-62-9
-}\]
+everything alerted
+%\newcommand{\colvect}[1]{%
+% \begin{pmatrix}#1\end{pmatrix}}
+%\[\alert{
+%  \colvect{1\\2}
+%  \colvect{4\\5}
+%  \bullet
+%  \colvect{-2\\2}
+%  \colvect{4\\-5}
+%  =
+%  2-62-9
+%}\]
 \end{itemize}
 \end{frame*}
 
@@ -449,6 +382,7 @@ other options are plain \& wallpaper
 % or
 \ExpandArgs{c}\newcommand{@myelement}{...}
 \end{lstlisting}
+and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}
 \end{frame*}
 
 \begin{frame*}
@@ -459,18 +393,18 @@ other options are plain \& wallpaper
 \makeatletter
 \newcommand\@myelement{...}
 % or
-\newcommand\@shortmyelement{...}
+\newcommand\@shortmyelement{...}                 % used if both available
 \makeatother
 % or
 \ExpandArgs{c}\newcommand{@myelement}{...}
 % or
-\ExpandArgs{c}\newcommand{@shortmyelement}{...}
+\ExpandArgs{c}\newcommand{@shortmyelement}{...}  % used if both available
 \end{lstlisting}\bigskip
-(\cs{@shortmyelement} will be preferred if available)\\
+and then pass \texttt{myelement} to \texttt{element-order}\\
 For example:
 \begin{lstlisting}
 \ExpandArgs{c}\newcommand{@framesoftotal}{%
- \arabic{frame}/\RefProperty{lastpage}{totalframes}
+ \arabic{frame}/\RefProperty{lastpage}{totalframes}%
 }
 \end{lstlisting}
 \end{frame*}
@@ -494,8 +428,9 @@ For example:
 \begin{frame}
 \frametitle{Future Work}
 \begin{itemize}
-\item better tagging
-\item better heading structure?
+\item tagging
+\item frame title
+\item heading structure?
 \end{itemize}
 \end{frame}
 

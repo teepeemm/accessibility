@@ -33,9 +33,7 @@
 %}
 
 \documentclass{ltugboat}
-%\usepackage{luatex85}
 \usepackage{graphicx}
-%\usepackage[all]{xy}
 \usepackage{tikz-cd}
 \usepackage{unicode-math}
 \usepackage{amsmath}
@@ -54,7 +52,7 @@
 \newcommand{\verbatimoptions}{\IfDocumentMetadataT{setup-code=}\small}
 
 \newcommand{\veraPDF}{vera\PDF}
-\newcommand{\VeraPDF}{Vera\PDF}
+\newcommand{\VeraPDF}{vera\PDF} % it appears they are always lower case
 \newcommand{\PDFix}{\PDF ix}
 
 \DeclareMathOperator{\coker}{coker}
@@ -121,8 +119,7 @@ Each section then ends with a custom command that inputs the exercises
 for that section.
 
 My university has been emphasizing the national requirement
-that all documents must be accessible according to
-the \acro{WCAG 2.1 AA} guideline
+that all documents must satisfy the \acro{WCAG 2.1 AA} guideline
 as of April 2026 (now delayed to 2027); see \TUB\ 45:2 \cite{Kuan:2024:LCL}
 for a historical overview of how we got to this point.
 Beginning in early 2025, I began exploring how to ensure that
@@ -130,6 +127,8 @@ the textbook meets this guideline.
 
 \section{The Basics}
 
+My starting point for \LaTeX\ accessibility is
+\url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}.
 I first needed to convert the document from using \XeLaTeX\ to \LuaLaTeX,
 which also necessitated adjusting a few font commands in the preamble,
 but not much else.
@@ -249,7 +248,7 @@ It is useful to note that it is not too difficult to create alt text.
 A majority of this discussion requires some familiarity with creating
 a longer \LaTeX\ document.
 For alt text, however, I used a short Python script that added
-\texttt{[alt={ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
+\texttt{[alt=\tubbraced{ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
 A student worker with less \TeX\ experience was then able to go through
 the book, examine the resulting \PDF, and create the alt text.
 
@@ -331,6 +330,8 @@ On the other hand, there is no \emph{mathematical} problem with
 having a longer description.
 Accessibility guidelines suggest creating a short alt text pointing
 to a longer description elsewhere.
+I typically ignored that suggestion,
+but tried to keep the alt text from getting too long.
 
 A bigger problem arises in early chapters in the calculus sequence
 when we ask students to verbally describe a graph,
@@ -379,7 +380,10 @@ formulas include alt text.
 We can accomplish this by uncommenting the \texttt{math/alt/use}
 key in the \cs{DocumentMetadata} command.
 This usually causes \PDF\ screen readers to read the alt text and
-omit the more informative \MathML\ tags, so I discourage its use
+omit the more informative \MathML\ tags
+(although there is a recent recommendation to the contrary at
+\url{https://pdfa.org/resource/best-practice-guide-math-in-pdf/}),
+so I discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
 A colleague uses the \texttt{rmarkdown} package,
@@ -419,7 +423,7 @@ and can omit the \texttt{table-header-columns}.
 These declarations obey \TeX's grouping rules, so that a header
 specification will last until the end of the current environment.
 
-While \cs{multicolumn} is tagging ready, I cannot say the same for
+While \cs{multicolumn} is tagging ready, the same is not true for
 a \cs{multirow} cell, which needs to have
 %
 %\newline
@@ -497,7 +501,7 @@ I have experience with
 The \LaTeX\ team uses \veraPDF\ to validate their documents,
 so that using the same validation gives similar results
 (this is usually good, but can be bad if they have overlooked an issue).
-The main downside I found with \veraPDF\ is that
+The main downside I find with \veraPDF\ is that
 while it provides a \acro{GUI} to initiate a validation and see the results,
 it reports the location of failed validation checks
 as paths within the \PDF\ document, such as
@@ -510,6 +514,8 @@ root/
   content[124]{mcid:109}/
   contentItem[0]{mcid:109}
 \end{verbatim}
+Identifying the page is not sufficient to know which aspect
+is causing a failed validation.
 \VeraPDF\ also has a command line version of the program,
 allowing for faster (or even automated) checking of generated \PDF s.
 After a minute examining the Calculus textbook, \veraPDF\ presents
@@ -517,6 +523,7 @@ an \XML\ report that the text book complies with various profiles
 and a number of rules and checks for each profile,
 summarized in \autoref{vera-report}.
 \begin{table}
+\centering
 \caption{Successful validations examined}
 \label{vera-report}
 \begin{tabular}{l S[table-format=4] S[table-format=8,digit-group-size=4]}\toprule
@@ -532,7 +539,7 @@ graphical view of the \PDF\ in question, which better locates errors.
 \PDFix\ also allows navigating the tree structure of the \PDF,
 making it possible to locate errors given by \veraPDF.
 
-Our institution uses Ally to check \PDF s posted to our \acro{LMS}.
+My institution uses Ally to check \PDF s posted to our \acro{LMS}.
 Ally is one of the aforementioned \PDF\ checkers that looks for version 1.7
 and requires formulas to have alt text.
 For this reason, I try to avoid posting the textbook to the \acro{LMS}.
@@ -570,12 +577,14 @@ hash & 11\\\bottomrule
 \autoref{results} reports the factor
 by which various computational statistics increase for the textbook.
 The final two entries relate
-how much memory the compilation process allocates.
+how much memory the compilation process requires.
 This originally resulted in fatal compilation errors that
 \TeX\ exceeded its capacity for
 the \texttt{number of strings} or the \texttt{hash size},
 requiring me to modify the compilation command
 (see \url{https://tex.stackexchange.com/a/741777/}).
+
+%As a final remark, don't be afraid to dig into 
 
 \iffalse
 
@@ -637,7 +646,7 @@ A few other typing conventions:
 \verb|\titleref{Book of Fred}|,\\ with output: \titleref{Book of Fred}.
 \end{itemize}
 
-We recommend using \cs{begin}\tubbraced{verbatim}\texttt{[\small] ...}
+We recommend using \cs{begin}\tubbraced{verbatim}\texttt{[\cs{small}] ...}
 \cs{end}\tubbraced{verbatim} for code blocks, since we prefer not to
 colorize code when printed. But if you want to have some font changes,
 our recommended settings for the \texttt{listings} package are in the
