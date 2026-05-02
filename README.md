@@ -36,7 +36,7 @@ Package/class substitutions:
 
 PDF Validators:
 -----------
-* [VeraPDF](https://verapdf.org/software/) is used by the LaTeX team, has a command line interface, but reports the PDF address of any errors it finds
+* [veraPDF](https://verapdf.org/software/) is used by the LaTeX team, has a command line interface, but reports the PDF address of any errors it finds
 * [PDFix](https://pdfix.net/) uses the same algorithm as veraPDF, will show you where any errors are, but has no command line interface
 * There are not many [other PDF validators](https://pdfa.org/accessible-math-in-pdf-finally/) that can handle math.
 * [PDF validation false negatives](https://github.com/latex3/tagging-project/discussions/categories/issues-with-accessibility-checkers-and-other-at-software)
@@ -50,11 +50,16 @@ PDF Screen readers:
 * Adobe, Foxit, or Firefox
 * [There are no others at this time](https://tex.stackexchange.com/a/755945/107497)
 
-<!-- Other links
+Other links:
+-----------
+* [Test PDF files](https://texlive.net/tests/MathML/)
+* [Tagging increases various system requirements](https://tex.stackexchange.com/a/751610/107497), so you may need [to increase](https://tex.stackexchange.com/a/741777/107497) [some limits](https://tex.stackexchange.com/a/518522/107497)
+
+<!-- 
 
 * https://accessibility.umn.edu/gaad/virtual-swag
 * https://iu.instructure.com/courses/2325746/pages/creating-fully-tagged-pdf-slash-ua-2-accessible-documents-with-latex?module_item_id=35514589
-* https://texlive.net/tests/MathML/
 * https://pdfa.org/resource/best-practice-guide-math-in-pdf/
+* https://www.linkedin.com/feed/update/urn:li:activity:7444461479694639104
 
 -->
