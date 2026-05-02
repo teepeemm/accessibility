@@ -449,15 +449,15 @@ Follow \texttt{texdoc latex-lab-table} for the details.
 
 \section{Other Package Changes}
 
-I had originally formatted our headings using the \texttt{titlesec} package.
+I had originally formatted headings using the \texttt{titlesec} package.
 This requires adjustments to properly tag,
-and was becoming too complicated for our use.
+and was becoming too complicated.
 I opted to instead use \cs{@startsec}
 (see \texttt{texdoc latex2e}, section 6.8).
 Another possibility is the new template mechanism
 (see \texttt{texdoc latex-lab-sec-template}).
 
-I was originally using \texttt{enumitem} to adjust our \tubbraced{enumerate}
+I was originally using \texttt{enumitem} to adjust \tubbraced{enumerate}
 environments, which is also not amenable to tagging.
 I am now using \texttt{enumext},
 although there is also a templating alternative
@@ -474,7 +474,7 @@ Instead, I am now using \texttt{marginalia}.
 \section{Checking the Results}
 
 Having resolved all possible errors,
-I needed to verify that our result was indeed accessible.
+I needed to verify that the result was indeed accessible.
 The obvious first step is to ensure
 a screen reader properly handles the document.
 Unfortunately, when it comes to \PDF\ version 2.0,
@@ -485,7 +485,7 @@ the only currently viable screen readers are to go with them are
 See \url{https://tex.stackexchange.com/a/755945/} for the latest.
 % \cite{screenReaders}
 
-Another approach is to verify that our \PDF\ is indeed version 2.0,
+Another approach is to verify that the \PDF\ is indeed version 2.0,
 and satisfies the \acro{UA-2} \PDF\ standard.
 Unfortunately (again),
 there are not many \PDF\ checkers that recognize version 2.0,

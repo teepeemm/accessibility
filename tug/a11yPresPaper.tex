@@ -446,7 +446,8 @@ We could
 \end{verbatim}
 to adjust the title page, but that is only necessary
 if we plan to create multiple title pages.
-The default \cs{maketitle} is equivalent to
+Instead, we can pass new values as optional arguments to \cs{maketitle},
+whose default is equivalent to
 \begin{lstlisting}
 \maketitle[
   element-order        = {
@@ -497,7 +498,7 @@ we can define the desired command with
 \begin{verbatim}[\verbatimOptions]
 \ExpandArgs{c}\newcommand{@myelement}{...}
 \end{verbatim}
-For example, I reproduce the \texttt{beamer} frame counter by using
+For example, we can reproduce the \texttt{beamer} frame counter by using
 \begin{lstlisting}
 \ExpandArgs{c}\newcommand{@framesoftotal}{%
  \arabic{frame}/%
@@ -558,6 +559,8 @@ We are intensely interested in feedback from screen reader users
 (as opposed to automated validators)
 as to what heading structure is useful to them.
 Such users are encouraged to get in contact with us.
+On a related note, we also would appreciate feedback about requested
+\cs{frametitle} customizations.
 
 %We recommend using \cs{begin}\tubbraced{verbatim}\texttt{[\textbackslash small] ...}
 %\cs{end}\tubbraced{verbatim} for code blocks, since we prefer not to
