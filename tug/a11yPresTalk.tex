@@ -14,8 +14,9 @@
 \date{July 2026}
 \title[Accessible Presentations]
  {Creating Accessible Presentations With \texttt{ltx-talk}}
-%\subtitle{beamer+tagging}
+\subtitle{beamer+tagging}
 \author[Tim Prescott]{Timothy Prescott (\TeX.SE \texttt{teepeemm})}
+\institute{University of North Dakota}
 % abstract:
 %We discuss how to create accessible \PDF\ presentations
 %using \texttt{ltx-talk}, which is similar to \texttt{beamer}.
@@ -103,7 +104,7 @@
 
 \begin{frame}
 \maketitle[
-  element-order = {title, subtitle, author, titlegraphic, date},
+  element-order = {title, author, titlegraphic, date},
   framestyle = plain,
 ]
 \end{frame}
@@ -354,11 +355,15 @@ For example:
 \subsection{Adjusting the Title Page}
 
 \begin{frame*}
-\frametitle{Adjusting the Title Page}
+\frametitle{Default Title Page}
+\begin{minipage}{.5\textwidth}
 \begin{lstlisting}
+\maketitle
+% same as
 \maketitle[
   element-order        = {
-    title, subtitle, author, institute, date
+    title, subtitle, author,
+    institute, date
   },
   framestyle           = talk,
   horizontal-alignment = center,
@@ -367,6 +372,31 @@ For example:
 \end{lstlisting}
 framestyle = pagestyle\\
 other options are plain \& wallpaper
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+\maketitle
+\end{minipage}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Adjusting the Title Page}
+\begin{minipage}{.5\textwidth}
+Adjusted title page:
+\begin{lstlisting}
+\maketitle[
+  element-order = {
+    title, author,
+    titlegraphic, date},
+  framestyle    = plain,
+]
+\end{lstlisting}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+\maketitle[
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain,
+]
+\end{minipage}
 \end{frame*}
 
 \subsection{Creating a Custom Title and Footer Element}
@@ -382,7 +412,16 @@ other options are plain \& wallpaper
 % or
 \ExpandArgs{c}\newcommand{@myelement}{...}
 \end{lstlisting}
-and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}
+and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}\\
+For example:
+\begin{lstlisting}
+\ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \includegraphics[
+    actualtext={University of North Dakota, Mathematics \& Statistics},
+    width=5cm
+  ]{graphic-file}%
+}
+\end{lstlisting}
 \end{frame*}
 
 \begin{frame*}
