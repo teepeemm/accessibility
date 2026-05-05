@@ -16,7 +16,8 @@ Accessible PDF files using LaTeX
     math/setup=mathml-SE
   }
 }
-\RequirePackage{unicode-math}
+...
+\usepackage{unicode-math}
 ```
 * Compile with LuaLaTeX
 * Any `\includegraphics`, `\tikz`, or `{tikzpicture}` or `{picture}` environments need `alt={...}` in the options (if the image is truly decorative, you can use the option `artifact` instead of `alt`; a different option is `actualtext={...}` if your image is really text in disguise).  See `texdoc latex-lab-graphic` for more
