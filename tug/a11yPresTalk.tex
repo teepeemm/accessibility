@@ -74,10 +74,12 @@
 % other graphics from https://campus.und.edu/brand/downloads.html
 % primary logotype, full color, svg converted to pdf
 \ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \addvspace{\medskipamount}
   \includegraphics[
     actualtext={University of North Dakota, Mathematics \& Statistics},
     width=5cm
   ]{MathStats-CMYK_primary.jpg}% logotype-full
+  \addvspace{\smallskipamount}
 }
 % flame logo, white, digital png
 \NewCommandCopy\oldframetitle\frametitle

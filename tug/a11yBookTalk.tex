@@ -1,3 +1,4 @@
+% !TEX program = LuaLaTeX-dev
 % due July 8
 \DocumentMetadata{
   lang=en,
@@ -10,25 +11,12 @@
   }
 }
 \documentclass{ltx-talk}
-% 30 minutes including questions
 
-\usepackage{booktabs}
-\usepackage{siunitx}
-\usepackage{emoji}
-\usepackage{tikz-cd}
-\usepackage{pgfplots}
-
-\DeclareMathOperator{\coker}{coker}
-\pgfplotsset{compat=1.18}
-
-\title[Accessible PDF Textbook]{Converting a PDF Textbook to be Accessible}
-%\shorttitle{Accessible PDF Textbook}
-\author[Tim Prescott]{Timothy Prescott (\TeX.SE: \texttt{teepeemm})}
-\institute{University of North Dakota}
-%\logo{\includegraphics{example-image}}
-%\institute{\raisebox{0pt}[\baselineskip]\LaTeX}
-%\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
 \date{July 2026}
+\title[Accessible PDF Textbook]{Converting a PDF Textbook to be Accessible}
+\author[Tim Prescott]{Timothy Prescott (\TeX.SE: \texttt{teepeemm})}
+\subtitle{Anyone can do it}
+\institute{University of North Dakota}
 % abstract:
 %A guideline in the United States requires that
 %\acro{PDF}s created after April 2026 must be accessible to visually
@@ -38,16 +26,45 @@
 %also discuss necessary adaptations to satisfy a common accessibility
 %checker available in several \acro{LMS}s.
 
+% 30 minutes including questions
+
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{emoji}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+\usepackage{listings}
+
+\DeclareMathOperator{\coker}{coker}
+\pgfplotsset{compat=1.18}
+
 \newcommand{\apex}{\texorpdfstring{A\kern -.1em \lower -.5ex\hbox{P}\kern -.25em\lower .5ex\hbox{E}\kern -.1em X}{APEX}}
+
+\ProvideDocumentEnvironment{tcb@manual@entry}{}{}{} % needed for the next line
+\usepackage{tagpdfdocu-patches}% needed to make listings work properly
+
+\lstset{
+  columns=fullflexible,
+  keepspaces=true,
+  commentstyle=\slshape,
+  basicstyle=\ttfamily
+  \lst@ifdisplaystyle\small\fi,
+  language={[LaTeX]TeX}
+}
+
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+\newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
+\newcommand{\meta}[1]{\ensuremath{\langle}%
+ \ifmmode\expandafter\mbox\fi{\itshape #1\/}%
+ \ensuremath{\rangle}%
+}
 
 %\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
 \providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
 
-\AddToHook{begindocument/end}{
-  \EditInstance{header}{std}{
+\EditInstance{header}{std}{
     background-color = maybeUNDgreen,
     color            = white,
-  }
 }
 
 \DeclareInstance{footer-element}{frameoftotal}{talk}{}
@@ -65,10 +82,12 @@
 % other graphics from https://campus.und.edu/brand/downloads.html
 % primary logotype, full color, svg converted to pdf
 \ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \addvspace{\medskipamount}
   \includegraphics[
     actualtext={University of North Dakota, Mathematics \& Statistics},
     width=5cm
   ]{MathStats-CMYK_primary.jpg}% logotype-full
+  \addvspace{\smallskipamount}
 }
 % flame logo, white, digital png
 \NewCommandCopy\oldframetitle\frametitle
@@ -78,19 +97,12 @@
   }%
 }
 
-\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
-\newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
-\newcommand{\meta}[1]{\ensuremath{\langle}%
- \ifmmode\expandafter\mbox\fi{\itshape #1\/}%
- \ensuremath{\rangle}%
-}
-
 \begin{document}
 
 \begin{frame}
 \maketitle[
-  element-order = {title, subtitle, author, titlegraphic, date},
-  framestyle = wallpaper
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain
 ]
 \end{frame}
 
@@ -144,7 +156,7 @@ All else & 60 & 30 & 50 & 5 \\\midrule
 \begin{frame*}
 \frametitle{TL;DR}
 Update \LaTeX
-\begin{verbatim}
+\begin{lstlisting}
 \DocumentMetadata{
   lang=en,
   tagging=on,
@@ -156,7 +168,7 @@ Update \LaTeX
   }
 }
 \RequirePackage{unicode-math}
-\end{verbatim}
+\end{lstlisting}
 compile with Lua\LaTeX, and most of the work is done\\
 \texttt{texdoc documentmetadata-support-code}
 \end{frame*}
