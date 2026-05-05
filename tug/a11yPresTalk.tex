@@ -88,6 +88,9 @@
     \includegraphics[height=2ex,artifact]{flame-w-rgb}%
   }%
 }
+%\newsavebox\logobox
+%\savebox\logobox{\includegraphics[artifact, height=2ex]{example-image}}
+%\savebox\logobox{\includegraphics[artifact, height=2ex]{flame-w-rgb}}
 
 %\EditInstance{hidden}{std}{opacity=.4}
 
@@ -111,6 +114,10 @@
 ]
 \end{frame}
 
+%\AddToHook{shipout/background}{%
+%   \put(\paperwidth - \wd\logobox - 0.5cm,
+%        -\ht\logobox -0.5cm){\usebox\logobox}}
+
 \begin{frame*}
 \frametitle{The Basics}
 \begin{itemize}
@@ -133,7 +140,7 @@
 \item tagged PDF + overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command} only on slides \verb|xyz|
 \item defined colors: \textcolor{alert}{alert}, \textcolor{example}{example}, \textcolor{structure}{structure}
 \item \tubbraced{frame*} $\Leftrightarrow$ \verb@\verb|...|@,
-\tubbraced{verbatim}, \tubbraced{lstlisting}, etc.
+\tubbraced{verbatim}, \tubbraced{lstlisting}, etc. (like Beamer's \texttt{fragile})
 \end{itemize}
 \end{frame*}
 
