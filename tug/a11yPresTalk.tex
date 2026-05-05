@@ -299,7 +299,7 @@ everything alerted
 
 \section{Customizations}
 
-\subsection{Adjusting the Header and Footer}
+\subsection{Adjusting the Header}
 
 \begin{frame*}
 \frametitle{Adjusting the Header}
@@ -332,6 +332,8 @@ $\qquad\longrightarrow\qquad\longrightarrow$}
 \end{lstlisting}
 \end{frame*}
 
+\subsection{Adjusting the Footer}
+
 \begin{frame*}
 \frametitle{Adjusting the Footer}
 \verb|\EditInstance{footer}{std}{<key=value>}|\\\medskip
@@ -350,78 +352,6 @@ author, date, institute, title, subtitle, framenumber,
 totalframes (=\cs{RefProperty}\tubbraced{lastpage}\tubbraced{totalframes})\\
 For example:
 \verb|\EditInstance{footer}{std}{element-order={date,author,title,framenumber}}|
-\end{frame*}
-
-\subsection{Adjusting the Title Page}
-
-\begin{frame*}
-\frametitle{Default Title Page}
-\begin{minipage}{.5\textwidth}
-\begin{lstlisting}
-\maketitle
-% same as
-\maketitle[
-  element-order        = {
-    title, subtitle, author,
-    institute, date
-  },
-  framestyle           = talk,
-  horizontal-alignment = center,
-  vertical-alignment   = center
-]
-\end{lstlisting}
-framestyle = pagestyle\\
-other options are plain \& wallpaper
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-\maketitle
-\end{minipage}
-\end{frame*}
-
-\begin{frame*}
-\frametitle{Adjusting the Title Page}
-\begin{minipage}{.5\textwidth}
-Adjusted title page:
-\begin{lstlisting}
-\maketitle[
-  element-order = {
-    title, author,
-    titlegraphic, date},
-  framestyle    = plain,
-]
-\end{lstlisting}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-\maketitle[
-  element-order = {title, author, titlegraphic, date},
-  framestyle = plain,
-]
-\end{minipage}
-\end{frame*}
-
-\subsection{Creating a Custom Title and Footer Element}
-
-\begin{frame*}
-\frametitle{Creating a Custom Title Element}
-\begin{lstlisting}
-\DeclareInstance{titlepage-element}{myelement}{talk}{<key=value>}
-% and then
-\makeatletter
-\newcommand\@myelement{...}
-\makeatother
-% or
-\ExpandArgs{c}\newcommand{@myelement}{...}
-\end{lstlisting}
-and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}\\
-For example:
-\begin{lstlisting}
-\ExpandArgs{c}\newcommand{@titlegraphic}{%
-  \includegraphics[
-    actualtext={University of North Dakota, Mathematics \& Statistics},
-    width=5cm
-  ]{graphic-file}%
-}
-\end{lstlisting}
 \end{frame*}
 
 \begin{frame*}
@@ -444,6 +374,81 @@ For example:
 \begin{lstlisting}
 \ExpandArgs{c}\newcommand{@framesoftotal}{%
  \arabic{frame}/\RefProperty{lastpage}{totalframes}%
+}
+\end{lstlisting}
+\end{frame*}
+
+\subsection{Adjusting the Title Page}
+
+\begin{frame*}
+\frametitle{Default Title Page}
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}
+\maketitle
+% same as
+\maketitle[
+  element-order        = {
+    title, subtitle, author,
+    institute, date
+  },
+  framestyle           = talk,
+  horizontal-alignment = center,
+  vertical-alignment   = center
+]
+\end{lstlisting}
+\cs{thispagestyle}\tubbraced{framestyle}\\
+options are \texttt{talk}, \texttt{plain} \& \texttt{wallpaper}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+\maketitle
+\end{minipage}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Adjusting the Title Page}
+\begin{minipage}{.5\textwidth}
+Adjusted title page:
+\begin{lstlisting}
+\maketitle[
+  element-order = {
+    title, author,
+    titlegraphic, date},
+  framestyle    = plain,
+]
+\end{lstlisting}
+\begin{description}
+\item[talk] default header and footer
+\item[plain] no header and footer
+\item[wallpaper] header and footer have background color but no text
+\end{description}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+\maketitle[
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain,
+]
+\end{minipage}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Creating a Custom Title Element}
+\begin{lstlisting}
+\DeclareInstance{titlepage-element}{myelement}{talk}{<key=value>}
+% and then
+\makeatletter
+\newcommand\@myelement{...}
+\makeatother
+% or
+\ExpandArgs{c}\newcommand{@myelement}{...}
+\end{lstlisting}
+and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}\\
+For example:
+\begin{lstlisting}
+\ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \includegraphics[
+    actualtext={University of North Dakota, Mathematics \& Statistics},
+    width=5cm
+  ]{graphic-file}%
 }
 \end{lstlisting}
 \end{frame*}
