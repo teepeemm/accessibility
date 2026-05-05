@@ -16,4 +16,4 @@ Source files for TUG articles and presentations for July 2026.
 
 **a11yPresPaper** then uses the graphics that are the pages from tugFigs.pdf, so the latter should be compiled first.
 
-**a11yPresTalk** needs to be compiled with lualatex-dev
+**a11y...Talk** need to be compiled with lualatex-dev
