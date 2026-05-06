@@ -3,7 +3,7 @@ Accessible PDF files using LaTeX
 ===========================
 
 * Make sure you have the latest TeX version, and have [updated your packages](https://tex.stackexchange.com/q/55437/107497)
-* As the first commands (before `\documentclass`), use
+* As the first commands, use
 ``` latex
 \DocumentMetadata{
   lang=en,
@@ -16,7 +16,7 @@ Accessible PDF files using LaTeX
     math/setup=mathml-SE
   }
 }
-...
+\documentclass{...}
 \usepackage{unicode-math}
 ```
 * Compile with LuaLaTeX
