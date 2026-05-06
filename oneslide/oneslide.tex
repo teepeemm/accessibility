@@ -53,12 +53,19 @@
   ]{MathStats-CMYK_primary.jpg}% logotype-full
 }
 % flame logo, white, digital png
-\NewCommandCopy\oldframetitle\frametitle
-\RenewDocumentCommand{\frametitle}{m}{%
-  \oldframetitle{#1\hfill
-    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
-  }%
-}
+\newsavebox\logobox
+%\savebox\logobox{\includegraphics[artifact, height=2ex]{example-image}}
+\savebox\logobox{%
+  \includegraphics[artifact, height=\baselineskip]{flame-w-rgb}}
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
+%  }%
+%}
 
 \begin{document}
 

@@ -385,13 +385,20 @@ My university encourages a presentation template that has a logo
 in the top right of the header.
 This cannot be done with the existing template, but can be accomplished with
 \begin{lstlisting}
-\NewCommandCopy\oldframetitle\frametitle
-\RenewDocumentCommand{\frametitle}{m}{%
-  \oldframetitle{#1\hfill
-    \includegraphics[height=2ex,artifact]
-      {logofile}}}
+\newsavebox\logobox
+\savebox\logobox{%
+  \includegraphics[artifact,
+    height=\baselineskip]{logofile}}
+% possibly after \maketitle frame
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
 \end{lstlisting}
-% Joseph or is there a better way?
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]
+%      {logofile}}}
 
 The default values of the footer template are listed
 in \autoref{footerTemplateDefaults}.

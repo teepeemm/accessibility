@@ -82,15 +82,19 @@
   \addvspace{\smallskipamount}
 }
 % flame logo, white, digital png
-\NewCommandCopy\oldframetitle\frametitle
-\RenewDocumentCommand{\frametitle}{m}{%
-  \oldframetitle{#1\hfill
-    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
-  }%
-}
-%\newsavebox\logobox
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
+%  }%
+%}
+\newsavebox\logobox
 %\savebox\logobox{\includegraphics[artifact, height=2ex]{example-image}}
-%\savebox\logobox{\includegraphics[artifact, height=2ex]{flame-w-rgb}}
+\savebox\logobox{%
+  \includegraphics[artifact, height=\baselineskip]{flame-w-rgb}}
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
 
 %\EditInstance{hidden}{std}{opacity=.4}
 
@@ -113,10 +117,6 @@
   framestyle = plain,
 ]
 \end{frame}
-
-%\AddToHook{shipout/background}{%
-%   \put(\paperwidth - \wd\logobox - 0.5cm,
-%        -\ht\logobox -0.5cm){\usebox\logobox}}
 
 \begin{frame*}
 \frametitle{The Basics}
@@ -332,14 +332,21 @@ print-frame-title & true\\\bottomrule
 \frametitle{A Logo in the Header
 $\qquad\longrightarrow\qquad\longrightarrow$}
 \begin{lstlisting}
-\NewCommandCopy\oldframetitle\frametitle
-\RenewDocumentCommand{\frametitle}{m}{%
-  \oldframetitle{#1\hfill
-    \includegraphics[height=2ex,artifact]{logo-file}%
-  }%
-}
+\newsavebox\logobox
+\savebox\logobox{%
+  \includegraphics[artifact, height=\baselineskip]{logo-file}}
+% after \maketitle frame
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
 \end{lstlisting}
 \end{frame*}
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]{logo-file}%
+%  }%
+%}
 
 \subsection{Adjusting the Footer}
 
@@ -482,6 +489,9 @@ For example:
 \frametitle{Future Work}
 \begin{itemize}
 \item tagging
+\item frame layout
+\item blocks
+\item header / footer templates
 \item frame title
 \item heading structure?
 \end{itemize}
