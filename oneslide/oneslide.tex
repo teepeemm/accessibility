@@ -1,4 +1,4 @@
-% due July 8
+% !TEX program = LuaLaTeX-dev
 \DocumentMetadata{
   lang=en,
   tagging=on,
@@ -10,7 +10,6 @@
   }
 }
 \documentclass{ltx-talk}
-\usepackage{qrcode}
 
 \title[Accessible PDFs]{Creating Accessible PDFs With \LaTeX}
 %\shorttitle{Accessible PDF Textbook}
@@ -21,14 +20,27 @@
 %\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
 \date{\today}
 
+\usepackage{qrcode}
+\usepackage{listings}
+
+\ProvideDocumentEnvironment{tcb@manual@entry}{}{}{} % needed for the next line
+\usepackage{tagpdfdocu-patches}% needed to make listings work properly
+
+\lstset{
+  columns=fullflexible,
+  keepspaces=true,
+  commentstyle=\slshape,
+  basicstyle=\ttfamily
+  \lst@ifdisplaystyle\small\fi,
+  language={[LaTeX]TeX}
+}
+
 %\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
 \providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
 
-\AddToHook{begindocument/end}{
-  \EditInstance{header}{std}{
-    background-color = maybeUNDgreen,
-    color            = white,
-  }
+\EditInstance{header}{std}{
+  background-color = maybeUNDgreen,
+  color            = white,
 }
 
 \EditInstance{footer}{std}{
@@ -71,16 +83,17 @@
 
 \begin{frame}
 \maketitle[
-  element-order = {title, subtitle, author, titlegraphic, date},
-  framestyle = wallpaper
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain
 ]
 \end{frame}
 
 \begin{frame*}
 \frametitle{TL;DR}
-\begin{minipage}[t]{.5\textwidth}
+\begin{columns}
+\begin{column}{.4\textwidth}
 Update \LaTeX
-\begin{verbatim}
+\begin{lstlisting}
 \DocumentMetadata{
   lang=en,
   tagging=on,
@@ -91,18 +104,27 @@ Update \LaTeX
     math/setup=mathml-SE
   }
 }
-\RequirePackage{unicode-math}
-\end{verbatim}
-compile with Lua\LaTeX\\
-Add alt text\\
-Give tables headers
-\end{minipage}%
-\begin{minipage}[t]{.5\textwidth}
+\documentclass{...}
+\usepackage{unicode-math}
+\end{lstlisting}
+compile with Lua\LaTeX
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{itemize}
+\item Images need \texttt{alt} (or \texttt{actualtext} or \texttt{artifact})
+\item Tables need
+\begin{lstlisting}
+\tagpdfsetup{table/header-rows   ={...},
+             table/header-columns={...}}
+\end{lstlisting}
+and sometimes \texttt{\small\textbackslash tagpdfsetup\{table/multirow=\{...\}\}}
+\end{itemize}
 \begin{center}
 \url{https://github.com/teepeemm/accessibility}\\\bigskip
 \qrcode{https://github.com/teepeemm/accessibility}
 \end{center}
-\end{minipage}
+\end{column}
+\end{columns}
 \end{frame*}
 
 \end{document}

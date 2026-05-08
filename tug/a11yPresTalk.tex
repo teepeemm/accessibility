@@ -398,7 +398,8 @@ For example:
 
 \begin{frame*}
 \frametitle{Default Title Page}
-\begin{minipage}{.5\textwidth}
+\begin{columns}
+\begin{column}{.5\textwidth}
 \begin{lstlisting}
 \maketitle
 % same as
@@ -414,15 +415,17 @@ For example:
 \end{lstlisting}
 \cs{thispagestyle}\tubbraced{framestyle}\\
 options are \texttt{talk}, \texttt{plain} \& \texttt{wallpaper}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+\end{column}
+\begin{column}{.5\textwidth}
 \maketitle
-\end{minipage}
+\end{column}
+\end{columns}
 \end{frame*}
 
 \begin{frame*}
 \frametitle{Adjusting the Title Page}
-\begin{minipage}{.5\textwidth}
+\begin{columns}
+\begin{column}{.5\textwidth}
 Adjusted title page:
 \begin{lstlisting}
 \maketitle[
@@ -435,15 +438,17 @@ Adjusted title page:
 \begin{description}
 \item[talk] default header and footer
 \item[plain] no header and footer
-\item[wallpaper] header and footer have background color but no text
+\item[wallpaper] header and footer have\\
+ background color but no text
 \end{description}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+\end{column}
+\begin{column}{.5\textwidth}
 \maketitle[
   element-order = {title, author, titlegraphic, date},
   framestyle = plain,
 ]
-\end{minipage}
+\end{column}
+\end{columns}
 \end{frame*}
 
 \begin{frame*}

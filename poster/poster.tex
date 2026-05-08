@@ -1,0 +1,210 @@
+% !TEX program = LuaLaTeX-dev
+\listfiles
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+%  check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+%beamerposter.sty, fancytikzposter, baposter, tikzposter, a0poster.cls, sciposter.cls, umbcposter (arabic), tcolorbox/tcbposter
+\documentclass{a0poster}
+
+% beamer.cls & beamerposter.sty -> beamer unsupported
+% fancytikzposter merged into tikzposter
+% baposter -> no longer exists
+% tikzposter.cls -> loads exscale.sty currently incompatible #1154
+% a0poster.cls -> loads very few files
+% sciposter -> loads shadow.sty currently incompatible #336
+% tcolorbox library poster
+
+\title{Creating Accessible PDFs With \LaTeX\ is Quick and Easy}
+%\shorttitle{Accessible PDF Textbook}
+\author{Timothy Prescott}
+%\institute{University of North Dakota}
+%\logo{\includegraphics{example-image}}
+%\institute{\raisebox{0pt}[\baselineskip]\LaTeX}
+%\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
+\date{\today}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{qrcode}
+\usepackage{listings}
+
+%%%%%%% begin qrcode adjustment
+% https://tex.stackexchange.com/a/718275/107497
+\usepackage{etoolbox}
+\makeatletter
+\ExplSyntaxOn
+\cs_new_protected:Npn\qr@savepos 
+ {
+  \tex_savepos:D 
+  \RecordProperties{qr@save-\theqrcodecnt}{xpos,ypos}
+  \tex_savepos:D 
+ }
+\cs_new:Npn \qr@diminbp #1 {\dim_to_decimal_in_bp:n {#1}}
+\ExplSyntaxOff
+
+\newcounter{qrcodecnt}
+\NewSocket{tagsupport/qrcode/begin}{0}
+\NewSocket{tagsupport/qrcode/end}{0}
+\NewSocketPlug{tagsupport/qrcode/begin}{tag}
+ {%
+   \leavevmode
+   \tagmcend%
+   \stepcounter{qrcodecnt}\qr@savepos%
+   \ExpandArgs{e}\tagpdfsetup
+     {role/new-attribute=
+      {qrcode-\theqrcodecnt}
+      {
+       /O /Layout 
+       /BBox [\qr@diminbp{\RefProperty{qr@save-\theqrcodecnt}{xpos}sp}
+              \qr@diminbp{\RefProperty{qr@save-\theqrcodecnt}{ypos}sp-0.5\qr@desiredheight}
+              \qr@diminbp{\RefProperty{qr@save-\theqrcodecnt}{xpos}sp+\qr@desiredheight} 
+              \qr@diminbp{\RefProperty{qr@save-\theqrcodecnt}{ypos}sp+0.5\qr@desiredheight}] 
+      }%
+     }%
+   \tagstructbegin{tag=Figure,alt=\qr@texttoencode,
+    attribute=qrcode-\theqrcodecnt}%
+   \tagmcbegin{}%
+  }
+  
+\NewSocketPlug{tagsupport/qrcode/end}{tag} 
+ {\tagmcend\tagstructend\tagmcbegin{}}
+ 
+\AssignSocketPlug{tagsupport/qrcode/begin}{tag} 
+\AssignSocketPlug{tagsupport/qrcode/end}{tag} 
+
+\def\qrcode@hyperwrapper@hyperref#1{%
+  \href{\qr@texttoencode}%
+   {\UseTaggingSocket{qrcode/begin}\SuspendTagging{qrcode}%
+    #1\ResumeTagging{qrcode}\UseTaggingSocket{qrcode/end}}}
+ 
+\def\qrcode@hyperwrapper@nohyperref#1{%
+  \UseTaggingSocket{qrcode/begin}\SuspendTagging{qrcode}%
+  #1\ResumeTagging{qrcode}\UseTaggingSocket{qrcode/end}}
+
+\patchcmd\qrcode@int{\relax}{\qrcode@hyperwrapper@nohyperref}{}{\fail}
+
+\makeatother
+%%%%% end qrcode adjustment
+
+\ProvideDocumentEnvironment{tcb@manual@entry}{}{}{} % needed for the next line
+\usepackage{tagpdfdocu-patches}% needed to make listings work properly
+
+\lstset{
+  columns=fullflexible,
+  keepspaces=true,
+  commentstyle=\slshape,
+  basicstyle=\ttfamily
+%  \lst@ifdisplaystyle\small\fi
+  ,
+  language={[LaTeX]TeX}
+}
+
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+\newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
+\newcommand{\meta}[1]{\ensuremath{\langle}%
+ \ifmmode\expandafter\mbox\fi{\itshape #1\/}%
+ \ensuremath{\rangle}%
+}
+
+%\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
+\providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
+
+\begin{document}
+\begin{center}
+\VERYHuge Creating accessible PDFs with \LaTeX\ is quick and easy\vspace{1in}
+\end{center}
+\huge
+\begin{minipage}[t]{.2\textwidth}
+How to:
+\begin{itemize}
+\item Update \LaTeX
+\item Start with
+\begin{lstlisting}
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+% check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+\documentclass{...}
+\usepackage{unicode-math}
+\end{lstlisting}
+\item Compile with Lua\LaTeX
+\item Images need \texttt{alt}\\
+\null\quad (or \texttt{actualtext}\\
+\null\quad\ or \texttt{artifact})
+\item Tables need
+\begin{lstlisting}
+\tagpdfsetup{
+  table/header-rows   ={...},
+  table/header-columns={...}
+}
+\end{lstlisting}
+and sometimes
+\begin{lstlisting}
+\tagpdfsetup{
+  table/multirow={...}
+}
+\end{lstlisting}
+\end{itemize}
+\end{minipage}%
+\begin{minipage}[t]{.5\textwidth}
+\centering
+\leavevmode\\
+\qrcode[height=.15\textheight]{https://github.com/teepeemm/accessibility}\\\vspace{1in}
+\Huge\url{https://github.com/teepeemm/accessibility}\\\vspace{2in}
+\veryHuge Timothy Prescott\\\bigskip
+\includegraphics[actualtext={University of North Dakota, Mathematics \& Statistics}]{MathStats-CMYK_primary}
+\end{minipage}%
+\begin{minipage}[t]{.3\textwidth}
+Package \& class changes:
+\begin{itemize}
+\item enumitem, enumerate \textrightarrow\\
+enumext or texdoc blocks-doc% for many new options
+\item marginnote, marginfit, and marginfix \textrightarrow\
+marginalia or \cs{marginpar}
+\item titlesec \textrightarrow\\
+\cs{@startsection} %(see texdoc source2e)
+ or\\
+ \quad texdoc latex-lab-sec-template% for many new options
+\item beamer \textrightarrow\ ltx-talk
+\end{itemize}\vspace{1in}
+To listen to the results:
+\begin{itemize}
+\item NVDA or JAWS
+\item Adobe or Foxit or Firefox
+\end{itemize}\vspace{1in}
+To validate the results:
+\begin{itemize}
+\item veraPDF
+\item PDFix
+\end{itemize}
+\end{minipage}
+\end{document}
+
+\tiny 12pt
+\scriptsize 14.4pt
+\footnotesize 17.28pt
+\small 20.74pt
+\normalsize 24.88pt
+\large 29.86pt
+\Large 35.83pt
+\LARGE 43pt
+\huge 51.6pt
+\Huge 61.92pt
+\veryHuge 74.3pt
+\VeryHuge 89.16pt
+\VERYHuge 107pt
+
+  \includegraphics[artifact, height=\baselineskip]{flame-w-rgb}
