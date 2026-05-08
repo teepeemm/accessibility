@@ -1,0 +1,376 @@
+% !TEX program = LuaLaTeX-dev
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+%  check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+\documentclass{ltx-talk}
+
+\date{Date}
+\title[Short Title]{Full Title}
+\subtitle{Subtitle}
+\author[Short Author]{Full Author Name}
+\institute{University of North Dakota}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+\newcommand{\tubbraced}[1]{\texttt{\{#1\}}}
+\newcommand{\meta}[1]{\ensuremath{\langle}%
+ \ifmmode\expandafter\mbox\fi{\itshape #1\/}%
+ \ensuremath{\rangle}%
+}
+%\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
+\providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
+
+\EditInstance{header}{std}{
+  background-color = maybeUNDgreen,
+  color            = white,
+}
+
+\DeclareInstance{footer-element}{framesoftotal}{talk}{}
+\ExpandArgs{c}\newcommand{@framesoftotal}{%
+ \arabic{frame}/\RefProperty{lastpage}{totalframes}
+}
+\EditInstance{footer}{std}{
+  color         = black!75,
+  separator     = \hfill|\hfill,
+  element-order = {date, author, title, framesoftotal},
+}
+
+\DeclareInstance{titlepage-element}{titlegraphic}{talk}{}
+% department logo obtained locally
+% other graphics from https://campus.und.edu/brand/downloads.html
+% primary logotype, full color, svg converted to pdf
+\ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \addvspace{\medskipamount}
+  \includegraphics[
+    actualtext={University of North Dakota, Mathematics \& Statistics},
+    width=5cm
+  ]{MathStats-CMYK_primary.jpg}% logotype-full
+  \addvspace{\smallskipamount}
+}
+% flame logo, white, digital png
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]{flame-w-rgb}%
+%  }%
+%}
+\newsavebox\logobox
+%\savebox\logobox{\includegraphics[artifact, height=2ex]{example-image}}
+\savebox\logobox{%
+  \includegraphics[artifact, height=\baselineskip]{flame-w-rgb}}
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
+
+%\EditInstance{hidden}{std}{opacity=.4}
+
+%\ShowTemplateDefaults{titlepage}{talk}
+%\ShowTemplateInterface{type}{talk}
+%\ShowTemplateVariables{type}{talk}
+%\ShowTemplateCode{type}{talk}
+%\ShowInstanceValues{type}{instance}
+
+%\DeclareInstance{footer-element}{myelement}{talk}{}
+%\ExpandArgs{c}\newcommand{@myelement}{SUCCESS}
+%\ExpandArgs{c}\newcommand{@shortmyelement}{SHORT}
+
+\begin{document}
+%\overfullrule=10pt
+
+\begin{frame}
+\maketitle[
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain,
+]
+\end{frame}
+
+\begin{frame*}
+\frametitle{The Basics}
+\begin{itemize}
+\item
+\begin{verbatim}
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+%  check-tagging-status,
+  tagging-setup={
+%    math/alt/use,               % <=> Formulas must have description/alt text
+%    role/new-tag=frametitle/H1, % <=> headings must begin at level 1
+    math/setup=mathml-SE
+  }
+}
+\documentclass{ltx-talk}
+\end{verbatim}
+\item Lua\LaTeX
+\item tagged PDF + overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command} only on slides \verb|xyz|
+\item defined colors: \textcolor{alert}{alert}, \textcolor{example}{example}, \textcolor{structure}{structure}
+\item \tubbraced{frame*} $\Leftrightarrow$ \verb@\verb|...|@,
+\tubbraced{verbatim}, \tubbraced{lstlisting}, etc. (like Beamer's \texttt{fragile})
+\end{itemize}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{More Basics --- Overlays}
+Overlays: \verb|\command<xyz>| \textrightarrow\ \cs{command}
+only on slides \verb|xyz|\bigskip
+\begin{itemize}
+\item Color commands with overlays: \cs{color}, \cs{mathcolor}, \cs{textcolor}
+\item Text commands with overlays: \cs{textbf}, \cs{textit},
+\cs{textmd}, \cs{textnormal}, \cs{textrm}, \cs{textsc}, \cs{textsf}, \cs{textsl}, \cs{texttt}, \cs{textup},
+\cs{emph}
+\item Also: \cs{includegraphics}; \cs{label}
+\item[\Large\star] \cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible},
+\cs{alert}
+\item Environments \tubbraced{onlyenv}, \tubbraced{invisibleenv},
+\tubbraced{uncoverenv}, \tubbraced{visibleenv}, \tubbraced{alertenv}
+\item Also: \cs{onslide}, \cs{alt}, \cs{temporal}
+\item \cs{item}, \cs{action}, \tubbraced{actionenv} can take an
+\emph{action specification}\\
+(combine several \textcolor{structure}{\Large\star} actions
+into one \verb|<...>|)
+%\item Also: \cs{item} (and can take an \emph{action spec})
+%\item Main overlay commands: \cs{onslide}, \cs{only}, \cs{uncover}, \cs{visible}, \cs{invisible}, \cs{alt}, \cs{temporal}
+%\item Overlay environments: \tubbraced{onlyenv}, \tubbraced{invisibleenv}, \tubbraced{uncoverenv}, \tubbraced{visibleenv}
+\end{itemize}
+\end{frame*}
+
+\begin{frame}<1>[name=TOCslide]
+\frametitle{A \cs{tableofcontents}\only<2>{ in a \cs{section}}}
+\tableofcontents
+\hrule\bigskip
+Default \texttt{tocdepth} is 2 (\cs{subsection}).
+\end{frame}
+
+\section{The Basics}
+
+\section{Sectioning}
+
+\reuseframe<2>{TOCslide}
+
+\section{Examples}
+
+\subsection{List Environments}
+
+\begin{frame*}
+\frametitle{List Environments}
+\begin{itemize}
+\item \tubbraced{itemize}, \tubbraced{enumerate}, \tubbraced{description}
+as in usual classes
+\item templates mean we can pass options to the environments,\\
+see \texttt{texdoc blocks-doc}
+\item extra (default) key \texttt{action-spec}
+\item \verb!action-spec=<+->! \qquad uncover one item at a time
+\item \verb!action-spec=<+-|alert@+>!
+\qquad and \alert{\cs{alert}} the new item
+\end{itemize}
+\end{frame*}
+
+
+\section{Customizations}
+
+\subsection{Adjusting the Header}
+
+\begin{frame*}
+\frametitle{Adjusting the Header}
+\verb|\EditInstance{header}{std}{<key=value>}|
+or\\
+\verb|\EditInstance{frametitle}{header}{font=<value>}|\\\medskip
+\begin{tabular}{ ll }\toprule
+Key & Default Value\\\midrule
+background-color & (none)\\
+color & structure \\
+font & \cs{normalfont}\\
+height & topmargin (\qty{10}{mm})\\
+ & \quad+ headsep (\qty2{mm})\\
+left-hspace & leftmargin (\qty{10}{mm})\\
+right-hspace & rightmargin (\qty{10}{mm})\\
+print-frame-title & true\\\bottomrule
+\end{tabular}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{A Logo in the Header
+$\qquad\longrightarrow\qquad\longrightarrow$}
+\begin{verbatim}
+\newsavebox\logobox
+\savebox\logobox{%
+  \includegraphics[artifact, height=\baselineskip]{logo-file}}
+% after \maketitle frame
+\AddToHook{shipout/foreground}{%
+  \put(\paperwidth - \wd\logobox - 10mm,
+       -8.5mm){\usebox\logobox}} % -\ht\logobox
+\end{verbatim}
+\end{frame*}
+%\NewCommandCopy\oldframetitle\frametitle
+%\RenewDocumentCommand{\frametitle}{m}{%
+%  \oldframetitle{#1\hfill
+%    \includegraphics[height=2ex,artifact]{logo-file}%
+%  }%
+%}
+
+\subsection{Adjusting the Footer}
+
+\begin{frame*}
+\frametitle{Adjusting the Footer}
+\verb|\EditInstance{footer}{std}{<key=value>}|\\\medskip
+\begin{tabular}{ll}\toprule
+Key & Default Value\\\midrule
+background-color & (none)\\
+color & black \\
+element-order & (empty)\\
+font & \cs{tiny}\\
+left-hspace & leftmargin (\qty{10}{mm}) \\
+right-hspace & rightmargin (\qty{10}{mm}) \\
+separator & \cs{hfil}\\\bottomrule
+\end{tabular}\\\medskip
+Available footer elements:\\
+author, date, institute, title, subtitle, framenumber,
+totalframes (=\cs{RefProperty}\tubbraced{lastpage}\tubbraced{totalframes})\\
+For example:
+\verb|\EditInstance{footer}{std}{element-order={date,author,title,framenumber}}|
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Creating a Custom Footer Element}
+\begin{verbatim}
+\DeclareInstance{footer-element}{myelement}{talk}{...}
+% and then
+\makeatletter
+\newcommand\@myelement{...}
+% or
+\newcommand\@shortmyelement{...}                 % used if both available
+\makeatother
+% or
+\ExpandArgs{c}\newcommand{@myelement}{...}
+% or
+\ExpandArgs{c}\newcommand{@shortmyelement}{...}  % used if both available
+\end{verbatim}\bigskip
+and then pass \texttt{myelement} to \texttt{element-order}\\
+For example:
+\begin{verbatim}
+\ExpandArgs{c}\newcommand{@framesoftotal}{%
+ \arabic{frame}/\RefProperty{lastpage}{totalframes}%
+}
+\end{verbatim}
+\end{frame*}
+
+\subsection{Adjusting the Title Page}
+
+\begin{frame*}
+\frametitle{Default Title Page}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{verbatim}
+\maketitle
+% same as
+\maketitle[
+  element-order        = {
+    title, subtitle, author,
+    institute, date
+  },
+  framestyle           = talk,
+  horizontal-alignment = center,
+  vertical-alignment   = center
+]
+\end{verbatim}
+\cs{thispagestyle}\tubbraced{framestyle}\\
+options are \texttt{talk}, \texttt{plain} \& \texttt{wallpaper}
+\end{column}
+\begin{column}{.5\textwidth}
+\maketitle
+\end{column}
+\end{columns}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Adjusting the Title Page}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Adjusted title page:
+\begin{verbatim}
+\maketitle[
+  element-order = {
+    title, author,
+    titlegraphic, date},
+  framestyle    = plain,
+]
+\end{verbatim}
+\begin{description}
+\item[talk] default header and footer
+\item[plain] no header and footer
+\item[wallpaper] header and footer have\\
+ background color but no text
+\end{description}
+\end{column}
+\begin{column}{.5\textwidth}
+\maketitle[
+  element-order = {title, author, titlegraphic, date},
+  framestyle = plain,
+]
+\end{column}
+\end{columns}
+\end{frame*}
+
+\begin{frame*}
+\frametitle{Creating a Custom Title Element}
+\begin{verbatim}
+\DeclareInstance{titlepage-element}{myelement}{talk}{<key=value>}
+% and then
+\makeatletter
+\newcommand\@myelement{...}
+\makeatother
+% or
+\ExpandArgs{c}\newcommand{@myelement}{...}
+\end{verbatim}
+and then pass \texttt{myelement} to \cs{maketitle}'s \texttt{element-order}\\
+For example:
+\begin{verbatim}
+\ExpandArgs{c}\newcommand{@titlegraphic}{%
+  \includegraphics[
+    actualtext={University of North Dakota, Mathematics \& Statistics},
+    width=5cm
+  ]{graphic-file}%
+}
+\end{verbatim}
+\end{frame*}
+
+\subsection{More Customizations}
+
+\begin{frame*}
+\frametitle{More Customizations}
+\begin{verbatim}
+\EditInstance{floatenv}{std}{horizontal-alignment = <alignment>}
+% left (default), center, or right
+
+\EditInstance{hidden}{std}{opacity = <value>}
+% 0 <= value <= 1 for how opaque hidden things should be
+% default is 0
+\end{verbatim}
+\end{frame*}
+
+\section{Future Work}
+
+\begin{frame}
+\frametitle{Future Work}
+\begin{itemize}
+\item tagging
+\item frame layout
+\item blocks
+\item header / footer templates
+\item frame title
+\item heading structure?
+\end{itemize}
+\end{frame}
+
+\end{document}
