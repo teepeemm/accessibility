@@ -33,7 +33,11 @@ Package/class substitutions:
 * `titlesec` -> `\@startsection` (see `texdoc source2e`) or `texdoc latex-lab-sec-template` for many new options
 * `beamer` -> `ltx-talk`
 
-<!-- see also texdoc latex-lab-toc and latex-lab-title -->
+<!-- see also
+ texdoc latex-lab-toc
+ texdoc latex-lab-title
+ texdoc documentmetadata-support-code
+  -->
 
 PDF Validators:
 -----------

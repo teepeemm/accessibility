@@ -1,3 +1,6 @@
+% preprint draft due June 14
+% final draft due July 27
+
 % TUGboat class documentation is at:
 %   texdoc tugboat
 % or
@@ -16,9 +19,6 @@
 
 % keep source lines to <= 79 characters
 %234567891_234567892_234567893_234567894_234567895_234567896_234567897_23456789
-
-% preprint draft due June 14
-% final draft due July 27
 
 % messes up the verbatim blocks
 %\DocumentMetadata{
@@ -49,10 +49,12 @@
 \IfDocumentMetadataF{
  \pgfqkeys{/tikz}{alt/.code={}}
 }
-\newcommand{\verbatimoptions}{\IfDocumentMetadataT{setup-code=}\small}
+\newcommand{\verbatimoptions}{%
+ \IfDocumentMetadataT{setup-code=}\small\makevmeta
+}
 
 \newcommand{\veraPDF}{vera\PDF}
-\newcommand{\VeraPDF}{vera\PDF} % it appears they are always lower case
+\newcommand{\VeraPDF}{vera\PDF}  % it appears they are always lower case
 \newcommand{\PDFix}{\PDF ix}
 
 \DeclareMathOperator{\coker}{coker}
@@ -95,13 +97,14 @@ to satisfy a common accessibility checker available in several \acro{LMS}s.
 Since 2016, the University of North Dakota has used
 a custom 1150 page textbook for its three semester calculus sequence.
 The source for the textbook is at
-\url{https://github.com/teepeemm/APEXCalculusLT_Source},
-%\cite{Apex},
+\cite{ApexURL},
+%\url{https://github.com/teepeemm/APEXCalculusLT_Source},
 forked from
-\url{https://github.com/APEXCalculus/APEXCalculus_Source},
-%\cite{Hartman},
+%\url{https://github.com/APEXCalculus/APEXCalculus_Source},
+\cite{Hartman},
 while the compiled document is at
-\url{https://arts-sciences.und.edu/academics/math/calc-1-texts.html}.
+\cite{ApexUNDurl}.
+%\url{https://arts-sciences.und.edu/academics/math/calc-1-texts.html}.
 
 Using a custom textbook has enabled students
 to download the \PDF\ for free
@@ -128,15 +131,16 @@ the textbook meets this guideline.
 \section{The Basics}
 
 My starting point for \LaTeX\ accessibility is
-\url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}.
+\cite{taggingStartPoint}.
+%\url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}.
 I first needed to convert the document from using \XeLaTeX\ to \LuaLaTeX,
 which also necessitated adjusting a few font commands in the preamble,
 but not much else.
 
 The \LaTeX\ team has been reporting their progress developing tagging
 since at least \TUB\ 40:2 \cite{Rowley:2019:ALK}
-(see also
-\url{https://tug.org/TUGboat/Contents/listkeyword.html#CatTAGAccessibility}),
+(see also \cite{tugKeywordAccessible}),
+%\url{https://tug.org/TUGboat/Contents/listkeyword.html#CatTAGAccessibility}
 building off of existing efforts.
 % should I cite others from TUGboat?
 Thanks to their hard work,
@@ -152,9 +156,10 @@ the vast majority of accessibility is enabled by using
   tagging-setup={
 %    math/alt/use,
     math/setup=mathml-SE } }
-\RequirePackage{unicode-math}
+\documentclass{...}
+\usepackage{unicode-math}
 \end{verbatim}
-as the first command of the document (even before the \cs{documentclass}).
+as the first commands of the document.
 I'll discuss the commented options as we proceed;
 other options are available by looking through
 \texttt{texdoc documentmetadata-support-code}.
@@ -171,7 +176,8 @@ created a minimal working example causing this warning and error.
 
 With the example in hand, I began searching the internet for a fix.
 For packages, a good starting point was to view
-\url{https://latex3.github.io/tagging-project/tagging-status/},
+\cite{taggingStatus},
+%\url{https://latex3.github.io/tagging-project/tagging-status/},
 which reports the tagging compatibility of each class and package.
 Often, a linked issue contained code snippets I copied and pasted
 into the preamble that resolved the issue.
@@ -201,9 +207,10 @@ your odds are bad if it's a local package provided by a ``friend''.
 \end{description}
 
 Resolving errors not directly related to packages was more difficult.
-I often turned to \url{https://tex.stackexchange.com/} for help.
-(In more extreme cases, I reported a bug at
-\url{https://github.com/latex3/tagging-project}.)
+I often turned to the \TeX\ Stack Exchange for help.
+(In more extreme cases,
+I reported a bug to the tagging project's GitHub repository.)
+%\url{https://github.com/latex3/tagging-project}.
 Luckily for the reader (and the author), some errors were caused
 by a bug in the tagging code that was quickly fixed.
 (A quickly fixed bug was also occasionally true
@@ -244,11 +251,12 @@ so that screen readers act as if there is no image,
 and instead read the text.
 This works best if the image is actually stylistically decorated text.
 
-It is useful to note that it is not too difficult to create alt text.
+It is useful to note that creating alt text is
+the least \TeX nical aspect of this article.
 A majority of this discussion requires some familiarity with creating
 a longer \LaTeX\ document.
 For alt text, however, I used a short Python script that added
-\texttt{[alt=\tubbraced{ALT-TEXT-TO-BE-DETERMINED}]} to all of the images.
+\texttt{alt=\tubbraced{ALT-TEXT-TO-BE-DETERMINED}} to all of the images.
 A student worker with less \TeX\ experience was then able to go through
 the book, examine the resulting \PDF, and create the alt text.
 
@@ -297,8 +305,8 @@ The first was succinctly stated by a colleague:
 \end{tikzcd}
 \caption{\label{fig:snakelemma}The conclusion of the snake lemma.
 Well, how would you write alt text for this?
-Image code adapted from \url{https://tex.stackexchange.com/a/440352/}.}
-%\cite{snake}
+Image code adapted from \cite{snakeURL}.}
+%\url{https://tex.stackexchange.com/a/440352/}.
 \end{figure}
 %
 More pertinent to our discussion, a defining feature of the textbook
@@ -338,10 +346,6 @@ when we ask students to verbally describe a graph,
 as in \autoref{fig:calcprob}.
 %
 \begin{figure}
-  Exercise: Describe this function, identifying limiting values, intercepts
-  and their degree, critical and inflection points,
-  and regions where the function is increasing, decreasing, and
-  concave up or down.
   \begin{center}
   \begin{tikzpicture}
   \begin{axis}[xmin=-2,xmax=2,ymin=-.1,ymax=1.6,width=\linewidth,
@@ -352,6 +356,10 @@ as in \autoref{fig:calcprob}.
   \end{axis}
   \end{tikzpicture}
   \end{center}
+  Exercise: Describe this function, identifying limiting values, intercepts
+  and their degree, critical and inflection points,
+  and regions where the function is increasing, decreasing, and
+  concave up or down.
 %  \\
 %  Model answer: this function has a domain of $-2\le x\le 2$.
 %  From $(-2,0.5)$ is increases linearly toward a left hand limit at $(-1,1)$.
@@ -382,7 +390,8 @@ key in the \cs{DocumentMetadata} command.
 This usually causes \PDF\ screen readers to read the alt text and
 omit the more informative \MathML\ tags
 (although there is a recent recommendation to the contrary at
-\url{https://pdfa.org/resource/best-practice-guide-math-in-pdf/}),
+\cite{bestPracticesURL}),
+%\url{https://pdfa.org/resource/best-practice-guide-math-in-pdf/}
 so I discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
@@ -431,9 +440,6 @@ a \cs{multirow} cell, which needs to have
 %\cs{tagpdfsetup}%
 %\tubbraced{table/multirow=\tubbraced{\meta{number of rows}}}}%
 %
-\renewcommand{\verbatimoptions}{%
-\IfDocumentMetadataT{setup-code=}\small\makevmeta
-}
 \begin{verbatim}[\verbatimoptions]
 \tagpdfsetup{table/multirow={!<number of rows>}}
 \end{verbatim}
@@ -472,7 +478,7 @@ Instead, I am now using \texttt{marginalia}.
 I needed to adjust \texttt{media9} to properly tag
 the three dimensional images.
 This involved a deep dive into tagging internals that I wouldn't recommend for
-beginners.
+those getting started tagging their documents.
 It's also possible that the tagging of these items isn't quite correct,
 although the result is a well-tagged \acro{UA-2} \PDF.
 
@@ -488,22 +494,24 @@ Unfortunately, when it comes to \PDF\ version 2.0,
 the only currently viable \PDF\ readers are Adobe, Foxit, and Firefox,
 while
 the only currently viable screen readers are to go with them are
-\acro{NVDA} and \acro{JAWS} on Windows and Orca on Linux.
-See \url{https://tex.stackexchange.com/a/755945/} for the latest.
-% \cite{screenReaders}
+\acro{NVDA} and \acro{JAWS} on Windows and Orca on Linux
+\cite{screenReadersURL}.
+%See \url{https://tex.stackexchange.com/a/755945/} for the latest.
 
 Another approach is to verify that the \PDF\ is indeed version 2.0,
 and satisfies the \acro{UA-2} \PDF\ standard.
 Unfortunately (again),
 there are not many \PDF\ checkers that recognize version 2.0,
 and many will apply version 1.7 standards to a version 2.0 document,
-resulting in many claimed ``issues'' with a valid document.
+resulting in many claimed ``issues'' with a valid document \cite{spuriousURL}.
 %(for example, 1.7 but not 2.0 requires that formulas have alt text).
-\url{https://pdfa.org/accessible-math-in-pdf-finally/} lists several
-(but currently only five) checkers that support \PDF\ version 2.0.
+In the positive direction,
+%\url{https://pdfa.org/accessible-math-in-pdf-finally/}
+there are several (but currently only five)
+checkers that support \PDF\ version 2.0 \cite{pdfCheckersURL}.
 I have experience with
-\veraPDF\ (\url{https://verapdf.org/}) and
-\PDFix\ (\url{https://pdfix.net/}).
+\veraPDF\footnote{\url{https://verapdf.org/}} and
+\PDFix\footnote{\url{https://pdfix.net/}}.
 
 The \LaTeX\ team uses \veraPDF\ to validate their documents,
 so that using the same validation gives similar results
@@ -512,17 +520,25 @@ The main downside I find with \veraPDF\ is that
 while it provides a \acro{GUI} to initiate a validation and see the results,
 it reports the location of failed validation checks
 as paths within the \PDF\ document, such as
+%\begin{verbatim}[\verbatimoptions]
+%root/
+%  document[0]/
+%  pages[14](925 0 obj PDPage)/
+%  contentStream[0](926 0 obj
+%    PDSemanticContentStream)/
+%  content[124]{mcid:109}/
+%  contentItem[0]{mcid:109}
+%\end{verbatim}
 \begin{verbatim}[\verbatimoptions]
 root/
   document[0]/
-  pages[14](925 0 obj PDPage)/
-  contentStream[0](926 0 obj
-    PDSemanticContentStream)/
-  content[124]{mcid:109}/
-  contentItem[0]{mcid:109}
+  StructTreeRoot[0](5 0 obj PDStructTreeRoot)/
+  K[0](22 0 obj SEDocument Document)/
+  K[2130](24072 0 obj SESect figures)/
+  K[71](102535 0 obj SEAside float)
 \end{verbatim}
-Identifying the page is not sufficient to know which aspect
-is causing a failed validation.
+%Identifying the page is not sufficient to know which aspect
+%is causing a failed validation.
 \VeraPDF\ also has a command line version of the program,
 allowing for faster (or even automated) checking of generated \PDF s.
 After a minute examining the Calculus textbook, \veraPDF\ presents
@@ -535,14 +551,21 @@ summarized in \autoref{vera-report}.
 \label{vera-report}
 \begin{tabular}{l S[table-format=4] S[table-format=8,digit-group-size=4]}\toprule
 Profile & {Rules} & {Checks} \\\midrule
-PDF/UA-2 & 1723 & 12926774 \\
-WTPDF 1.0 Accessibility & 1719 & 12926770 \\
-WTPDF 1.0 Reuse & 1706 & 11679799 \\\bottomrule
+\PDF/\acro{UA-2} & 1723 & 12926774 \\
+\acro{WTPDF} 1.0 Accessibility & 1719 & 12926770 \\
+\acro{WTPDF} 1.0 Reuse & 1706 & 11679799 \\\bottomrule
 \end{tabular}
 \end{table}
 
 \PDFix\ uses a similar checker as \veraPDF, but it also provides a
 graphical view of the \PDF\ in question, which better locates errors.
+For example, \PDFix\ presents the above validation error as in
+\autoref{pdfixValError}.
+\begin{figure}
+\includegraphics[width=\linewidth]{pdfixValError}
+\caption{A \acro{UA-2} validation error in \PDFix.}
+\label{pdfixValError}
+\end{figure}
 \PDFix\ also allows navigating the tree structure of the \PDF,
 making it possible to locate errors given by \veraPDF.
 
@@ -554,17 +577,12 @@ For this reason, I try to avoid posting the textbook to the \acro{LMS}.
 Ally also requires that documents over two pages use headings.
 I normally accomplish this with \cs{section} commands,
 but if a document does not otherwise have them,
-it is possible to have the title also provide a heading,
-see \url{https://tex.stackexchange.com/a/758805/}.
+it is possible to have the title also provide a heading \cite{titleHeadingURL}.
+%see \url{https://tex.stackexchange.com/a/758805/}.
 
 For shorter documents, I can also examine the tagging structure
 of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
 or the website \url{https://ngpdf.com/}.
-
-%* Ally, UDOIT, SiteImprove, continual engine prep?
-%* Adobe?
-
-% Section headings: Ally, UDOIT ?
 
 Accessible \PDF s require more computing power to create.
 \begin{table}
@@ -588,8 +606,29 @@ how much memory the compilation process requires.
 This originally resulted in fatal compilation errors that
 \TeX\ exceeded its capacity for
 the \texttt{number of strings} or the \texttt{hash size},
-requiring me to modify the compilation command
-(see \url{https://tex.stackexchange.com/a/741777/}).
+requiring me to modify the compilation command \cite{moreMemoryURL}.
+%(see \url{https://tex.stackexchange.com/a/741777/}).
+
+\section{Other Textbooks and Lessons Learned}
+
+Since converting the calculus textbook to be accessible,
+I have also converted a linear algebra textbook and
+a differential equations textbook to both be accessible.
+
+The most work involved is when someone used manual formatting
+instead of \LaTeX\ defaults.
+Typing \verb|1. ... 2. ... 3.| instead of using
+an \tubbraced{enumerate} environment may yield a similar looking \PDF,
+but the manually formatted version cannot be properly tagged.
+This requires a revision to replace the manual formatting
+with the \LaTeX\ defaults, and possibly more work
+to make the defaults resemble the original manually formatted version.
+
+On the other hand,
+replacing manual formatting with \LaTeX\ defaults creates
+a more readable, more maintainable, and more accessible document.
+I would argue that the one time cost of doing so
+is well worth the few hours required for the result.
 
 %As a final remark, don't be afraid to dig into 
 
