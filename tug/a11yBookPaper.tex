@@ -42,6 +42,7 @@
 \usepackage{siunitx}
 \usepackage{microtype}
 \usepackage[normalem]{ulem}
+\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 
 \def\url{\tburl}
@@ -60,11 +61,8 @@
 \DeclareMathOperator{\coker}{coker}
 \pgfplotsset{compat=1.18}
 
-\RenewDocumentCommand\acro{m}{\textSMC{#1}\@}
-% see tagging-project #1274
 \title{Converting a \PDF\ textbook to be accessible}
 
-% repeat info for each author; comment out items that don't apply.
 \author{Timothy Prescott}
 \address{University of North Dakota\\101 Cornell Street Stop 8376\\
 Grand Forks ND, 58203\\ USA}
@@ -137,7 +135,7 @@ I first needed to convert the document from using \XeLaTeX\ to \LuaLaTeX,
 which also necessitated adjusting a few font commands in the preamble,
 but not much else.
 
-The \LaTeX\ team has been reporting their progress developing tagging
+The \LaTeX\ team has reported their progress developing tagging
 since at least \TUB\ 40:2 \cite{Rowley:2019:ALK}
 (see also \cite{tugKeywordAccessible}),
 %\url{https://tug.org/TUGboat/Contents/listkeyword.html#CatTAGAccessibility}
@@ -194,12 +192,12 @@ The \texttt{tagging-status} website and log information have five categories:
 if you avoid issues described in the website.
 \item[currently-incompatible] Double check the issue(s) in the website
 to see if you can make it work.
-\item[no-support / unsupported] You need to find a new package.
-(As an aside, if a required package in this category
+\item[no-support / unsupported] You need to find a new package%
+\footnote{If a required package in this category
 is causing errors because you use \cs{DocumentMetadata} solely
 to adjust the \PDF\ metadata,
 you can use the \texttt{pdfmanagement} package
-instead of \cs{DocumentMetadata}.)
+instead of \cs{DocumentMetadata}}.
 \item[unchecked / unknown / unclassified] The package has not been tested.
 Your odds are good if some other package loaded it;
 your odds are bad if it's a local package provided by a ``friend''.
@@ -207,14 +205,33 @@ your odds are bad if it's a local package provided by a ``friend''.
 \end{description}
 
 Resolving errors not directly related to packages was more difficult.
-I often turned to the \TeX\ Stack Exchange for help.
+I often turned to the \TeX\ Stack
+Exchange\footnote{\url{https://tex.stackexchange.com/}} for help.
 (In more extreme cases,
-I reported a bug to the tagging project's GitHub repository.)
-%\url{https://github.com/latex3/tagging-project}.
+I reported a bug to the tagging project's GitHub
+repository\footnote{\url{https://github.com/latex3/tagging-project}}.
 Luckily for the reader (and the author), some errors were caused
 by a bug in the tagging code that was quickly fixed.
 (A quickly fixed bug was also occasionally true
 of errors relating to packages.)
+
+How much time you'll need to spend getting through this step depends on
+how much the existing document follows some general guidelines:
+\begin{itemize}
+\item Use modern, best practices \LaTeX.
+(That code that has always produced the desired \PDF\ even though
+people looking at have said ``that's not the right way to do it''?
+Now is the time to get better code.)
+\item Further, aim for a clean log file.
+The tagging software writes useful information to the log file
+that is difficult to find if it's full of warnings
+(you're not ignoring error messages, are you?).
+\item Arrange your code so that the content is in the \tubbraced{document},
+while the preamble takes care of the formatting, style, and execution.
+\item For example, make liberal use of \tubbraced{environments}.
+Environments make it clearer where a portion of the \PDF\ should begin and end.
+They also automatically provide several useful points where you can hook code.
+\end{itemize}
 
 \section{Alt Text}
 
@@ -233,6 +250,9 @@ Ideally, alt text should be
 so that a screen reader does not say ``Image: image \dots''
 \item not blindly copied from an AI output
 \end{itemize}
+A guideline I often tell myself is
+``How would I tell someone to sketch this image?''
+
 \LaTeX's tagging code can specify alt text as an optional argument
 to the image:
 \begin{itemize}
@@ -242,7 +262,7 @@ to the image:
 \item\cs{begin}\tubbraced{tikzpicture}[\textbf{alt=\tubbraced{...}}]
 \item\cs{begin}\tubbraced{picture}[\textbf{alt=\tubbraced{...}}]
 \end{itemize}
-There are also two other options to \texttt{alt=\tubbraced{...}}:
+There are also two substitutes to \texttt{alt=\tubbraced{...}}:
 we can use the option \texttt{artifact}
 if the image is purely decorative and unnecessary for the reader,
 so that screen readers ignore it entirely.
@@ -253,12 +273,14 @@ This works best if the image is actually stylistically decorated text.
 
 It is useful to note that creating alt text is
 the least \TeX nical aspect of this article.
-A majority of this discussion requires some familiarity with creating
+A majority of this discussion requires some experience with creating
 a longer \LaTeX\ document.
 For alt text, however, I used a short Python script that added
 \texttt{alt=\tubbraced{ALT-TEXT-TO-BE-DETERMINED}} to all of the images.
 A student worker with less \TeX\ experience was then able to go through
 the book, examine the resulting \PDF, and create the alt text.
+
+\subsection{Issues Related to Alt Text}
 
 There are two contrasting problems arising from alt text.
 The first was succinctly stated by a colleague:
@@ -356,6 +378,7 @@ as in \autoref{fig:calcprob}.
   \end{axis}
   \end{tikzpicture}
   \end{center}
+  \footnotesize
   Exercise: Describe this function, identifying limiting values, intercepts
   and their degree, critical and inflection points,
   and regions where the function is increasing, decreasing, and
@@ -379,8 +402,6 @@ I chose to describe the graph using various synonyms
 (``the graph is a line from $(-2,0.5)$ to a hollow dot at $(-1,1)$, \dots''),
 but acknowledge this is not an entirely satisfactory approach.
 
-\subsection{Other Issues Related to Alt Text}
-
 Many \PDF\ checkers do not recognize \PDF\ version 2.0 and
 instead check the \PDF\ against version 1.7.
 A critical distinction for us is that \PDF\ version 1.7 requires that
@@ -395,12 +416,12 @@ omit the more informative \MathML\ tags
 so I discourage its use
 unless a document is being judged on its adherence to the 1.7 standard.
 
-A colleague uses the \texttt{rmarkdown} package,
-which has its own syntax for including graphics.
-This does not (yet?) allow specifying the alt text,
-which we therefore accomplish by using \verb|\setkeys{Gin}{alt={...}}|.
-Note that this setting will remain in effect until
-the next such command or when the group ends.
+%A colleague uses the \texttt{rmarkdown} package,
+%which has its own syntax for including graphics.
+%This does not (yet?) allow specifying the alt text,
+%which we therefore accomplish by using \verb|\setkeys{Gin}{alt={...}}|.
+%Note that this setting will remain in effect until
+%the next such command or when the group ends.
 
 \section{Tables}
 
@@ -449,40 +470,29 @@ I should also note that the table interface
 will likely change over the next few years.
 Follow \texttt{texdoc latex-lab-table} for the details.
 
-%\section{3D Graphics?}
-%
-%* Adobe?
 
 \section{Other Package Changes}
 
-I had originally formatted headings using the \texttt{titlesec} package.
-This requires adjustments to properly tag,
-and was becoming too complicated.
-I opted to instead use \cs{@startsec}
-(see \texttt{texdoc latex2e}, section 6.8).
+\begin{description}
+\item[\texttt{titlesec}] Became \cs{@startsec}
+(see \texttt{texdoc latex2e}, \S 6.8).
 Another possibility is the new template mechanism
 (see \texttt{texdoc latex-lab-sec-template}).
-
-I was originally using \texttt{enumitem} to adjust \tubbraced{enumerate}
-environments, which is also not amenable to tagging.
-I am now using \texttt{enumext},
-although there is also a templating alternative
+\item[\texttt{enumitem}] Became \texttt{enumext},
+Also has a templating alternative
 (see \texttt{texdoc blocks-doc}).
-
-I also made heavy use of the \texttt{marginnote} package
-which, along with \texttt{marginfit}, % and marginfix?
-is currently incompatible with tagging.
-Instead, I am now using \texttt{marginalia}.
+\item[\texttt{marginnote}] Became \texttt{marginalia}.
 % \cs{marginpar} another possibility
-
-I needed to adjust \texttt{media9} to properly tag
-the three dimensional images.
-This involved a deep dive into tagging internals that I wouldn't recommend for
+\item[\texttt{media9}] Needed a deep dive into tagging internals
+to properly tag the three dimensional images.
+I wouldn't recommend that for
 those getting started tagging their documents.
-It's also possible that the tagging of these items isn't quite correct,
-although the result is a well-tagged \acro{UA-2} \PDF.
-
-%beamer ltx-talk
+%It's also possible that the tagging of these items isn't quite correct,
+%although the result is a well-tagged \acro{UA-2} \PDF.
+\item[\texttt{beamer}] Became \texttt{ltx-talk}.
+For more details, see my other article in this issue.%
+\footnote{Not for the textbook, but as long as I'm mentioning package changes.}
+\end{description}
 
 \section{Checking the Results}
 
@@ -493,12 +503,15 @@ a screen reader properly handles the document.
 Unfortunately, when it comes to \PDF\ version 2.0,
 the only currently viable \PDF\ readers are Adobe, Foxit, and Firefox,
 while
-the only currently viable screen readers are to go with them are
+the only currently viable screen readers to go with them are
 \acro{NVDA} and \acro{JAWS} on Windows and Orca on Linux
 \cite{screenReadersURL}.
-%See \url{https://tex.stackexchange.com/a/755945/} for the latest.
+I should also note that experienced users often use their screen readers
+in a radically different manner than novice users,
+so that this obvious first step may be necessary, but not sufficient.
 
-Another approach is to verify that the \PDF\ is indeed version 2.0,
+Another approach to verifying accessibility is to verify that
+the \PDF\ is indeed version 2.0,
 and satisfies the \acro{UA-2} \PDF\ standard.
 Unfortunately (again),
 there are not many \PDF\ checkers that recognize version 2.0,
@@ -507,7 +520,9 @@ resulting in many claimed ``issues'' with a valid document \cite{spuriousURL}.
 %(for example, 1.7 but not 2.0 requires that formulas have alt text).
 In the positive direction,
 %\url{https://pdfa.org/accessible-math-in-pdf-finally/}
-there are several (but currently only five)
+there are several (but currently only
+five\footnote{and at least three of the five are different user interfaces
+over the same validation profiles})
 checkers that support \PDF\ version 2.0 \cite{pdfCheckersURL}.
 I have experience with
 \veraPDF\footnote{\url{https://verapdf.org/}} and
@@ -541,9 +556,11 @@ root/
 %is causing a failed validation.
 \VeraPDF\ also has a command line version of the program,
 allowing for faster (or even automated) checking of generated \PDF s.
-After a minute examining the Calculus textbook, \veraPDF\ presents
-an \XML\ report that the text book complies with various profiles
-and a number of rules and checks for each profile,
+\VeraPDF\ provides several profiles for checking \PDF s
+at \cite{veraProfilesURL}.
+For each profile, after a minute examining the Calculus textbook,
+\veraPDF\ presents an \XML\ report that the text book is compliant,
+as well as how many rules and checks it used for the profile,
 summarized in \autoref{vera-report}.
 \begin{table}
 \centering
@@ -551,38 +568,62 @@ summarized in \autoref{vera-report}.
 \label{vera-report}
 \begin{tabular}{l S[table-format=4] S[table-format=8,digit-group-size=4]}\toprule
 Profile & {Rules} & {Checks} \\\midrule
-\PDF/\acro{UA-2} & 1723 & 12926774 \\
-\acro{WTPDF} 1.0 Accessibility & 1719 & 12926770 \\
-\acro{WTPDF} 1.0 Reuse & 1706 & 11679799 \\\bottomrule
+\PDF/\acro{UA}-2 & 91 & 9051914 \\
+\acro{ISO}-32005 & 1645 & 4200409 \\
+\PDF/\acro{UA}-2 \& \acro{ISO}-32005 & 1727 & 12730361 \\
+\acro{WCAG} 2.2 & 59 & 1186 \\
+\acro{WCAG} 2.2 Dev & 23 & 0 \\  % semantic checks
+\acro{WCAG} 2.2 Machine & 98 & 9053079 \\
+\acro{WCAG} 2.2 Complete & 145 & 9053095 \\
+\acro{WTPDF} 1.0 Accessibility & 1723 & 12730357 \\
+\acro{WTPDF} 1.0 Reuse & 1710 & 11483386 \\\midrule
+Combined & 1906 & 22305420 \\\bottomrule
 \end{tabular}
 \end{table}
+(The \acro{WCAG} 2.2 Dev profile uses ``semantic'' checks
+that only a human can verify.)
+A default invocation of \veraPDF\ will give a report using the
+\PDF/\acro{UA}-2 \& \acro{ISO}-32005 profile
+and the two \acro{WTPDF} 1.0 profiles.
+These do not need to be downloaded from \cite{veraProfilesURL}.
+In my experience, a document that compiles successfully,
+only uses supported packages,
+and does not attempt strange constructions
+will satisfy the validation profiles.
+
+We can combine the profiles in \autoref{vera-report} \cite{combineProfilesURL},
+although their overlap is unclear and the \acro{WCAG} profiles may move to
+\acro{PDF4WCAG}\footnote{\url{https://pdf4wcag.com/}} \cite{migrationURL}.
 
 \PDFix\ uses a similar checker as \veraPDF, but it also provides a
 graphical view of the \PDF\ in question, which better locates errors.
-For example, \PDFix\ presents the above validation error as in
-\autoref{pdfixValError}.
+For example, \PDFix\ presents the \emph{same} validation error as in
+\autoref{pdfixValError} (gray-scaled for print).
 \begin{figure}
 \includegraphics[width=\linewidth]{pdfixValError}
-\caption{A \acro{UA-2} validation error in \PDFix.}
+\caption{A \acro{UA}-2 validation error in \PDFix.}
 \label{pdfixValError}
 \end{figure}
 \PDFix\ also allows navigating the tree structure of the \PDF,
 making it possible to locate errors given by \veraPDF.
+Additionally, \PDFix\ offers the profiles from \cite{veraProfilesURL}
+without needing an additional installation.
 
 My institution uses Ally to check \PDF s posted to our \acro{LMS}.
 Ally is one of the aforementioned \PDF\ checkers that looks for version 1.7
 and requires formulas to have alt text.
 For this reason, I try to avoid posting the textbook to the \acro{LMS}.
 
-Ally also requires that documents over two pages use headings.
+Ally also requires that documents over two pages
+use headings \cite{allyChecksURL}.
 I normally accomplish this with \cs{section} commands,
 but if a document does not otherwise have them,
-it is possible to have the title also provide a heading \cite{titleHeadingURL}.
-%see \url{https://tex.stackexchange.com/a/758805/}.
+it is possible to have the title also
+serve as a heading \cite{titleHeadingURL}.
 
 For shorter documents, I can also examine the tagging structure
 of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
-or the website \url{https://ngpdf.com/}.
+or \acro{ngPDF}\footnote{\url{https://ngpdf.com/}}.
 
 Accessible \PDF s require more computing power to create.
 \begin{table}
@@ -616,11 +657,11 @@ I have also converted a linear algebra textbook and
 a differential equations textbook to both be accessible.
 
 The most work involved is when someone used manual formatting
-instead of \LaTeX\ defaults.
+instead of \LaTeX\ defaults\footnote{\cs{over} wasn't all that fun, either}.
 Typing \verb|1. ... 2. ... 3.| instead of using
 an \tubbraced{enumerate} environment may yield a similar looking \PDF,
 but the manually formatted version cannot be properly tagged.
-This requires a revision to replace the manual formatting
+This requires revisions to replace the manual formatting
 with the \LaTeX\ defaults, and possibly more work
 to make the defaults resemble the original manually formatted version.
 
@@ -630,7 +671,23 @@ a more readable, more maintainable, and more accessible document.
 I would argue that the one time cost of doing so
 is well worth the few hours required for the result.
 
-%As a final remark, don't be afraid to dig into 
+I have encountered some misconceptions during this process.
+Some people think that \PDF s, especially those produced by \LaTeX,
+are inherently inaccessible.
+This is usually because they are not using the techniques from this article,
+or they are not using (one of the few) screen readers
+that can properly handle the output.
+A separate misconception is that inaccessibilities in a \LaTeX\ \PDF\ must
+be remediated elsewhere (usually in Adobe Pro),
+a time intensive and costly process.
+These people often do not realize that transforming
+a tex file into a \PDF\ means we have the ability
+to remediate as we create the \PDF.
+Nor do they realize that the goal of the \LaTeX\ team
+is to obviate any remediation requirement.
+
+As a final remark, I have collected the advice from this article
+into a GitHub repository at \cite{accessibleURL}.
 
 \iffalse
 
