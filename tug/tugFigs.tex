@@ -26,7 +26,7 @@
 \begin{document}
 
 \newlength\mylabelwidth
-\setlength\mylabelwidth{\widthof{tagged PDFs }}
+\setlength\mylabelwidth{\widthof{tagged PDFs}}
 \begin{frame}
  \frametitle{A Strangely Sporadic Glossary}
 \input{exampleDesc}
@@ -35,6 +35,17 @@
 \begin{frame}[tag-slides=1-]
 \frametitle{Matrix Multiplication Example,
  Step \arabic{slide}}
+\input{exampleMatrix}
+\end{frame}
+
+\begin{frame}
+\frametitle{Matrix Multiplication Example,
+ Cumulative}
+\RenewDocumentCommand{\alert}{ d<> m }{#2}
+\RenewDocumentCommand{\invisible}{ d<> m }{#2}
+\RenewDocumentCommand{\only}{ d<> m }{#2}
+\RenewDocumentCommand{\uncover}{ d<> m }{#2}
+\RenewDocumentCommand{\visible}{ d<> m }{#2}
 \input{exampleMatrix}
 \end{frame}
 
