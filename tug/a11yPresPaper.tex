@@ -293,16 +293,9 @@ As another example, I was able to demonstrate matrix multiplication using
 \begin{lstlisting}
 \end{frame}
 \end{lstlisting}}
-To peer behind the curtain of this example, if we disable the overlay commands,
-then we see the content in \autoref{matrixAll}.
-\begin{figure}
-\fbox{\includegraphics[page=11,width=.97\linewidth]{tugFigs}}
-\caption{Elements of matrix multiplication example.}
-\label{matrixAll}
-\end{figure}
 In the live code (and also if we were to transfer this to \beamer),
 the overlays combine to reveal and highlight particular portions
-of the displayed code, creating a frame of six slides,
+of the code, creating a frame of six slides,
 as seen in \autoref{matrixMult}.
 \begin{figure}
 \setkeys{Gin}{width=.49\linewidth}
@@ -316,6 +309,13 @@ as seen in \autoref{matrixMult}.
 \end{tabular}
 \caption{Output of matrix multiplication example.}
 \label{matrixMult}
+\end{figure}
+To peer behind the curtain of this example, if we disable the overlay commands,
+then we see the content in \autoref{matrixAll}.
+\begin{figure}
+\fbox{\includegraphics[page=11,width=.97\linewidth]{tugFigs}}
+\caption{Elements of matrix multiplication example.}
+\label{matrixAll}
 \end{figure}
 
 It is worthwhile to comment on the \texttt{tag-slides=1-} argument.
