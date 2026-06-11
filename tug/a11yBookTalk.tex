@@ -113,14 +113,14 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{A Strangely Sporadic Timeline}
+\frametitle{A strangely sporadic timeline}
 \newlength{\maxwidth}
-\setlength{\maxwidth}{\widthof{2024-04-26\ \ }}
+\setlength{\maxwidth}{\widthof{2024-04-26}}
 \begin{description}[
-  label-width=\maxwidth,
+  label-width=\maxwidth+1em,
   label-align=left,
 %  left-margin=10em,
-  left-margin=\maxwidth,
+  left-margin=\maxwidth+1em,
 ]
 \item[1978] \TeX
 \item[1990] Americans with Disabilities Act (ADA). \\
@@ -138,12 +138,14 @@ Most entities get two years.  We (DoJ) get three years.
 \end{frame}
 
 \begin{frame}
-\frametitle{Basic Outline of Accessibilizing}
+\frametitle{Basic outline of accessibilizing}
 \tableofcontents
 \end{frame}
 
+%\overfullrule=5pt
+
 \begin{frame}
-\frametitle{Basic Table of Accessibilizing}
+\frametitle{Basic table of accessibilizing}
 \sisetup{table-format=3}
 \tagpdfsetup{table/header-rows={1,2}}
 \begin{tabular}{@{} l @{\qquad} SSS @{\qquad} S @{}}
@@ -160,7 +162,7 @@ All else & 60 & 30 & 50 & 5 \\\midrule
 \section{Preamble}
 
 \begin{frame*}
-\frametitle{TL;DR}
+\frametitle{Tl;dr}
 Update \LaTeX
 \begin{lstlisting}
 \DocumentMetadata{
@@ -200,7 +202,7 @@ Prefer environments over macros
 \section{Images}
 
 \begin{frame}
-\frametitle{What Else to do --- Images}
+\frametitle{What else to do --- images}
 \begin{itemize}
 \ttfamily
 \item\cs{includegraphics}[\textbf{alt=\tubbraced{...}}]
@@ -228,7 +230,7 @@ Alternatives to {\bfseries\ttfamily alt=\tubbraced{...}} are
 \end{frame}
 
 \begin{frame*}
-\frametitle{Alt Text}
+\frametitle{Alt text}
 \begin{itemize}
 \item Usually not seen
 \item Specific, accurate, objective, neutral
@@ -247,7 +249,7 @@ If not possible, have the alt text point to a separately written description
 \end{frame*}
 
 \begin{frame}
-\frametitle{Alt Text Problem 1}
+\frametitle{Alt text problem 1}
 ``What alt text would you give for the snake lemma?''\bigskip
 \AddToHookNext{env/tikzcd/begin}{\MathCollectFalse}
 \begin{tikzcd}[
@@ -285,7 +287,7 @@ If not possible, have the alt text point to a separately written description
 \end{frame}
 
 \begin{frame}
-\frametitle{Alt Text Problem 1b}
+\frametitle{Alt text problem 1b}
 \begin{minipage}{\textheight}
 \includegraphics[width=\textheight,alt={An interactive 3d shape from the textbook.}]{figdivthm_space2_3D}
 \end{minipage}\quad
@@ -297,7 +299,7 @@ Asymptote + media9 \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Alt Text Problem 2}
+\frametitle{Alt text problem 2}
   Exercise: Describe this function, identifying limiting values, intercepts
   and their degree, critical and inflection points,
   and regions where the function is increasing, decreasing, and
@@ -316,7 +318,7 @@ Asymptote + media9 \\
 \section{Tables}
 
 \begin{frame}
-\frametitle{What Else to do --- Tables}
+\frametitle{What else to do --- tables}
 \begin{itemize}
 \item\texttt{\cs{tagpdfsetup}\tubbraced{table/header-rows=\tubbraced{...},table/header-columns=\tubbraced{...}}\\
 \qquad\qquad \textrm{outside of the} tabular\\
@@ -332,7 +334,7 @@ Asymptote + media9 \\
 \section{All else}
 
 \begin{frame}
-\frametitle{Replacements \& Adjustments}
+\frametitle{Replacements \& adjustments}
 \begin{itemize}
 \item enumitem \& enumerate \textrightarrow\ enumext or templates (\texttt{texdoc blocks-doc})
 \item margin[fit|fix|note] \textrightarrow\ margin[alia|par]
@@ -388,7 +390,7 @@ To verify that a PDF is accessible:
 \end{frame}
 
 \begin{frame*}
-\frametitle{veraPDF --- Example Error}
+\frametitle{veraPDF --- example error}
 \begin{verbatim}
 root/
   document[0]/
@@ -406,7 +408,7 @@ root/
 \end{frame}
 
 \begin{frame}
-\frametitle{PDFix --- Same Example Error}
+\frametitle{PDFix --- same example error}
 %\centering
 \includegraphics[alt={Screenshot of PDFix error},height=\textheight]{pdfixValError}
 \end{frame}
@@ -449,17 +451,17 @@ root/
 \frametitle{Misconceptions}
 Email from IT:
 \begin{quote}
-``To keep it in the format (PDF) that it is in now would result in major \alert<3>{clean-up} to the tagging structure (\alert<3>{in Adobe} particularly). You could do it, but 1000 pages \alert<3>{in Adobe} is a lot \alert<3>{to remediate}. Additionally, the code in the content tab of Adobe has a lot of \alert<2>{rogue elements} that came over. There are \alert<2>{containers in there that don't even correspond to textual or visual elements on the page}, so I don't know where those came from; they must have resulted from something in the conversion process from LaTex to PDF.''
+\!\!``To keep it in the format (PDF) that it is in now would result in major \alert<3>{clean-up} to the tagging structure (\alert<3>{in Adobe} particularly). You could do it, but 1000 pages \alert<3>{in Adobe} is a lot \alert<3>{to remediate}. Additionally, the code in the content tab of Adobe has a lot of \alert<2>{rogue elements} that came over. There are \alert<2>{containers in there that don't even correspond to textual or visual elements on the page}, so I don't know where those came from; they must have resulted from something in the conversion process from LaTex to PDF.''
 \end{quote}\bigskip
 \begin{itemize}
-\item<alert@2> Adobe checks PDF1.7, not PDF2.0
-\item<alert@3> Remediation can be done at creation by \LaTeX, not after in Adobe
+\item<1-|alert@2> Adobe checks PDF1.7, not PDF2.0
+\item<1-|alert@3> Remediation can be done at creation by \LaTeX, not after in Adobe
 \item \texttt{.tex \textrightarrow\ .pdf} is not a one time process
 \end{itemize}
 \end{frame}
 
 \begin{frame*}
-\frametitle{Last Bits}
+\frametitle{Last bits}
 \begin{itemize}
 \item \url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}
 \item \url{https://github.com/teepeemm/accessibility}
