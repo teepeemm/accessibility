@@ -72,13 +72,14 @@ xmp=false,
 
 \title{Creating accessible presentations with \ltxtalk}
 
+\addtolength{\signaturewidth}{25pt}
 % repeat info for each author; comment out items that don't apply.
 \author{Timothy Prescott}
-\address{University of North Dakota\\101 Cornell Street Stop 8376\\
-Grand Forks ND, 58203\\ USA}
+%\address{University of North Dakota\\101 Cornell Street Stop 8376\\
+%Grand Forks ND, 58203\\ USA}
 \netaddress{timothy dot prescott (at) UND dot edu}
 %\personalURL{https://und.edu/directory/timothy.prescott}
-\ORCID{0009-0009-0555-8074}
+%\ORCID{0009-0009-0555-8074}
 
 \begin{document}
 \maketitle
@@ -113,7 +114,7 @@ Joseph explored several aspects in the previous issue
 \TUB\ 47:1 \cite{Wright:2026:LCA}.
 I will further explore this replacement.
 
-\section{The Basics}
+\section{The basics}
 
 A \ltxtalk\ presentation must begin with
 \begin{verbatim}[\verbatimOptions]
@@ -243,9 +244,10 @@ Because \ltxtalk\ has adapted the \beamer\ overlay specification concept,
 we can still use
 \begin{verbatim}[\verbatimOptions]
 \begin{itemize}[<+->]
-...
-\end{itemize}
 \end{verbatim}
+%...
+%\end{itemize}
+% one fewer page
 to create a list that we uncover item by item.
 (I generally prefer allowing the audience to read an entire slide
 at their leisure instead of forcing their attention to bounce back and forth,
@@ -270,7 +272,9 @@ creates four slides and uncovers each item in turn,
 culminating in \autoref{fig:eg_description}.
 \begin{figure}
 \setlength{\fboxsep}{0pt}
-\fbox{\includegraphics[width=.98\linewidth,page=4]{tugFigs}}
+\fbox{\includegraphics[width=.98\linewidth,page=4,
+trim=0 60 0 0,clip, % get things onto one fewer page
+]{tugFigs}}
 \caption{Output of example \tubbraced{description} code.}
 \label{fig:eg_description}
 \end{figure}
@@ -280,7 +284,7 @@ repeating four slides with only slightly varying information
 doesn't make sense.
 In these modes, \ltxtalk\ represents only the final slide.
 
-\subsection{Matrix Multiplication}
+\subsection{Matrix multiplication}
 
 As another example, I was able to demonstrate matrix multiplication using
 {\lstset{aboveskip=0pt,belowskip=0pt}
@@ -298,7 +302,9 @@ the overlays combine to reveal and highlight particular portions
 of the code, creating a frame of six slides,
 as seen in \autoref{matrixMult}.
 \begin{figure}
-\setkeys{Gin}{width=.49\linewidth}
+\setkeys{Gin}{width=.49\linewidth,
+trim=0 80 0 0,clip % get things onto one fewer page
+}
 \begin{tabular}{|@{}c@{}|@{}c@{}|}\hline
 \includegraphics[page=5]{tugFigs}&
 \includegraphics[page=6]{tugFigs}\\\hline
@@ -313,7 +319,9 @@ as seen in \autoref{matrixMult}.
 To peer behind the curtain of this example, if we disable the overlay commands,
 then we see the content in \autoref{matrixAll}.
 \begin{figure}
-\fbox{\includegraphics[page=11,width=.97\linewidth]{tugFigs}}
+\fbox{\includegraphics[page=11,width=.97\linewidth,
+trim=0 80 0 0,clip % try to get things onto one fewer page
+]{tugFigs}}
 \caption{Elements of matrix multiplication example.}
 \label{matrixAll}
 \end{figure}
@@ -349,15 +357,17 @@ to
 This indicates that the \texttt{handout} specification will follow
 the default \texttt{projector} specification.
 Alternatively, we can have only the last slide in the handout by using
-\begin{verbatim}[\verbatimOptions]
-<projector:!<spec>|article>
-\end{verbatim}
+\verb|<projector:!<spec>|article>|
+% save one extra page
+%\begin{verbatim}[\verbatimOptions]
+%<projector:!<spec>|article>
+%\end{verbatim}
 on non-last slides.
 
 
 \section{Customizations}
 
-\subsection{Adjusting the Header and Footer}
+\subsection{Adjusting the header and footer}
 
 Everyone wants to adjust the header and footer;
 \ltxtalk\ creates these using templates.
@@ -458,7 +468,7 @@ Outside of the footer, we can access total frames via
 %%\item actionenv
 %\end{itemize}
 
-\subsection{Adjusting the Title Page}
+\subsection{Adjusting the title page}
 
 We could use
 \begin{verbatim}[\verbatimOptions]
@@ -487,7 +497,7 @@ we can also use \texttt{wallpaper} which removes the text
 from the footer and the title
 (but not their background colors).
 
-\subsection{Creating Custom Elements}
+\subsection{Creating custom elements}
 
 There are two steps to creating a custom element for a title page.
 First, we declare its template instance:
@@ -504,7 +514,7 @@ which we can define with the usual
 \makeatother
 \end{verbatim}
 
-%\subsection{Creating a Custom Footer Element}
+%\subsection{Creating a custom footer element}
 
 Similarly, to creating a custom footer element,
 we first declare its template instance:
@@ -528,7 +538,7 @@ For example, we can reproduce the \beamer\ frame counter
  \RefProperty{lastpage}{totalframes}}
 \end{lstlisting}
 
-\subsection{More Customizations}
+\subsection{More customizations}
 
 The templates and instances created by \ltxtalk\ are
 summarized in \autoref{templatesInstances}.
@@ -572,7 +582,7 @@ and in the log file by using the template commands
 \item\cs{ShowInstanceValues}\tubbraced{\meta{type}}\tubbraced{\meta{instance}}
 \end{itemize}
 
-\section{Future Work}
+\section{Future work}
 
 As \ltxtalk's reason for existence is proper tagging,
 please let us know of any tagging difficulties that you find.

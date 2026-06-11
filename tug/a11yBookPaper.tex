@@ -42,7 +42,7 @@
 \usepackage{siunitx}
 \usepackage{microtype}
 \usepackage[normalem]{ulem}
-\usepackage{xurl}
+%\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 
 \def\url{\tburl}
@@ -63,12 +63,13 @@
 
 \title{Converting a \PDF\ textbook to be accessible}
 
+\addtolength{\signaturewidth}{25pt}
 \author{Timothy Prescott}
-\address{University of North Dakota\\101 Cornell Street Stop 8376\\
-Grand Forks ND, 58203\\ USA}
+%\address{University of North Dakota\\101 Cornell Street Stop 8376\\
+%Grand Forks ND, 58203\\ USA}
 \netaddress{timothy dot prescott (at) UND dot edu}
 %\personalURL{https://und.edu/directory/timothy.prescott}
-\ORCID{0009-0009-0555-8074}
+%\ORCID{0009-0009-0555-8074}
 
 % electronic access to the TUGboat issue suffices
 
@@ -90,7 +91,7 @@ necessary adaptations
 to satisfy a common accessibility checker available in several \acro{LMS}s.
 \end{abstract}
 
-\section{Introduction \& Setup}
+\section{Introduction \& setup}
 
 Since 2016, the University of North Dakota has used
 a custom 1150 page textbook for its three semester calculus sequence.
@@ -126,7 +127,7 @@ for a historical overview of how we got to this point.
 Beginning in early 2025, I began exploring how to ensure that
 the textbook meets this guideline.
 
-\section{The Basics}
+\section{The basics}
 
 My starting point for \LaTeX\ accessibility is
 \cite{taggingStartPoint}.
@@ -233,7 +234,7 @@ Environments make it clearer where a portion of the \PDF\ should begin and end.
 They also automatically provide several useful points where you can hook code.
 \end{itemize}
 
-\section{Alt Text}
+\section{Alt text}
 
 With \LuaLaTeX\ automatically handling the bulk of the work,
 the greatest part of the work requiring manual intervention was
@@ -280,7 +281,7 @@ For alt text, however, I used a short Python script that added
 A student worker with less \TeX\ experience was then able to go through
 the book, examine the resulting \PDF, and create the alt text.
 
-\subsection{Issues Related to Alt Text}
+\subsection{Issues related to alt text}
 
 There are two contrasting problems arising from alt text.
 The first was succinctly stated by a colleague:
@@ -471,7 +472,7 @@ will likely change over the next few years.
 Follow \texttt{texdoc latex-lab-table} for the details.
 
 
-\section{Other Package Changes}
+\section{Other package changes}
 
 \begin{description}
 \item[\texttt{titlesec}] Became \cs{@startsec}
@@ -494,7 +495,7 @@ For more details, see my other article in this issue.%
 \footnote{Not for the textbook, but as long as I'm mentioning package changes.}
 \end{description}
 
-\section{Checking the Results}
+\section{Checking the results}
 
 Having resolved all possible errors,
 I needed to verify that the result was indeed accessible.
@@ -636,7 +637,7 @@ For shorter documents, I can also examine the tagging structure
 of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
 or \acro{ngPDF}\footnote{\url{https://ngpdf.com/}}.
 
-\section{Other Textbooks and Lessons Learned}
+\section{Other textbooks and lessons learned}
 
 Since converting the calculus textbook to be accessible,
 I have also converted a linear algebra
