@@ -1,4 +1,3 @@
-% !TEX program = LuaLaTeX-dev
 % due July 8
 \DocumentMetadata{
   lang=en,
@@ -174,7 +173,8 @@ Update \LaTeX
     math/setup=mathml-SE
   }
 }
-\RequirePackage{unicode-math}
+\documentclass{...}
+\usepackage{unicode-math}
 \end{lstlisting}
 compile with Lua\LaTeX, and most of the work is done\\
 \texttt{texdoc documentmetadata-support-code}
@@ -184,13 +184,17 @@ compile with Lua\LaTeX, and most of the work is done\\
 
 \begin{frame*}
 \frametitle{Basic idea}
-Use \LaTeX\ so that the output looks how you want it\\
-\emph{and the input reflects the meaning.}\\
-(Don't use tabular to position boxes.)\\\bigskip
+Use good \LaTeX\ so that the output looks how you want it\\
+\emph{and the input reflects the meaning.}
+\begin{itemize}
+\item Aim for a clean log
+\item Don't use tabular to position boxes.
+\end{itemize}
 Make use of \emph{semantic} macros and environments:\\
 Bad: \verb|\textbf{Example 3.1.4 Finding Extreme Values}|\\
-Good: \verb|\begin{example}{Finding Extreme Values}|
+Good: \verb|\begin{example}{Finding Extreme Values}|\\
 % \end{example}
+Prefer environments over macros
 \end{frame*}
 
 \section{Images}
@@ -229,12 +233,13 @@ Alternatives to {\bfseries\ttfamily alt=\tubbraced{...}} are
 \item Usually not seen
 \item Specific, accurate, objective, neutral
 \item What does my audience need from this picture?
+\item How would I tell someone to draw this picture?
 \item Do not begin with ``image''
 \item Do not repeat the caption
 \item At most 120 characters or 1--2 sentences.\\
 If not possible, have the alt text point to a separately written description
 \smallskip
-\item Backup method: \verb|\setkeys{Gin}{alt={...}}|
+%\item Backup method: \verb|\setkeys{Gin}{alt={...}}|
 \item ``Formulas need alt text'' $\leftrightarrow$ option
 \texttt{math/alt/use}
 \item Have someone else write the alt text?
@@ -355,7 +360,7 @@ To verify that a PDF is accessible:
 %\item[\emoji{thumbsdown}] too easy, false negatives
 %\end{itemize}
 \item[Screen reader:] (NVDA or JAWS) and (Adobe, FoxIt, or Firefox)
-\item[VeraPDF:] \url{https://verapdf.org/software}
+\item[veraPDF:] \url{https://verapdf.org/software}
 \begin{itemize}
 \item[\emoji{thumbsup}] has command line version; \LaTeX\ team
 \item[\emoji{thumbsdown}] no GUI for PDF errors
@@ -377,15 +382,33 @@ To verify that a PDF is accessible:
 %\section{Tools}
 
 \begin{frame}
+\frametitle{veraPDF --- \url{https://verapdf.org/software}}
+%\centering
+\includegraphics[alt={Screenshot of veraPDF},height=\textheight]{veraPdfScreenshot}
+\end{frame}
+
+\begin{frame*}
+\frametitle{veraPDF --- Example Error}
+\begin{verbatim}
+root/
+  document[0]/
+  StructTreeRoot[0](5 0 obj PDStructTreeRoot)/
+  K[0](22 0 obj SEDocument Document)/
+  K[2130](24072 0 obj SESect figures)/
+  K[71](102535 0 obj SEAside float)
+\end{verbatim}
+\end{frame*}
+
+\begin{frame}
 \frametitle{PDFix --- \url{https://pdfix.net}}
-\centering
+%\centering
 \includegraphics[alt={Screenshot of PDFix},height=\textheight]{pdfixScreenshot}
 \end{frame}
 
 \begin{frame}
-\frametitle{VeraPDF --- \url{https://verapdf.org/software}}
-\centering
-\includegraphics[alt={Screenshot of VeraPDF},height=\textheight]{veraPdfScreenshot}
+\frametitle{PDFix --- Same Example Error}
+%\centering
+\includegraphics[alt={Screenshot of PDFix error},height=\textheight]{pdfixValError}
 \end{frame}
 
 %\begin{frame}
@@ -422,19 +445,32 @@ To verify that a PDF is accessible:
 
 %\section{For more information}
 
+\begin{frame}
+\frametitle{Misconceptions}
+Email from IT:
+\begin{quote}
+``To keep it in the format (PDF) that it is in now would result in major \alert<3>{clean-up} to the tagging structure (\alert<3>{in Adobe} particularly). You could do it, but 1000 pages \alert<3>{in Adobe} is a lot \alert<3>{to remediate}. Additionally, the code in the content tab of Adobe has a lot of \alert<2>{rogue elements} that came over. There are \alert<2>{containers in there that don't even correspond to textual or visual elements on the page}, so I don't know where those came from; they must have resulted from something in the conversion process from LaTex to PDF.''
+\end{quote}\bigskip
+\begin{itemize}
+\item<alert@2> Adobe checks PDF1.7, not PDF2.0
+\item<alert@3> Remediation can be done at creation by \LaTeX, not after in Adobe
+\item \texttt{.tex \textrightarrow\ .pdf} is not a one time process
+\end{itemize}
+\end{frame}
+
 \begin{frame*}
 \frametitle{Last Bits}
 \begin{itemize}
 \item \url{https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html}
 \item \url{https://github.com/teepeemm/accessibility}
 \item Compiling needs more:\smallskip\\
-\begin{tabular}{lS[table-format=2.1]}\toprule
-Stat & Factor \\\midrule
-Time & 6.7 \\
-RAM & 4.4 \\
-Output size & 1.3 \\
-strings & 11 \\
-hash & 11 \\\bottomrule
+\begin{tabular}{lS[table-format=2(1),uncertainty-mode=separate]}\toprule
+Statistic & Factor \\\midrule
+Time & 10(3) \\
+RAM & 6(2) \\
+Output size & 2(1) \\
+strings & 11(4)\\
+hash & 10(4)\\\bottomrule
 \end{tabular}
 \smallskip\\
 Try \verb|\DocumentMetadata{tagging=off}| for draft runs
