@@ -1,5 +1,3 @@
-% !TEX program = LuaLaTeX-dev
-\listfiles
 \DocumentMetadata{
   lang=en,
   tagging=on,
@@ -21,7 +19,13 @@
 % sciposter -> loads shadow.sty currently incompatible #336
 % tcolorbox library poster
 
-\title{Creating Accessible PDFs With \LaTeX\ is Quick and Easy}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{qrcode}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+
+\title{Creating Accessible PDFs With \texofpdfstring{\LaTeX}{LaTeX} is Quick and Easy}
 %\shorttitle{Accessible PDF Textbook}
 \author{Timothy Prescott}
 %\institute{University of North Dakota}
@@ -29,11 +33,6 @@
 %\institute{\raisebox{0pt}[\baselineskip]\LaTeX}
 %\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
 \date{\today}
-
-\usepackage{graphicx}
-\usepackage{url}
-\usepackage{qrcode}
-\usepackage{listings}
 
 %%%%%%% begin qrcode adjustment
 % https://tex.stackexchange.com/a/718275/107497
@@ -116,9 +115,13 @@
 %\providecolor{maybeUNDgreen}{Hsb}{146,1,0.62}
 \providecolor{maybeUNDgreen}{Hsb}{146,1,0.53}
 
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
 \begin{document}
 \begin{center}
-\VERYHuge Creating accessible PDFs with \LaTeX\ is quick and easy\vspace{1in}
+\VERYHuge Creating accessible PDFs with \LaTeX\ is quick and
+easy\footnotemark
+\vspace{1in}
 \end{center}
 \huge
 \begin{minipage}[t]{.2\textwidth}
@@ -157,7 +160,7 @@ and sometimes
   table/multirow={...}
 }
 \end{lstlisting}
-\item (You \emph{were} semantically marking up your document, weren't you?)
+%\item (You \emph{were} semantically marking up your document, weren't you?)
 \end{itemize}
 \end{minipage}%
 \begin{minipage}[t]{.5\textwidth}
@@ -170,17 +173,21 @@ and sometimes
 \end{minipage}%
 \begin{minipage}[t]{.3\textwidth}
 Package \& class changes:
-\begin{itemize}
-\item enumitem, enumerate \textrightarrow\\
-enumext or texdoc blocks-doc% for many new options
-\item marginnote, marginfit, and marginfix \textrightarrow\
-marginalia or \cs{marginpar}
-\item titlesec \textrightarrow\\
-\cs{@startsection} %(see texdoc source2e)
+\begin{itemize}[item-indent=-1em,left-margin=1em]
+\item enumitem, enumerate\\
+\textrightarrow\ enumext or \texttt{texdoc blocks-doc}% for many new options
+\item marginnote, marginfit, and marginfix\\
+\textrightarrow\ marginalia or \cs{marginpar}
+\item titlesec\\
+\textrightarrow\ \cs{@startsection} %(see texdoc source2e)
  or\\
- \quad texdoc latex-lab-sec-template% for many new options
-\item beamer \textrightarrow\ ltx-talk
-\end{itemize}\vspace{1in}
+\textrightarrow\ \texttt{texdoc latex-lab-sec-template}% for many new options
+\item beamer\\
+\textrightarrow\ ltx-talk
+\end{itemize}
+Other packages' status:\\
+\url{https://latex3.github.io/tagging-project/tagging-status/}
+\vspace{1in}\par
 To listen to the results:
 \begin{itemize}
 \item NVDA or JAWS
@@ -192,6 +199,12 @@ To validate the results:
 \item PDFix
 \end{itemize}
 \end{minipage}
+
+\hfill
+\textsuperscript{\fnsymbol{footnote}}%
+As long as you start with good source material.
+(You have good \LaTeX\ sources, don't you?)
+%\end{center}
 \end{document}
 
 \tiny 12pt
