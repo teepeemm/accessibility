@@ -111,22 +111,24 @@ called \ltxtalk\ with proper tagging support as a
 replacement for \beamer.
 \end{quote}
 Joseph explored several aspects in the previous issue
-\TUB\ 47:1 \cite{Wright:2026:LCA}.
+\TUB\ 47:1 \cite{Wright:TB47-1:64}.
+%\cite{Wright:2026:LCA}.
 I will further explore this replacement.
 
 \section{The basics}
 
 A \ltxtalk\ presentation must begin with
 \begin{verbatim}[\verbatimOptions]
-\DocumentMetadata{}
-\documentclass{ltx-talk}
+\DocumentMetadata{}\documentclass{ltx-talk}
 \end{verbatim}
+%\begin{verbatim}[\verbatimOptions]
+%\DocumentMetadata{}
+%\documentclass{ltx-talk}
+%\end{verbatim}
 But we will probably want a \cs{DocumentMetadata} more like
 \begin{verbatim}[\verbatimOptions]
 \DocumentMetadata{
-  lang=en-US,
-  tagging=on,
-  pdfstandard=ua-2,
+  lang=en-US,tagging=on,pdfstandard=ua-2,
 %  check-tagging-status,
   tagging-setup={
 %    math/alt/use,
@@ -159,11 +161,14 @@ but that is a consequence of using \PDF\ 1.7).
 If we want to define a new overlay aware command,
 we should use the \texttt{xparse} syntax
 \begin{verbatim}[\verbatimOptions]
-\NewDocumentCommand{\mycommand}
-  { s D<>{1-} ... }{ ... }
+\NewDocumentCommand{\mycommand}{sD<>{1-}...}{...}
 \end{verbatim}
+%\begin{verbatim}[\verbatimOptions]
+%\NewDocumentCommand{\mycommand}
+%  { s D<>{1-} ... }{ ... }
+%\end{verbatim}
 where the \texttt{s} indicates an optional star
-(if we want our command to look for that),
+(if we want that),
 the \verb|D<>{1-}| indicates the overlay specification
 with a default value \verb|1-|
 (or \texttt{d<>} if a default value doesn't make sense),
@@ -273,7 +278,7 @@ culminating in \autoref{fig:eg_description}.
 \begin{figure}
 \setlength{\fboxsep}{0pt}
 \fbox{\includegraphics[width=.98\linewidth,page=4,
-trim=0 60 0 0,clip, % get things onto one fewer page
+trim=0 80 0 0,clip, % get things onto one fewer page
 ]{tugFigs}}
 \caption{Output of example \tubbraced{description} code.}
 \label{fig:eg_description}
@@ -303,7 +308,7 @@ of the code, creating a frame of six slides,
 as seen in \autoref{matrixMult}.
 \begin{figure}
 \setkeys{Gin}{width=.49\linewidth,
-trim=0 80 0 0,clip % get things onto one fewer page
+trim=0 100 0 0,clip % get things onto one fewer page
 }
 \begin{tabular}{|@{}c@{}|@{}c@{}|}\hline
 \includegraphics[page=5]{tugFigs}&
@@ -320,7 +325,7 @@ To peer behind the curtain of this example, if we disable the overlay commands,
 then we see the content in \autoref{matrixAll}.
 \begin{figure}
 \fbox{\includegraphics[page=11,width=.97\linewidth,
-trim=0 80 0 0,clip % try to get things onto one fewer page
+trim=0 100 0 0,clip % try to get things onto one fewer page
 ]{tugFigs}}
 \caption{Elements of matrix multiplication example.}
 \label{matrixAll}
@@ -471,6 +476,7 @@ Outside of the footer, we can access total frames via
 \subsection{Adjusting the title page}
 
 We could use
+%\verb|\EditTemplateDefaults{titlepage}{talk}{!<new key values>}|
 \begin{verbatim}[\verbatimOptions]
 \EditTemplateDefaults{titlepage}{talk}
   {!<new key values>}
