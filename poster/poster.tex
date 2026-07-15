@@ -9,7 +9,7 @@
   }
 }
 %beamerposter.sty, fancytikzposter, baposter, tikzposter, a0poster.cls, sciposter.cls, umbcposter (arabic), tcolorbox/tcbposter
-\documentclass{a0poster}
+\documentclass[a1]{a0poster}
 
 % beamer.cls & beamerposter.sty -> beamer unsupported
 % fancytikzposter merged into tikzposter
@@ -23,7 +23,14 @@
 \usepackage{url}
 \usepackage{qrcode}
 \usepackage{listings}
+
+\usepackage{xcolor}
+
 \usepackage[hidelinks]{hyperref}
+
+\definecolor{alert}{RGB}{200,0,0}
+\colorlet{example}{green!50!black}
+\definecolor{structure}{rgb}{0.2,0.2,0.7}
 
 \title{Creating Accessible PDFs With \texofpdfstring{\LaTeX}{LaTeX} is Quick and Easy}
 %\shorttitle{Accessible PDF Textbook}
@@ -99,7 +106,7 @@
   columns=fullflexible,
   keepspaces=true,
   commentstyle=\slshape,
-  basicstyle=\ttfamily
+  basicstyle=\ttfamily\color{structure}
 %  \lst@ifdisplaystyle\small\fi
   ,
   language={[LaTeX]TeX}
@@ -119,16 +126,16 @@
 
 \begin{document}
 \begin{center}
-\VERYHuge Creating accessible PDFs with \LaTeX\ is quick and
+\VeryHuge Creating accessible PDFs with \LaTeX\ is quick and
 easy\footnotemark
 \vspace{1in}
 \end{center}
-\huge
-\begin{minipage}[t]{.2\textwidth}
+\Large
+\begin{minipage}[t]{.25\textwidth}
 How to:
 \begin{itemize}
-\item Update \LaTeX
-\item Start with
+\item \textcolor{example}{Update} \LaTeX
+\item Start with:% \textcolor{structure}{\cs{DocumentMetadata}}
 \begin{lstlisting}
 \DocumentMetadata{
   lang=en,
@@ -143,50 +150,70 @@ How to:
 \documentclass{...}
 \usepackage{unicode-math}
 \end{lstlisting}
-\item Compile with Lua\LaTeX
-\item Images need \texttt{alt}\\
-\null\quad (or \texttt{actualtext}\\
-\null\quad\ or \texttt{artifact})
-\item Tables need
+\item Compile with \textcolor{example}{Lua\LaTeX}
+\item \textcolor{example}{Images} need \textcolor{structure}{\texttt{alt}}\\
+\null\quad (or \textcolor{structure}{\texttt{actualtext}}\\%)
+\null\quad\phantom(or \textcolor{structure}{\texttt{artifact}})
+\item \textcolor{example}{Tables} need
 \begin{lstlisting}
 \tagpdfsetup{
   table/header-rows   ={...},
   table/header-columns={...}
 }
 \end{lstlisting}
-and sometimes
-\begin{lstlisting}
-\tagpdfsetup{
-  table/multirow={...}
-}
-\end{lstlisting}
+and sometimes\\
+\makebox[0pt][l]{\makebox[78cm][r]{\hfill
+\makebox[0pt][r]{%
+\textsuperscript{\fnsymbol{footnote}}%
+As long as you start with good source material.
+(You have good \LaTeX\ sources, don't you?)%
+}}}
+{\color{structure}\verb|\tagpdfsetup{table/multirow={...}}|}
+%\begin{lstlisting}
+%\tagpdfsetup{table/multirow={...}}
+%\end{lstlisting}
 %\item (You \emph{were} semantically marking up your document, weren't you?)
 \end{itemize}
 \end{minipage}%
-\begin{minipage}[t]{.5\textwidth}
+\begin{minipage}[t]{.45\textwidth}
 \centering
-\leavevmode\\
-\qrcode[height=.15\textheight]{https://github.com/teepeemm/accessibility}\\\vspace{1in}
-\Huge\url{https://github.com/teepeemm/accessibility}\\\vspace{2in}
-\veryHuge Timothy Prescott\\\bigskip
-\includegraphics[actualtext={University of North Dakota, Mathematics \& Statistics}]{MathStats-CMYK_primary}
+\vspace*{\baselineskip}
+\qrcode[height=.2\textheight,nolink]{https://github.com/teepeemm/accessibility}\\\vspace{\baselineskip}
+\url{https://github.com/teepeemm/accessibility}\\
+\vspace{3\baselineskip}
+\Huge Timothy Prescott\\\bigskip
+\includegraphics[width=.5\linewidth,actualtext={University of North Dakota, Mathematics \& Statistics}]{MathStats-CMYK_primary}
 \end{minipage}%
 \begin{minipage}[t]{.3\textwidth}
 Package \& class changes:
 \begin{itemize}[item-indent=-1em,left-margin=1em]
-\item enumitem, enumerate\\
-\textrightarrow\ enumext or \texttt{texdoc blocks-doc}% for many new options
-\item marginnote, marginfit, and marginfix\\
-\textrightarrow\ marginalia or \cs{marginpar}
-\item titlesec\\
-\textrightarrow\ \cs{@startsection} %(see texdoc source2e)
- or\\
-\textrightarrow\ \texttt{texdoc latex-lab-sec-template}% for many new options
-\item beamer\\
-\textrightarrow\ ltx-talk
+%\renewcommand\labelitemii{\textrightarrow\ }
+\EditInstance{list}{itemize-2}{
+ item-indent=0em,
+ item-label=\textrightarrow,
+ label-sep=.5em
+}
+\item \textcolor{alert}{enumitem}, \textcolor{alert}{enumerate}
+\begin{itemize}
+\item \textcolor{example}{enumext} or
+\item \texttt{texdoc blocks-doc}% for many new options
+\end{itemize}
+%\item marginnote, marginfit, and marginfix\\
+%\textrightarrow\ marginalia or \cs{marginpar}
+\item \textcolor{alert}{titlesec}
+\begin{itemize}
+\item \textcolor{example}{\cs{@startsection}}\\
+\quad(see \texttt{texdoc source2e})
+ or
+\item \texttt{texdoc latex-lab-sec-template}% for many new options
+\end{itemize}
+\item \textcolor{alert}{beamer}
+\begin{itemize}
+\item \textcolor{example}{ltx-talk}
+\end{itemize}
 \end{itemize}
 Other packages' status:\\
-\url{https://latex3.github.io/tagging-project/tagging-status/}
+\textcolor{alert}{\url{https://latex3.github.io/tagging-project/tagging-status/}}
 \vspace{1in}\par
 To listen to the results:
 \begin{itemize}
@@ -195,15 +222,17 @@ To listen to the results:
 \end{itemize}\vspace{1in}
 To validate the results:
 \begin{itemize}
-\item veraPDF
-\item PDFix
+\item veraPDF or PDFix
+\item \texttt{show-pdf-tags}
 \end{itemize}
+%\vspace{4\baselineskip}
+%\hfill
+%\makebox[0pt][r]{%
+%\textsuperscript{\fnsymbol{footnote}}%
+%As long as you start with good source material.
+%(You have good \LaTeX\ sources, don't you?)%
+%}
 \end{minipage}
-
-\hfill
-\textsuperscript{\fnsymbol{footnote}}%
-As long as you start with good source material.
-(You have good \LaTeX\ sources, don't you?)
 %\end{center}
 \end{document}
 
