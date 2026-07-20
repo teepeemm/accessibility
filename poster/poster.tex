@@ -124,6 +124,12 @@
 
 \renewcommand*{\thefootnote}{\fnsymbol{footnote}}
 
+\EditInstance{list}{itemize-2}{
+ item-indent=0em,
+ item-label=\textrightarrow,
+ label-sep=.5em
+}
+
 \begin{document}
 \begin{center}
 \VeryHuge Creating accessible PDFs with \LaTeX\ is quick and
@@ -187,12 +193,6 @@ As long as you start with good source material.
 \begin{minipage}[t]{.3\textwidth}
 Package \& class changes:
 \begin{itemize}[item-indent=-1em,left-margin=1em]
-%\renewcommand\labelitemii{\textrightarrow\ }
-\EditInstance{list}{itemize-2}{
- item-indent=0em,
- item-label=\textrightarrow,
- label-sep=.5em
-}
 \item \textcolor{alert}{enumitem}, \textcolor{alert}{enumerate}
 \begin{itemize}
 \item \textcolor{example}{enumext} or
