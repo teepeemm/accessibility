@@ -8,7 +8,34 @@
     math/setup=mathml-SE
   }
 }
-%beamerposter.sty, fancytikzposter, baposter, tikzposter, a0poster.cls, sciposter.cls, umbcposter (arabic), tcolorbox/tcbposter
+
+\title[pdftitle={Creating Accessible PDFs With LaTeX is Quick and Easy}]
+{Creating Accessible PDFs With \LaTeX\ is Quick and Easy%
+\footnote{\Large\textsuperscript{\fnsymbol{footnote}}As long as you start with
+good source material. (You have good \LaTeX\ sources, don't you?)}%
+\textsuperscript{\fnsymbol{footnote}}}
+
+\author{Timothy Prescott}
+%\institute{University of North Dakota}
+%\logo{\includegraphics{example-image}}
+\date{August 6, 2026}
+
+%\documentclass{article}
+%\begin{document}
+%%%\maketitle
+%
+%\makeatletter
+%\tagstructbegin{tag=Title}\tagmcbegin{}\@title\tagmcend\tagstructend
+%\makeatother
+%\makeatletter
+%\AddToHook{cmd/@makefnmark/before}{\Large}
+%\makeatother
+%
+%Tim Prescott
+%
+%July 20, 2026
+%\end{document}
+
 \documentclass[a1]{a0poster}
 
 % beamer.cls & beamerposter.sty -> beamer unsupported
@@ -18,6 +45,7 @@
 % a0poster.cls -> loads very few files
 % sciposter -> loads shadow.sty currently incompatible #336
 % tcolorbox library poster
+% umbcposter (arabic)
 
 \usepackage{graphicx}
 \usepackage{url}
@@ -31,15 +59,6 @@
 \definecolor{alert}{RGB}{200,0,0}
 \colorlet{example}{green!50!black}
 \definecolor{structure}{rgb}{0.2,0.2,0.7}
-
-\title{Creating Accessible PDFs With \texofpdfstring{\LaTeX}{LaTeX} is Quick and Easy}
-%\shorttitle{Accessible PDF Textbook}
-\author{Timothy Prescott}
-%\institute{University of North Dakota}
-%\logo{\includegraphics{example-image}}
-%\institute{\raisebox{0pt}[\baselineskip]\LaTeX}
-%\institute{\raisebox{0pt}[\baselineskip]{\includegraphics[width=.1\linewidth]{example-image}}}
-\date{\today}
 
 %%%%%%% begin qrcode adjustment
 % https://tex.stackexchange.com/a/718275/107497
@@ -130,10 +149,28 @@
  label-sep=.5em
 }
 
+\renewcommand\footnoterule\relax
+\setlength\footnotemargin{12.5in}
+
 \begin{document}
+\raggedright
 \begin{center}
-\VeryHuge Creating accessible PDFs with \LaTeX\ is quick and
-easy\footnotemark
+\makeatletter
+\renewcommand*{\thefootnote}{\relax}
+\tagstructbegin{tag=Title}\tagmcbegin{}\VeryHuge\@title\tagmcend\tagstructend
+%\ShowCommand\footnote
+%\show\@outputbox@appendfootnotes
+%\ExpandArgs{c}\show{pdfcolfoot@current}
+%\show\footins
+\makeatother
+
+%\ShowSocket{build/column/outputbox}
+%\ShowSocket{tagsupport/build/column/footins}
+
+%\makeatletter
+%\renewcommand{\@makefnmark}{\hbox{\@textsuperscript{\Large\@thefnmark}}}
+%\makeatother
+%\renewcommand*{\thefootnote}{\Large\fnsymbol{footnote}}
 \vspace{1in}
 \end{center}
 \Large
@@ -142,7 +179,7 @@ How to:
 \begin{itemize}
 \item \textcolor{example}{Update} \LaTeX
 \item Start with:% \textcolor{structure}{\cs{DocumentMetadata}}
-\begin{lstlisting}
+\begin{lstlisting}[aboveskip=\smallskipamount,belowskip=\smallskipamount]
 \DocumentMetadata{
   lang=en,
   tagging=on,
@@ -161,20 +198,16 @@ How to:
 \null\quad (or \textcolor{structure}{\texttt{actualtext}}\\%)
 \null\quad\phantom(or \textcolor{structure}{\texttt{artifact}})
 \item \textcolor{example}{Tables} need
-\begin{lstlisting}
+\begin{lstlisting}[aboveskip=0pt,belowskip=0pt]
 \tagpdfsetup{
   table/header-rows   ={...},
   table/header-columns={...}
 }
 \end{lstlisting}
-and sometimes\\
-\makebox[0pt][l]{\makebox[78cm][r]{\hfill
-\makebox[0pt][r]{%
-\textsuperscript{\fnsymbol{footnote}}%
-As long as you start with good source material.
-(You have good \LaTeX\ sources, don't you?)%
-}}}
+\begin{minipage}[t][.5\baselineskip]{\textwidth}
+and multirow cells need\\
 {\color{structure}\verb|\tagpdfsetup{table/multirow={...}}|}
+\end{minipage}
 %\begin{lstlisting}
 %\tagpdfsetup{table/multirow={...}}
 %\end{lstlisting}
@@ -213,8 +246,8 @@ Package \& class changes:
 \end{itemize}
 \end{itemize}
 Other packages' status:\\
-\textcolor{alert}{\url{https://latex3.github.io/tagging-project/tagging-status/}}
-\vspace{1in}\par
+\textcolor{alert}{\url{https://latex3.github.io/tagging-project/tagging-status/}}\par
+\vspace{1in}
 To listen to the results:
 \begin{itemize}
 \item NVDA or JAWS
