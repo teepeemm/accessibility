@@ -138,13 +138,16 @@ But we will probably want a \cs{DocumentMetadata} more like
 Also, documents must be compiled using \texttt{lualatex} (preferable)
 or \texttt{pdflatex}.
 
-The class documentation is available via \texttt{texdoc ltx-talk}
-on a command line, or at \cite{ltxTalkCtanURL}.
-This links to several examples at \cite{ltxTalkEgURL}.
+The class documentation is available
+%via \texttt{texdoc ltx-talk} on a command line, or
+at \url{https://ctan.org/pkg/ltx-talk}
+%\cite{ltxTalkCtanURL}.
+and links to several examples at
+\url{https://www.texdev.net/ltx-talk/examples}.
+%\cite{ltxTalkEgURL}.
 If we want to customize the document,
 it is important to note that \ltxtalk\ makes use of \emph{templates},
-so that we will want to familiarize ourselves
-with \texttt{texdoc lttemplates}.
+so that we may want to consult \texttt{texdoc lttemplates}.
 
 Broadly, we can view a \ltxtalk\ as a properly tagged \LaTeX\ document
 that incorporates presentation ideas such as overlays and the geometry.
@@ -159,9 +162,10 @@ the \texttt{math/alt/use} line to add alt text to all of our math formulas
 but that is a consequence of using \PDF\ 1.7).
 
 If we want to define a new overlay aware command,
-we should use the \texttt{xparse} syntax
+we should use the syntax
 \begin{verbatim}[\verbatimOptions]
-\NewDocumentCommand{\mycommand}{sD<>{1-}...}{...}
+\NewDocumentCommand{\mycommand}
+  { s D<>{1-} ... }{...}
 \end{verbatim}
 %\begin{verbatim}[\verbatimOptions]
 %\NewDocumentCommand{\mycommand}
@@ -190,7 +194,7 @@ and \textcolor{structure}{structure (blue)}.
 All three are slightly darker than standard 100\%/0\%/0\%
 in \acro{RGB} colors to enhance contrast for accessibility.
 
-If a frame needs to use verbatim or similar to change the catcodes,
+If a frame needs to use \cs{verb} or similar to change catcodes,
 then \ltxtalk\ needs a \tubbraced{frame*} environment
 (this is similar to \beamer's concept of a \emph{fragile} frame).
 As with most things related to verbatim,
@@ -217,11 +221,14 @@ also have corresponding environments \tubbraced{\meta{action}env}.
 
 %\section{Sections}
 
-Within a frame, the sectioning commands \cs{section}, \cs{subsection}, and
-\cs{subsubsection} have no affect.
+Within a frame,
+%the commands
+%\cs{section}, \cs{subsection}, and \cs{subsubsection}
+\cs{((sub)sub)section}
+has no effect.
 (The other common sectioning commands should not appear in a presentation and
 are not defined.)
-Outside of the frames, the sectioning commands for sections with frames
+Outside of the frames, the sectioning commands
 contribute to the table of contents, printed by the usual \cs{tableofcontents}.
 Before any sectioning command,
 this will present an outline of the presentation,
@@ -279,6 +286,7 @@ culminating in \autoref{fig:eg_description}.
 \setlength{\fboxsep}{0pt}
 \fbox{\includegraphics[width=.98\linewidth,page=4,
 trim=0 80 0 0,clip, % get things onto one fewer page
+alt={Described by the caption.}
 ]{tugFigs}}
 \caption{Output of example \tubbraced{description} code.}
 \label{fig:eg_description}
@@ -307,7 +315,7 @@ the overlays combine to reveal and highlight particular portions
 of the code, creating a frame of six slides,
 as seen in \autoref{matrixMult}.
 \begin{figure}
-\setkeys{Gin}{width=.49\linewidth,
+\setkeys{Gin}{width=.49\linewidth,alt={Described by the caption.},
 trim=0 100 0 0,clip % get things onto one fewer page
 }
 \begin{tabular}{|@{}c@{}|@{}c@{}|}\hline
@@ -325,6 +333,7 @@ To peer behind the curtain of this example, if we disable the overlay commands,
 then we see the content in \autoref{matrixAll}.
 \begin{figure}
 \fbox{\includegraphics[page=11,width=.97\linewidth,
+alt={Described by the caption.},
 trim=0 100 0 0,clip % try to get things onto one fewer page
 ]{tugFigs}}
 \caption{Elements of matrix multiplication example.}
@@ -351,7 +360,6 @@ This causes everything to appears as in step 6, but to all be \cs{alert}ed.
 %(annoying, but fixable)
 %and the \cs{only} entries to all be visible.
 This is an issue with \beamer\ as well.
-
 %There are two solutions to this problem.
 If we want the handout to follow the \texttt{projector} mode and its tagging,
 we can change all of the overlay specifications from \texttt{<\meta{spec}>}
@@ -407,7 +415,8 @@ We can adjust the values by using
 
 My university encourages a presentation template that has a logo
 in the top right of the header.
-This cannot be done with the existing template, but can be accomplished with
+This cannot be done with the existing template, but can be accomplished
+by thinking of this as a regular \LaTeX\ document and using
 \begin{lstlisting}
 \newsavebox\logobox
 \savebox\logobox{%
@@ -498,7 +507,8 @@ whose default is equivalent to
 %as optional arguments to the \cs{maketitle} command.
 
 \texttt{framestyle} is similar to \cs{pagestyle}.
-In addition to the default and \texttt{plain} (no header or footer),
+In addition to the default \texttt{talk}, \texttt{empty}, and \texttt{plain}
+(no header or footer),
 we can also use \texttt{wallpaper} which removes the text
 from the footer and the title
 (but not their background colors).
@@ -592,7 +602,10 @@ and in the log file by using the template commands
 
 As \ltxtalk's reason for existence is proper tagging,
 please let us know of any tagging difficulties that you find.
-The class's GitHub repository is at \cite{ltxGHurl}.
+The class's GitHub repository is at
+%\cite{ltxGHurl}.
+\url{https://github.com/josephwright/ltx-talk}.
+
 
 We are intensely interested in feedback from screen reader users
 (as opposed to automated validators)
