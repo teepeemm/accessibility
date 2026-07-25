@@ -24,6 +24,7 @@
 !rawPDFs/*
 !oneslide/oneslide.pdf
 !ltx-talk-template/ltx-talk-template.pdf
+!poster/poster.pdf
 
 # unicode glyphs
 tug/luatex.*/*.png
