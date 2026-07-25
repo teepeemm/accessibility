@@ -2,6 +2,7 @@
 Accessible PDF files using LaTeX
 ===========================
 
+* The [MathFest poster](https://teepeemm.github.io/accessibility/poster/poster.pdf) and its [reading by NVDA in Foxit](https://teepeemm.github.io/accessibility/poster/poster.mp3)
 * Make sure you have the latest TeX version, and have [updated your packages](https://tex.stackexchange.com/q/55437/107497)
 * As the first commands, use
 ``` latex
@@ -12,7 +13,7 @@ Accessible PDF files using LaTeX
 %  check-tagging-status,
   tagging-setup={
 %    math/alt/use,               % <=> Formulas must have description/alt text
-%    role/new-tag=frametitle/H1, % <=> headings must begin at level 1
+%    role/new-tag=frametitle/H1, % <=> ltx-talk headings must begin at level 1
     math/setup=mathml-SE
   }
 }
@@ -21,9 +22,9 @@ Accessible PDF files using LaTeX
 ```
 * Compile with LuaLaTeX
 * Any `\includegraphics`, `\tikz`, or `{tikzpicture}` or `{picture}` environments need `alt={...}` in the options (if the image is truly decorative, you can use the option `artifact` instead of `alt`; a different option is `actualtext={...}` if your image is really text in disguise).  See `texdoc latex-lab-graphic` for more
-* For a tabular (or similar), use `\tagpdfsetup{table/header-rows={...},table/header-columns={...}}` and `\tagpdfsetup{table/multirow={...}}`.  See `texdoc latex-lab-table` for more
+* Before tabular (or similar), use `\tagpdfsetup{table/header-rows={...},table/header-columns={...}}`. Use `\tagpdfsetup{table/multirow={...}}` within such cells.  See `texdoc latex-lab-table` for more
 * The `check-tagging-status` key will report [general class and package status](https://latex3.github.io/tagging-project/tagging-status/)
-* [For more information](https://latex3.github.io/tagging-project/documentation/prototype-usage-instructions.html)
+* [For more information](https://latex3.github.io/tagging-project/documentation/usage-instructions.html)
 * If you must, you can [make the title act as a header](https://tex.stackexchange.com/a/758805/107497), but using `\section*` is better
 
 Package/class substitutions:
