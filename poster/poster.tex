@@ -10,15 +10,23 @@
 }
 
 \title[pdftitle={Creating Accessible PDFs With LaTeX is Quick and Easy}]
-{Creating Accessible PDFs With \LaTeX\ is Quick and Easy%
-\footnote{\Large\textsuperscript{\fnsymbol{footnote}}As long as you start with
-good source material. (You have good \LaTeX\ sources, don't you?)}%
-\textsuperscript{\fnsymbol{footnote}}}
+{\VeryHuge Creating Accessible PDFs With \texorpdfstring{\LaTeX}{LaTeX} is
+Quick and Easy%
+\texorpdfstring{\footnote{As long as you start with
+good source material. (You have good \LaTeX\ sources, don't you?)}}{}}
+%\title[pdftitle={Creating Accessible PDFs With LaTeX is Quick and Easy}]
+%{Creating Accessible PDFs With \texorpdfstring{\LaTeX}{LaTeX} is Quick and Easy%
+%\footnote{\Large\textsuperscript{\fnsymbol{footnote}}As long as you start with
+%good source material. (You have good \LaTeX\ sources, don't you?)}%
+%\textsuperscript{\fnsymbol{footnote}}}
 
-\author{Timothy Prescott}
+\renewcommand\thefootnote{\fnsymbol{footnote}}
+
+% these need to be blank for the maketitle
+\author{} % Timothy Prescott
 %\institute{University of North Dakota}
 %\logo{\includegraphics{example-image}}
-\date{August 6, 2026}
+\date{} % August 6, 2026
 
 %\documentclass{article}
 %\begin{document}
@@ -37,6 +45,7 @@ good source material. (You have good \LaTeX\ sources, don't you?)}%
 %\end{document}
 
 \documentclass[a1]{a0poster}
+\renewcommand\footnotesize\Large
 
 % beamer.cls & beamerposter.sty -> beamer unsupported
 % fancytikzposter merged into tikzposter
@@ -153,26 +162,10 @@ good source material. (You have good \LaTeX\ sources, don't you?)}%
 \setlength\footnotemargin{12.5in}
 
 \begin{document}
+\maketitle
+\thispagestyle{empty}
 \raggedright
-\begin{center}
-\makeatletter
-\renewcommand*{\thefootnote}{\relax}
-\tagstructbegin{tag=Title}\tagmcbegin{}\VeryHuge\@title\tagmcend\tagstructend
-%\ShowCommand\footnote
-%\show\@outputbox@appendfootnotes
-%\ExpandArgs{c}\show{pdfcolfoot@current}
-%\show\footins
-\makeatother
-
-%\ShowSocket{build/column/outputbox}
-%\ShowSocket{tagsupport/build/column/footins}
-
-%\makeatletter
-%\renewcommand{\@makefnmark}{\hbox{\@textsuperscript{\Large\@thefnmark}}}
-%\makeatother
-%\renewcommand*{\thefootnote}{\Large\fnsymbol{footnote}}
-\vspace{1in}
-\end{center}
+\vspace{-.75in}
 \Large
 \begin{minipage}[t]{.25\textwidth}
 How to:
