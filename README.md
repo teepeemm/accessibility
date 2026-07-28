@@ -2,6 +2,7 @@
 Accessible PDF files using LaTeX
 ===========================
 
+* This information is migrating to https://teepeemm.github.io/accessibility/
 * The [MathFest poster](https://teepeemm.github.io/accessibility/poster/poster.pdf) and its [reading by NVDA in Foxit](https://teepeemm.github.io/accessibility/poster/poster.mp3)
 * Make sure you have the latest TeX version, and have [updated your packages](https://tex.stackexchange.com/q/55437/107497)
 * As the first commands, use
