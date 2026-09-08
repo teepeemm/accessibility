@@ -1,0 +1,239 @@
+% a promotional effort to show that the workflow does work and
+% produce good results
+
+% keep source lines to <= 79 characters
+%234567891_234567892_234567893_234567894_234567895_234567896_234567897_23456789
+
+% bio:
+% Timothy Prescott (https://campus.und.edu/directory/timothy.prescott) is an associate professor in the department of Mathematics & Statistics at the University of North Dakota, where he maintains the department's Calculus textbook and coordinates the data for the emporium math lab.
+
+\DocumentMetadata{
+  lang=en,
+  tagging=on,
+  pdfstandard=ua-2,
+%  check-tagging-status,
+  tagging-setup={
+%    math/alt/use,
+    math/setup=mathml-SE
+  }
+}
+
+\title[pdftitle={Converting a PDF textbook to be accessible}
+]{Converting a \PDF\ textbook to be accessible}
+\author{Timothy Prescott}
+\date{}
+
+\documentclass{article}
+\usepackage{unicode-math}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\makeatletter
+\newcommand{\SMC}{%
+  \ifx\@currsize\normalsize\small\else
+   \ifx\@currsize\small\footnotesize\else
+    \ifx\@currsize\footnotesize\scriptsize\else
+     \ifx\@currsize\large\normalsize\else
+      \ifx\@currsize\Large\large\else
+       \ifx\@currsize\LARGE\Large\else
+        \ifx\@currsize\scriptsize\tiny\else
+         \ifx\@currsize\tiny\tiny\else
+          \ifx\@currsize\huge\LARGE\else
+           \ifx\@currsize\Huge\huge\else
+            \small\SMC@unknown@warning
+ \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+}
+\makeatother
+
+\newcommand*{\acro}[1]{{\SMC #1}\@}
+\newcommand{\PDF}{\acro{PDF}}
+\newcommand{\veraPDF}{vera\PDF}
+\newcommand{\VeraPDF}{vera\PDF}  % it appears they are always lower case
+\newcommand{\PDFix}{\PDF ix}
+
+\setcounter{secnumdepth}{-1}
+
+%\address{University of North Dakota}
+%\netaddress{timothy dot prescott (at) UND dot edu}
+%\personalURL{https://und.edu/directory/timothy.prescott}
+%\ORCID{0009-0009-0555-8074}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Modern \LaTeX\ provides a viable roadmap to creating accessible \PDF s.
+%Convincing others of that fact may be a different matter.
+%Creating a large accessible \PDF\ is straightforward using modern \LaTeX.
+%Convincing others you have done so may be a different matter.
+\end{abstract}
+
+\section{Introduction \& setup}
+
+For the past decade, the University of North Dakota has used a
+\href{https://arts-sciences.und.edu/academics/math/calc-1-texts.html}{custom 1150 page textbook}
+for its three semester calculus sequence.
+This has enabled students
+to download the \PDF\ for free
+in addition to having the option to purchase the book
+for a fraction of the cost of other textbooks
+(currently \$25--\$30 per semester, when I last checked).
+
+My university has been emphasizing the national requirement
+that all documents must satisfy the \acro{WCAG 2.1 AA} guideline
+as of April 2027.
+Beginning in early 2025, I began exploring how to ensure that
+the textbook meets this guideline.
+
+\section{The basics}
+
+Because we create the textbook using \LaTeX,
+we were able to leverage much of the work of the \LaTeX\ project.
+By placing a single command at the beginning of the code's preamble,
+we indicated that Lua\LaTeX\ should produce
+a \PDF\ version 2.0 satisfying the \acro{UA-2} standard.
+
+Because tagging in \LaTeX\ is still under development,
+I did encounter several bugs in the resulting compilation.
+These were generally quickly fixed or circumvented by users
+in online forums (often members of the \LaTeX\ project).
+
+\section{Alt text and tables}
+
+A key part of any accessibility workflow is providing alt text for images.
+With Lua\LaTeX\ automatically handling the bulk of \PDF\ tagging,
+this was the greatest part of the remaining work.
+%providing alternative text for the thousand or so images throughout the book.
+\LaTeX\ can specify alt text
+to the image, and also provides the capability to note that an image
+is an artifact or actual text.
+
+It is useful to note that creating alt text is
+not necessarily a \TeX nical aspect of the tagging process,
+but possibly the most time intensive.
+For alt text, I used a short Python script that added
+\texttt{alt=\{ALT-TEXT-TO-BE-DETERMINED\}} to all of the images.
+A student worker with less \TeX\ experience was then able to go through
+the book, examine the resulting \PDF, and help create the alt text.
+
+There are two contrasting problems we encountered with alt text.
+Alt text guidelines generally prefer a description that is too short
+to adequately describe a complicated mathematical object.
+I typically considered but not necessarily followed such a restriction.
+
+A bigger problem arises in early chapters in the calculus sequence
+when we ask students to verbally describe a graph.
+It is not clear how we can provide alt text to describe a graph
+without giving an answer that students could repeat.
+I chose to describe such graphs using various synonyms
+(``the graph is a line from $(-2,0.5)$ to a hollow dot at $(-1,1)$, \dots''),
+but acknowledge this is not an entirely satisfactory approach.
+
+Many \PDF\ checkers do not recognize \PDF\ version 2.0 and
+instead (silently) check the \PDF\ against version 1.7.
+A critical distinction for us is that \PDF\ version 1.7 requires that
+formulas include alt text.
+We can accomplish this with \LaTeX,
+but this usually causes \PDF\ screen readers to read the alt text and
+omit the more informative Math\acro{ML} tags
+(despite a recent recommendation to the contrary),
+%\url{https://pdfa.org/resource/best-practice-guide-math-in-pdf/},
+so I discourage its use
+unless a document is being judged on its adherence to the 1.7 standard.
+
+The last remaining significant accessibility task is that
+tables need to identify the headings that describe the data in the table.
+But we should emphasize that if the sole purpose of the table
+is to arrange elements in a grid,
+then it's not actually a table and probably shouldn't be tagged as such.
+Again, \LaTeX\ can identify the headers,
+although the current syntax to do so is still under development.
+
+\section{Checking the results}
+
+Having resolved the reported errors,
+I needed to verify that the result was indeed accessible.
+The obvious first step is to ensure
+a screen reader properly handles the document.
+Unfortunately, when it comes to \PDF\ version 2.0,
+the only currently viable \PDF\ readers are Adobe, Foxit, and Firefox,
+while the only currently viable screen readers to go with them are
+\acro{NVDA} and \acro{JAWS} on Windows and Orca on \acro{GNU}/Linux.
+
+Another approach to verifying accessibility is to verify that
+the \PDF\ is indeed version 2.0,
+and satisfies the \acro{UA-2} \PDF\ standard.
+Unfortunately (again),
+there are not many \PDF\ checkers that recognize version 2.0,
+and many will apply version 1.7 standards to a version 2.0 document,
+resulting in many claimed ``issues'' with a valid document.
+In the positive direction,
+%\url{https://pdfa.org/accessible-math-in-pdf-finally/}
+there are several (but currently only
+five, and at least three of the five are different user interfaces
+over the same validation profiles)
+checkers that support \PDF\ version 2.0.
+% listed at \url{https://pdfa.org/accessible-math-in-pdf-finally}.
+I have experience with
+\href{https://verapdf.org/}{\veraPDF} and
+\href{https://pdfix.net/}{\PDFix}.
+
+\hypersetup{hidelinks}
+
+The \LaTeX\ team uses \veraPDF\ to validate their documents.
+\VeraPDF\ also has a command line version of the program,
+allowing for faster, or automated, checking of generated \PDF s.
+After a minute of checking, \veraPDF\ reported that the textbook
+satisfies the \acro{UA-2} and \acro{WTPDF} standards,
+having performed over eleven million checks
+of one thousand seven hundred rules.
+
+\PDFix\ uses a similar checker as \veraPDF, but it also provides a
+graphical view of the \PDF\ in question, which better locates errors.
+\PDFix\ also allows navigating the tree structure of the \PDF,
+making it possible to locate errors given by \veraPDF.
+Additionally, \PDFix\ offers additional profiles for validation.
+
+My institution uses Ally to check \PDF s posted to our \acro{LMS}.
+Ally is one of the aforementioned \PDF\ checkers that looks for version 1.7
+and requires formulas to have alt text.
+For this reason, I try to avoid posting the textbook to our \acro{LMS}.
+
+%For shorter documents, I can also examine the tagging structure
+%of a \PDF\ by using the command line tool \texttt{show-pdf-tags}
+%or ng\acro{PDF} at \url{https://ngpdf.com/}.
+
+\section{Other textbooks and lessons learned}
+
+Since converting the calculus textbook to be accessible,
+I have also converted both a linear algebra textbook
+% (see \url{https://github.com/teepeemm/LinearAlgebra})
+and a differential equations textbook
+% (see \url{https://github.com/teepeemm/trenchDEs})
+to be accessible.
+
+%Converting these textbooks creates
+%a more readable, more maintainable, and more accessible document.
+%I would argue that the one-time cost of doing so
+%is well worth the few hours required for the result.
+
+I have encountered some misconceptions during this process.
+Some people think that \PDF s, especially those produced by \LaTeX,
+are inherently inaccessible.
+usually because they are not aware that
+this reality has completely changed over the past few years.
+A separate misconception is that inaccessibilities in a \LaTeX\ \PDF\ must
+be laboriously remediated elsewhere (usually in Adobe Pro),
+not realizing that \LaTeX\ has the ability
+to create a fully accessible \PDF.
+\bigskip
+
+%As a final remark, I have collected the advice from this article
+%into a GitHub repository at\\
+%%\cite{accessibleURL}.
+%\url{https://teepeemm.github.io/accessibility}.
+
+A longer version of this article is available at
+\url{https://tug.org/TUGboat/tb47-2/tb146prescott-book-accessibility.pdf}.
+
+\end{document}
