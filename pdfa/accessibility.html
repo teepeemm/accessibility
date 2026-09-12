@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Easily making an accessible PDF textbook</title>
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Easily making an accessible PDF textbook</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Frank Mittelbach
+</span></span>
+<span class="ltx_author_before">  </span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Timothy Prescott
+</span></span></div>
+
+<div id="abstract1" class="ltx_abstract"><h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+    
+<p class="ltx_p">Modern <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> provides a viable roadmap to creating accessible PDFs.</p>
+  
+</div>
+<section id="Sx1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Introduction &amp; setup</h2>
+
+<div id="Sx1.p1" class="ltx_para">
+<p class="ltx_p">For the past decade, the University of North Dakota has used a custom 1150 page
+textbook
+for its three semester calculus sequence.
+This has enabled students
+to download the PDF for free
+in addition to having the option to purchase the book
+for a fraction of the cost of other textbooks
+(currently $25–$30 per semester, when last checked).</p>
+</div>
+<div id="Sx1.p2" class="ltx_para">
+<p class="ltx_p">The University of North Dakota has been emphasizing the national requirement
+that all documents must satisfy the WCAG 2.1 AA guidelines
+as of April 2027.
+Beginning in early 2025, I (the second author) began exploring how to ensure that
+the textbook meets these guidelines.</p>
+</div>
+</section>
+<section id="Sx2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">The basics</h2>
+
+<div id="Sx2.p1" class="ltx_para">
+<p class="ltx_p">Because the textbook is a <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> document,
+we were able to leverage much of the work of the <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> project,
+of which the first author is a member.
+A single command at the beginning of the code’s preamble
+indicates that Lua<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> should produce
+a PDF version 2.0 satisfying the UA-2 standard.</p>
+</div>
+<div id="Sx2.p2" class="ltx_para">
+<p class="ltx_p">Because tagging in <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> is still under development,
+there were several bugs in the resulting compilation.
+These were generally quickly fixed or circumvented by users
+in online forums (often members of the <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> project).</p>
+</div>
+</section>
+<section id="Sx3" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Alt text and tables</h2>
+
+<div id="Sx3.p1" class="ltx_para">
+<p class="ltx_p">A key part of any accessibility workflow
+is providing alternative text for images.
+With Lua<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> automatically handling the bulk of PDF tagging,
+this was the greatest part of the remaining work.
+<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> can specify alt text to the image,
+and also provides the capability to note that an image
+is an artifact or actual text.</p>
+</div>
+<div id="Sx3.p2" class="ltx_para">
+<p class="ltx_p">It is useful to note that creating alt text is
+not necessarily a <span class="ltx_text ltx_TeX_logo" style="letter-spacing:-0.2em; margin-right:0.2em;">T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;;">e</span>X</span>nical aspect of the tagging process,
+but possibly the most time intensive.
+For alt text, a short Python script added
+<span class="ltx_text ltx_font_typewriter">alt={ALT-TEXT-TO-BE-DETERMINED}</span> to all of the images.
+A student worker with less <span class="ltx_text ltx_TeX_logo" style="letter-spacing:-0.2em; margin-right:0.2em;">T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;;">e</span>X</span> experience then went through
+the book, examined the resulting PDF, and created the alt text.</p>
+</div>
+<div id="Sx3.p3" class="ltx_para">
+<p class="ltx_p">There are two contrasting problems we encountered with alt text.
+Alt text guidelines generally prefer a description that is too short
+to adequately describe a complicated mathematical object.
+The textbook typically followed such a restriction, but not always.</p>
+</div>
+<div id="Sx3.p4" class="ltx_para">
+<p class="ltx_p">A bigger problem arises in early chapters in the calculus sequence
+when students are asked to verbally describe a graph.
+It is not clear how to provide alt text to describe a graph
+without giving an answer that students could repeat.
+The textbook describes such graphs using various synonyms
+(“the graph is a line from <math id="Sx3.p4.m1" class="ltx_Math" alttext="(-2,0.5)" display="inline"><mrow><mo stretchy="false">(</mo><mrow><mo lspace="0em">−</mo><mn>2</mn></mrow><mo>,</mo><mn>0.5</mn><mo stretchy="false">)</mo></mrow></math> to a hollow dot at <math id="Sx3.p4.m2" class="ltx_Math" alttext="(-1,1)" display="inline"><mrow><mo stretchy="false">(</mo><mrow><mo lspace="0em">−</mo><mn>1</mn></mrow><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>, …”),
+but we acknowledge this is not an entirely satisfactory approach.</p>
+</div>
+<div id="Sx3.p5" class="ltx_para">
+<p class="ltx_p">Many PDF checkers do not recognize PDF version 2.0 and
+instead (silently) check the PDF against version 1.7.
+A critical distinction for math is that PDF version 1.7 requires that
+formulas include alt text.
+<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> can accomplish this,
+but this usually causes PDF screen readers to read the alt text and
+omit the more informative MathML tags
+(despite a recent PDF Association recommendation to the contrary),
+so we discourage its use
+unless a document is being judged on its adherence to the 1.7 standard.</p>
+</div>
+<div id="Sx3.p6" class="ltx_para">
+<p class="ltx_p">The last remaining significant accessibility task is that
+tables need to identify the headings that describe the data in the table.
+Again, <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> can identify the headers,
+although the current syntax to do so is still under development.
+But we should also emphasize that if the sole purpose of the table
+is to arrange elements in a grid,
+then it’s not actually a table and probably shouldn’t be tagged as such.</p>
+</div>
+</section>
+<section id="Sx4" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Checking the results</h2>
+
+<div id="Sx4.p1" class="ltx_para">
+<p class="ltx_p">Having resolved the reported errors,
+we needed to verify that the result was indeed accessible.
+The obvious first step is to ensure
+a screen reader properly handles the document.
+Unfortunately, when it comes to PDF version 2.0,
+the only currently viable PDF readers are Adobe, Foxit, and Firefox,
+while the only currently viable screen readers to go with them are
+NVDA and JAWS on Windows and Orca on GNU/Linux.</p>
+</div>
+<div id="Sx4.p2" class="ltx_para">
+<p class="ltx_p">Another approach to verifying accessibility is to verify that
+the PDF is indeed version 2.0,
+and satisfies the UA-2 PDF standard.
+Unfortunately (again),
+there are relatively few PDF checkers that recognize version 2.0,
+while many more will apply version 1.7 standards to a version 2.0 document,
+resulting in many claimed “issues” with a valid document.</p>
+</div>
+<div id="Sx4.p3" class="ltx_para">
+<p class="ltx_p">The <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> team uses <a href="https://verapdf.org/" title="" class="ltx_ref ltx_href">veraPDF</a> to verify their
+documents.
+veraPDF also has a command line version of the program,
+allowing for faster, or automated, checking of generated PDFs.
+After a minute of checking, veraPDF reported that the textbook
+satisfies the UA-2 and WTPDF standards,
+having performed over eleven million checks
+of one thousand seven hundred rules.</p>
+</div>
+<div id="Sx4.p4" class="ltx_para">
+<p class="ltx_p">A related verifier is <a href="https://pdfix.net/" title="" class="ltx_ref ltx_href">PDFix</a>, which uses a similar
+checker as veraPDF,
+but also provides a graphical view of the PDF in question,
+which better locates errors.
+Additionally, PDFix offers additional profiles for verification.</p>
+</div>
+<div id="Sx4.p5" class="ltx_para">
+<p class="ltx_p">The University of North Dakota uses Ally
+to check PDFs posted to its learning management system.
+Ally is one of the aforementioned PDF checkers that looks for version 1.7
+and requires formulas to have alt text.
+For this reason,
+we recommend avoiding an Ally verification if possible.</p>
+</div>
+</section>
+<section id="Sx5" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Lessons learned</h2>
+
+<div id="Sx5.p1" class="ltx_para">
+<p class="ltx_p">There are some misconceptions regarding accessibility and PDFs.
+Some people think that PDFs, especially those produced by <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span>,
+are inherently inaccessible,
+usually because they are not aware that
+this reality has completely changed over the past few years.
+A separate misconception is that inaccessibilities in a <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> PDF must
+be laboriously remediated elsewhere (usually in Adobe Pro),
+not realizing that thanks to the recent work of the <span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> Project team,
+<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span> now has the ability to automatically create fully accessible PDFs.</p>
+</div>
+<div id="Sx5.p2" class="ltx_para">
+<p class="ltx_p">We hope that this successful demonstration of converting a large
+and complex STEM document into an accessible format can help to
+overcome these misconceptions.
+<span class="ltx_text ltx_LaTeX_logo" style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_text" style="position:relative; bottom:0.4ex;font-variant:small-caps;;">a</span>T<span class="ltx_text" style="position:relative; bottom:-0.2ex;font-variant:small-caps;font-size:120%;">e</span>X</span>’s ability to automatically create fully accessible PDFs
+means that producing high quality and accessible documents is
+not only possible but also smooth and painless,
+eliminating
+undue extra work by the author beyond supplying alternative texts
+(which would be a part of any accessibility workflow).
+Most importantly, there is no need for any manual remediation after the
+PDF is produced, so that future editions of these documents will
+automatically remain accessible without any further work.</p>
+</div>
+<div id="Sx5.p3" class="ltx_para">
+<p class="ltx_p">A longer version of this article is available at
+<a href="https://tug.org/TUGboat/tb47-2/tb146prescott-book-accessibility.pdf" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://tug.org/TUGboat/tb47-2/tb146prescott-book-accessibility.pdf</a>.
+The textbook in question is available at
+<a href="https://arts-sciences.und.edu/academics/math/calc-1-texts.html" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://arts-sciences.und.edu/academics/math/calc-1-texts.html</a>.</p>
+</div>
+</section>
+</article>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_page_logo">Generated  by <a href="http://dlmf.nist.gov/LaTeXML/" class="ltx_LaTeXML_logo"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="Mascot Sammy"></a> (oxide)</div></footer>
+</div>
+</body>
+</html>
